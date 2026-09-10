@@ -4,7 +4,32 @@
 
 **Created**: 2026-09-10
 
-**Status**: Draft
+**Status**: Clarified
+
+## Clarifications
+
+### Session 2026-09-10
+
+- Q: How often should the device sample the sensor? → A: Once per second.
+- Q: At exactly the threshold values, which state wins? → A: Strictly
+  greater/less. WARNING triggers only when temperature is strictly above
+  30.0°C; OK resumes only when strictly below 28.0°C. A reading of exactly
+  30.0°C or exactly 28.0°C does not by itself change state.
+- Q: Should a single failed sensor read immediately trigger SENSOR_ERROR,
+  or require multiple consecutive failures? → A: 3 consecutive failed
+  reads are required before entering SENSOR_ERROR, to tolerate a single
+  transient I2C glitch without flapping. A failure count below 3 does not
+  change MonitorState at all (the prior OK/WARNING state, and the prior
+  valid reading, are held as-is).
+- Q: What should the OLED show during SENSOR_ERROR? → A: An explicit
+  "SENSOR ERROR" label plus the last valid reading, clearly marked as
+  stale (e.g. "Last: 26.4C (stale)"), so the device never presents old
+  data as if it were current.
+- Q: How frequently should Serial print diagnostics? → A: Every sampling
+  cycle (same 1-second cadence as the OLED update), one line containing
+  the current MonitorState and the current-or-last-valid temperature.
+  Decided alongside the sampling interval since both are driven by the
+  same cycle; not treated as a separate high-stakes decision.
 
 **Input**: User description: "Build an application for a Heltec WiFi Kit V3 that reads a sensor, shows the value on the display, and shows a warning when the value is too high."
 
@@ -94,45 +119,46 @@ value as if it were current.
 
 ### Edge Cases
 
-- What should the OLED display during SENSOR_ERROR — nothing, an error
-  label only, or an error label alongside the last valid reading?
-  [NEEDS CLARIFICATION: exact SENSOR_ERROR display content]
-- Should a single failed read immediately enter SENSOR_ERROR, or should a
-  short run of consecutive failures be required first (debounce)?
-  [NEEDS CLARIFICATION: sensor failure debounce policy]
-- At exactly 30.0°C, is the device in OK or WARNING? At exactly 28.0°C, is
-  it in WARNING or OK? [NEEDS CLARIFICATION: inclusive vs exclusive
-  threshold comparisons]
-- How often should Serial print diagnostics — every sampling cycle, or on
-  a separate slower interval? [NEEDS CLARIFICATION: Serial diagnostic
-  frequency and format]
+- SENSOR_ERROR displays "SENSOR ERROR" plus the last valid reading marked
+  stale (see Clarifications). Before any first valid reading has ever been
+  obtained, there is no "last valid reading" to show — the OLED shows
+  "SENSOR ERROR" with no temperature value in that case.
+- A run of 1–2 consecutive failed reads does not change MonitorState; only
+  3 consecutive failures trigger SENSOR_ERROR (see Clarifications).
+- Threshold comparisons are strict (`>` and `<`, never `>=`/`<=`); readings
+  of exactly 30.0°C or exactly 28.0°C do not by themselves change state
+  (see Clarifications).
+- Serial prints once per sampling cycle (see Clarifications).
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: The system MUST sample temperature from the sensor on a
-  fixed interval [NEEDS CLARIFICATION: exact sampling interval — the
-  vague prompt never said "once per second," that was only ever a
-  suggestion in the workshop plan, not a confirmed requirement].
+- **FR-001**: The system MUST sample temperature from the sensor once per
+  second.
 - **FR-002**: The system MUST display the current temperature reading on
   the OLED after every successful sample.
 - **FR-003**: The system MUST enter WARNING state when temperature is
-  above the upper threshold of 30°C.
+  strictly above 30.0°C (not at exactly 30.0°C).
 - **FR-004**: The system MUST leave WARNING state only when temperature
-  falls below the lower threshold of 28°C (hysteresis band of 2°C). The
-  system MUST NOT toggle WARNING state for temperatures between 28°C and
-  30°C.
-- **FR-005**: The system MUST enter SENSOR_ERROR state when the sensor
-  cannot be read, per the debounce policy in the Clarifications section.
-- **FR-006**: The system MUST report the current state (OK / WARNING /
-  SENSOR_ERROR) and the current or last-known temperature over Serial.
+  falls strictly below 28.0°C (hysteresis band of 2°C; not at exactly
+  28.0°C). The system MUST NOT toggle WARNING state for temperatures in
+  the closed range [28.0°C, 30.0°C].
+- **FR-005**: The system MUST enter SENSOR_ERROR state only after 3
+  consecutive failed sensor reads. Fewer than 3 consecutive failures MUST
+  NOT change MonitorState or overwrite the last valid reading.
+- **FR-006**: The system MUST print one Serial line per sampling cycle
+  (1 Hz) containing the current MonitorState and the current-or-last-valid
+  temperature.
 - **FR-007**: The system MUST NOT crash, hang, or silently reboot on a
   sensor read failure.
 - **FR-008**: The decision logic for FR-003–FR-005 (the state machine)
   MUST be implemented independently of any Arduino/hardware API, so it can
   be exercised by automated tests without hardware (Constitution
   Principle I).
+- **FR-009**: While in SENSOR_ERROR, the OLED MUST show an explicit
+  "SENSOR ERROR" label plus the last valid reading marked as stale, or (if
+  no valid reading has ever been obtained) the label alone.
 
 ### Key Entities
 
