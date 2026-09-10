@@ -3,8 +3,9 @@
 //
 // This file is intentionally NOT built or tested as part of this repository.
 // It exists to show what a direct prompt-to-code request actually produces,
-// and how many product decisions it silently invents. See README.md in this
-// folder for the full list of hidden assumptions and the bugs they cause.
+// and which product decisions it has to invent because they were never
+// stated. See README.md in this folder for the reasoning behind each one,
+// and for an explicit note on what was deliberately NOT included here.
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -17,17 +18,27 @@
 #define DHT_TYPE DHT22
 #define WARNING_THRESHOLD 30 // "too high" -- guessed, never confirmed
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+// Heltec WiFi Kit V3 OLED pins and Vext power control. Whether an AI
+// agent gets board-specific facts like these right on the first try
+// without a verification step is not something this example claims to
+// demonstrate either way -- see README.md "What this example is not
+// claiming" below.
+#define OLED_SDA 17
+#define OLED_SCL 18
+#define OLED_RST 21
+#define VEXT_PIN 36
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RST);
 DHT dht(DHT_PIN, DHT_TYPE);
 
 void setup() {
   Serial.begin(115200);
-  dht.begin();
 
-  // Uses the generic ESP32 I2C default pins. Nobody told this code that the
-  // Heltec WiFi Kit V3 OLED is wired to GPIO17/18, or that GPIO36 (Vext)
-  // must be pulled low first to power the display at all.
-  Wire.begin(21, 22);
+  pinMode(VEXT_PIN, OUTPUT);
+  digitalWrite(VEXT_PIN, LOW); // power the OLED/sensor rail
+
+  dht.begin();
+  Wire.begin(OLED_SDA, OLED_SCL);
 
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println("Display init failed");

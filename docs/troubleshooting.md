@@ -40,8 +40,8 @@ supports data (not charge-only), and that no other program (e.g. a
 Serial monitor) is holding the port open.
 
 **OLED stays completely blank**
-Two board-specific causes, both realistic beginner mistakes (see
-[`examples/prompt-only/README.md`](../examples/prompt-only/README.md)):
+Two board-specific causes, both easy to hit if you haven't verified this
+board's documentation:
 
 1. `Vext` (GPIO36) was never pulled LOW before `display.init()` — the
    OLED has no power.

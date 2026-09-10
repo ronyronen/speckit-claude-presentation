@@ -79,16 +79,19 @@ prompt never said otherwise:
 - When the warning clears (no hysteresis — it flickers right at the edge)
 - What happens on sensor failure (prints "Sensor error," no debounce, no
   defined recovery)
-- The board's actual I2C wiring (used generic ESP32 defaults — **wrong**
-  for this board)
-- Whether the OLED even gets power at all (never enables `Vext` — the
-  board-specific power rail the OLED needs)
+- Whether any of this logic can be tested independently of the hardware
+  (it can't — it's all inline in `loop()`)
 
 None of this is a coding failure. The AI wrote confident, syntactically
-correct C++ for a product that was never actually specified. Two of the
-mistakes above (`Vext`, wrong I2C pins) would produce a **blank screen**
-on the real board — and whoever's holding it would have no way to tell if
-that's a wiring fault, a hardware fault, or a specification gap.
+correct C++ for a product that was never actually specified — and it did
+so with the board's I2C wiring and power sequencing correct, because
+those are verifiable hardware facts, not product decisions. That
+distinction matters: no amount of hardware knowledge would have told the
+agent which sensor the user wants, what temperature counts as "too
+high," or whether the warning needs hysteresis. Only a human stakeholder
+can answer those, and the vague prompt never asked. See
+[`examples/prompt-only/README.md`](../examples/prompt-only/README.md)
+for the full "implicit assumption vs. explicit decision" framing.
 
 The prompt→fix loop this produces looks like:
 
@@ -426,22 +429,63 @@ default).
 
 This is the stage most tutorials skip, and it's the one this workshop
 insists on keeping, because it's where Spec Kit caught a genuine mistake
-in this very project: `spec.md`'s `SC-004` said a sensor failure would be
-"visible within one sampling interval," but the clarified `FR-005`
-requires 3 consecutive failures first (added *after* SC-004 was
-originally written). `/speckit-analyze` cross-checks every requirement,
-success criterion, and task against each other and against the
-constitution, and it caught the two sections quietly disagreeing.
+in this very project — not a hypothetical one written for the slides.
+Here is exactly what happened, in order:
 
-> Specification requires hysteresis. Tasks include only "warning
-> threshold." This is a missing implementation obligation — and it is
-> exactly the shape of bug `/speckit-analyze` exists to catch, whether
-> it's a missing task or (as happened here) two requirements that
-> silently contradict each other.
+```text
+Clarification decision
+        ↓
+3 consecutive sensor failures required before SENSOR_ERROR (FR-005)
+        ↓
+Existing SC-004 still described incompatible behavior
+("visible on the OLED within one sampling interval" — written
+ before the debounce decision existed)
+        ↓
+/speckit-analyze detects the contradiction (finding I1, HIGH severity)
+        ↓
+Specification corrected (SC-004 → "within 3 sampling intervals")
+        ↓
+Implementation starts only after consistency is restored
+```
 
-See `analysis-report.md` for the full finding table, including two
-MEDIUM-severity automated-coverage gaps that were also caught and closed
-(`T023`/`T024` in `tasks.md`) before implementation began.
+![Sequence: how /speckit-analyze caught the SC-004/FR-005 contradiction](images/diagram-analyze-catch.svg)
+
+`/speckit-clarify` had settled a real product question — a single
+transient I2C glitch shouldn't immediately declare the sensor dead, so 3
+consecutive failures are required first (`FR-005`). But `SC-004`, a
+success criterion written earlier in the same `/speckit-specify` pass,
+still promised visibility "within one sampling interval." Nobody edited
+it when the debounce decision was made. `/speckit-analyze` doesn't read
+code — it cross-checks every requirement, success criterion, and task
+against every other one, and against the constitution — and it found
+these two sentences, in the same file, quietly describing two different
+devices.
+
+> `/speckit-analyze` did not find a syntax problem or a coding bug. It
+> found that our own requirements disagreed with each other, before we
+> wrote the implementation.
+
+The full record — the exact finding, its severity, and the wording fix
+that followed — is preserved at
+[`analysis-report.md`](../specs/001-heltec-monitor/analysis-report.md)
+(finding `I1`) and in the Git history. The contradiction is visible at
+tag `07-analysis-complete` (found, not yet fixed) and resolved in the
+very next commit:
+
+```bash
+git show $(git log 07-analysis-complete..08-implemented --oneline -- \
+  specs/001-heltec-monitor/spec.md | tail -1 | cut -d' ' -f1) \
+  -- specs/001-heltec-monitor/spec.md
+```
+
+That prints the exact diff: `SC-004` changing from "within one sampling
+interval" to "within 3 sampling intervals (the debounce window defined
+in FR-005)."
+
+The report also caught two MEDIUM-severity automated-coverage gaps
+(closed via `T023`/`T024` in `tasks.md`) — smaller, but the same
+principle: found by comparing documents against each other, not by
+reading code.
 
 ## 16. The Heltec WiFi Kit V3 Example
 
@@ -584,10 +628,12 @@ every project.
 - **Skipping `/speckit-clarify`** because the spec "looks done." The spec
   looking syntactically complete and the spec being *decided* are
   different things — see Chapter 12.
-- **Writing hardware facts from memory instead of verifying them.** The
-  wrong-I2C-pins and missing-`Vext` bugs in `examples/prompt-only/` are
-  realistic, not exaggerated — they're the exact kind of mistake generic
-  ESP32 knowledge produces on a board with board-specific wiring.
+- **Writing hardware facts from memory instead of verifying them.** This
+  board's OLED pins (17/18/21) are *not* the generic ESP32 I2C default
+  (21/22), and it needs a `Vext` power-rail sequence most boards don't.
+  This project verified both against Heltec's own factory-test example
+  (`research.md`) before writing a single line of firmware — the kind of
+  step a prompt-only request has no reason to trigger.
 - **Skipping `/speckit-analyze`** and finding out about a spec/task
   mismatch during implementation instead of before it — see Chapter 15's
   real example from this project.
@@ -606,8 +652,9 @@ Highlights specific to this project:
 
 - **OLED stays blank on a Heltec V3**: almost always a missing `Vext`
   (GPIO36) LOW pulse before `display.init()`, or using the generic ESP32
-  I2C pins (21/22) instead of this board's dedicated OLED pins (17/18).
-  See `examples/prompt-only/README.md` for the exact failure mode.
+  I2C pins (21/22) instead of this board's dedicated OLED pins (17/18/21).
+  Both are easy to get wrong if you don't verify against Heltec's own
+  documentation/examples — see `research.md`.
 - **`pio test -e native` links but finds no symbols**: check that
   `[env:native]` in `platformio.ini` has `test_build_src = yes` — without
   it, PlatformIO's test runner does not compile `src/` files into the
