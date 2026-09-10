@@ -1,11 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" font-family="Arial, Helvetica, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" font-family="Arial, Helvetica, sans-serif">
   <style>
     .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; rx: 10; }
     .box-ai { fill: #fef3c7; stroke: #d97706; }
     .box-spec { fill: #dbeafe; stroke: #2563eb; }
     .box-fix { fill: #fee2e2; stroke: #dc2626; }
-    .lbl { font-size: 16px; fill: #1e293b; text-anchor: middle; }
-    .lbl-en { font-size: 11px; fill: #475569; text-anchor: middle; }
+    .lbl { font-size: 16px; fill: #1e293b; text-anchor: middle; font-weight: bold; }
     .title { font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
     .arrow { stroke: #64748b; stroke-width: 2.5; marker-end: url(#arrow); fill: none; }
   </style>
@@ -15,86 +14,74 @@
     </marker>
   </defs>
 
-  <text x="500" y="30" class="title">פיתוח ישיר מול פיתוח מונחה-מפרט</text>
+  <text x="500" y="30" class="title">Direct Prompting vs. Spec-Driven Development</text>
 
   <!-- Row 1: Direct prompting loop -->
-  <text x="60" y="80" class="lbl" style="text-anchor:start" font-weight="bold">פרומפט ישיר:</text>
+  <text x="40" y="80" class="lbl" style="text-anchor:start">Direct prompt:</text>
   <g>
     <rect x="40" y="95" width="120" height="55" class="box"/>
-    <text x="100" y="118" class="lbl">פרומפט</text>
-    <text x="100" y="136" class="lbl-en">Prompt</text>
+    <text x="100" y="128" class="lbl">Prompt</text>
   </g>
   <path d="M160,122 H210" class="arrow"/>
   <g>
     <rect x="210" y="95" width="120" height="55" class="box box-ai"/>
-    <text x="270" y="118" class="lbl">סוכן AI</text>
-    <text x="270" y="136" class="lbl-en">Claude / Codex</text>
+    <text x="270" y="128" class="lbl">Claude / Codex</text>
   </g>
   <path d="M330,122 H380" class="arrow"/>
   <g>
     <rect x="380" y="95" width="120" height="55" class="box"/>
-    <text x="440" y="118" class="lbl">קוד</text>
-    <text x="440" y="136" class="lbl-en">Code</text>
+    <text x="440" y="128" class="lbl">Code</text>
   </g>
   <path d="M500,122 H550" class="arrow"/>
   <g>
     <rect x="550" y="95" width="120" height="55" class="box box-fix"/>
-    <text x="610" y="118" class="lbl">תיקון</text>
-    <text x="610" y="136" class="lbl-en">Fix</text>
+    <text x="610" y="128" class="lbl">Fix</text>
   </g>
   <path d="M670,122 H720" class="arrow"/>
   <g>
     <rect x="720" y="95" width="120" height="55" class="box"/>
-    <text x="780" y="118" class="lbl">פרומפט</text>
-    <text x="780" y="136" class="lbl-en">Prompt</text>
+    <text x="780" y="128" class="lbl">Prompt</text>
   </g>
   <path d="M840,122 H880" class="arrow"/>
   <path d="M880,122 C 920,122 920,180 780,180 L 500,180" class="arrow"/>
-  <text x="700" y="200" class="lbl-en" font-style="italic">חוזר חלילה, ללא זיכרון קבוע של ההחלטות</text>
+  <text x="700" y="200" class="lbl" font-style="italic" font-weight="normal" font-size="13">Repeats indefinitely -- no durable memory of the decisions</text>
 
   <!-- Row 2: Spec-driven pipeline -->
-  <text x="60" y="270" class="lbl" style="text-anchor:start" font-weight="bold">מונחה-מפרט:</text>
+  <text x="40" y="270" class="lbl" style="text-anchor:start">Spec-driven:</text>
   <g>
     <rect x="30" y="285" width="90" height="55" class="box"/>
-    <text x="75" y="308" class="lbl">רעיון</text>
-    <text x="75" y="326" class="lbl-en">Idea</text>
+    <text x="75" y="318" class="lbl">Idea</text>
   </g>
   <path d="M120,312 H160" class="arrow"/>
   <g>
     <rect x="160" y="285" width="100" height="55" class="box box-spec"/>
-    <text x="210" y="308" class="lbl">מפרט</text>
-    <text x="210" y="326" class="lbl-en">Spec</text>
+    <text x="210" y="318" class="lbl">Spec</text>
   </g>
   <path d="M260,312 H300" class="arrow"/>
   <g>
     <rect x="300" y="285" width="100" height="55" class="box box-spec"/>
-    <text x="350" y="308" class="lbl">הבהרה</text>
-    <text x="350" y="326" class="lbl-en">Clarify</text>
+    <text x="350" y="318" class="lbl">Clarify</text>
   </g>
   <path d="M400,312 H440" class="arrow"/>
   <g>
     <rect x="440" y="285" width="100" height="55" class="box box-spec"/>
-    <text x="490" y="308" class="lbl">תכנון</text>
-    <text x="490" y="326" class="lbl-en">Plan</text>
+    <text x="490" y="318" class="lbl">Plan</text>
   </g>
   <path d="M540,312 H580" class="arrow"/>
   <g>
     <rect x="580" y="285" width="100" height="55" class="box box-spec"/>
-    <text x="630" y="308" class="lbl">משימות</text>
-    <text x="630" y="326" class="lbl-en">Tasks</text>
+    <text x="630" y="318" class="lbl">Tasks</text>
   </g>
   <path d="M680,312 H720" class="arrow"/>
   <g>
     <rect x="720" y="285" width="120" height="55" class="box box-ai"/>
-    <text x="780" y="308" class="lbl">סוכן AI</text>
-    <text x="780" y="326" class="lbl-en">Claude / Codex</text>
+    <text x="780" y="318" class="lbl">Claude / Codex</text>
   </g>
   <path d="M840,312 H880" class="arrow"/>
   <g>
     <rect x="880" y="285" width="90" height="55" class="box"/>
-    <text x="925" y="308" class="lbl">קוד</text>
-    <text x="925" y="326" class="lbl-en">Code</text>
+    <text x="925" y="318" class="lbl">Code</text>
   </g>
 
-  <text x="500" y="390" class="lbl" font-style="italic">ההחלטות החשובות נקבעות לפני הקוד, ונשמרות ברפוזיטורי</text>
+  <text x="500" y="390" class="lbl" font-style="italic" font-weight="normal" font-size="15">Important decisions are made before the code, and kept in the repository</text>
 </svg>

@@ -48,6 +48,12 @@ def convert(svg_path: str, out_dir: str, scale: float = 2.5) -> str:
 if __name__ == "__main__":
     out_dir = sys.argv[1] if len(sys.argv) > 1 else "presentation/assets/generated"
     os.makedirs(out_dir, exist_ok=True)
-    for svg_path in sorted(glob.glob("docs/images/diagram-*.svg")):
+    # English diagrams (docs/images/diagram-*-en.svg) are pure LTR and are
+    # converted separately by generate_en_diagrams.py into
+    # presentation/assets/generated_en/ -- excluded here to avoid confusing
+    # duplicate copies in the Hebrew assets folder.
+    all_svgs = glob.glob("docs/images/diagram-*.svg")
+    hebrew_svgs = [p for p in all_svgs if not p.endswith("-en.svg")]
+    for svg_path in sorted(hebrew_svgs):
         out = convert(svg_path, out_dir)
         print(f"{svg_path} -> {out}")

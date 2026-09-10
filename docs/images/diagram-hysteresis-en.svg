@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="380" viewBox="0 0 800 380" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .axis { stroke: #334155; stroke-width: 2; }
+    .band { fill: #fef9c3; opacity: 0.7; }
+    .curve { fill: none; stroke: #2563eb; stroke-width: 3; }
+    .warn-seg { fill: none; stroke: #dc2626; stroke-width: 4; }
+    .lbl { font-size: 14px; fill: #1e293b; }
+    .lbl-b { font-size: 14px; fill: #1e293b; font-weight: bold; }
+    .title { font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+    .dash { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 4 4; }
+  </style>
+
+  <text x="400" y="28" class="title">Hysteresis: Why One Threshold Is Not Enough</text>
+
+  <line x1="70" y1="60" x2="70" y2="320" class="axis"/>
+  <line x1="70" y1="320" x2="750" y2="320" class="axis"/>
+  <text x="30" y="325" class="lbl">&#176;C</text>
+  <text x="700" y="345" class="lbl">time</text>
+
+  <rect x="70" y="130" width="680" height="60" class="band"/>
+  <line x1="70" y1="130" x2="750" y2="130" class="dash"/>
+  <line x1="70" y1="190" x2="750" y2="190" class="dash"/>
+  <text x="755" y="134" class="lbl-b" fill="#b45309">30&#176;C</text>
+  <text x="755" y="194" class="lbl-b" fill="#b45309">28&#176;C</text>
+
+  <path d="M70,250
+           C 150,250 180,100 260,100
+           C 320,100 320,160 380,160
+           C 420,160 420,145 460,145
+           C 500,145 500,170 540,170
+           C 580,170 600,250 660,250
+           C 700,250 710,280 750,280"
+        class="curve"/>
+
+  <path d="M170,130 C 200,105 230,100 260,100
+           C 320,100 320,160 380,160
+           C 420,160 420,145 460,145
+           C 500,145 500,170 540,170
+           C 580,170 596,190 605,190"
+        class="warn-seg"/>
+
+  <text x="180" y="90" class="lbl-b" fill="#dc2626">WARNING starts</text>
+  <text x="270" y="240" class="lbl" fill="#334155">Stays in WARNING inside the band (28-30&#176;C)</text>
+  <text x="640" y="215" class="lbl-b" fill="#16a34a">WARNING clears</text>
+
+  <text x="400" y="365" class="lbl" text-anchor="middle" font-style="italic">Without a hysteresis band: the state "flickers" at every crossing of 30&#176;C alone</text>
+</svg>

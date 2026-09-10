@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="620" viewBox="0 0 780 620" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; rx: 10; }
+    .box-decision { fill: #dbeafe; stroke: #2563eb; }
+    .box-conflict { fill: #fee2e2; stroke: #dc2626; }
+    .box-analyze { fill: #fef3c7; stroke: #d97706; }
+    .box-fixed { fill: #dcfce7; stroke: #16a34a; }
+    .lbl { font-size: 15px; fill: #1e293b; text-anchor: middle; }
+    .lbl-b { font-size: 15px; fill: #1e293b; text-anchor: middle; font-weight: bold; }
+    .lbl-en { font-size: 12px; fill: #475569; text-anchor: middle; font-family: monospace; }
+    .arrow { stroke: #64748b; stroke-width: 2.5; marker-end: url(#arrowA); fill: none; }
+    .title { font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+  </style>
+  <defs>
+    <marker id="arrowA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <text x="390" y="30" class="title">What /speckit-analyze Actually Caught in This Project</text>
+
+  <g>
+    <rect x="140" y="55" width="500" height="60" class="box box-decision"/>
+    <text x="390" y="80" class="lbl-b">Clarification decision</text>
+    <text x="390" y="100" class="lbl-en">3 consecutive sensor failures required before SENSOR_ERROR</text>
+  </g>
+  <path d="M390,115 V145" class="arrow"/>
+
+  <g>
+    <rect x="140" y="145" width="500" height="70" class="box box-conflict"/>
+    <text x="390" y="170" class="lbl-b" fill="#b91c1c">But: SC-004 still described different behavior</text>
+    <text x="390" y="190" class="lbl-en">"visible on the OLED within one sampling interval"</text>
+    <text x="390" y="206" class="lbl-en">(written before the debounce decision existed)</text>
+  </g>
+  <path d="M390,215 V245" class="arrow"/>
+
+  <g>
+    <rect x="120" y="245" width="540" height="70" class="box box-analyze"/>
+    <text x="390" y="270" class="lbl-b" fill="#b45309">/speckit-analyze detects the contradiction</text>
+    <text x="390" y="292" class="lbl-en">Inconsistency, HIGH severity: SC-004 vs FR-005</text>
+  </g>
+  <path d="M390,315 V345" class="arrow"/>
+
+  <g>
+    <rect x="140" y="345" width="500" height="60" class="box box-fixed"/>
+    <text x="390" y="370" class="lbl-b" fill="#15803d">Spec corrected</text>
+    <text x="390" y="390" class="lbl-en">SC-004: "within 3 sampling intervals"</text>
+  </g>
+  <path d="M390,405 V435" class="arrow"/>
+
+  <g>
+    <rect x="140" y="435" width="500" height="60" class="box"/>
+    <text x="390" y="460" class="lbl-b">Implementation starts only after consistency is restored</text>
+    <text x="390" y="480" class="lbl-en">/speckit-implement</text>
+  </g>
+
+  <text x="390" y="530" class="lbl" font-style="italic">This wasn't a bug in code -- it was a contradiction between two parts</text>
+  <text x="390" y="552" class="lbl" font-style="italic">of our own spec, before a single line of code was written</text>
+
+  <text x="390" y="595" class="lbl-en" font-family="Arial" font-style="italic">Full record: specs/001-heltec-monitor/analysis-report.md (finding I1)</text>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="460" viewBox="0 0 700 460" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .box { stroke-width: 2; rx: 12; }
+    .b1 { fill: #dbeafe; stroke: #2563eb; }
+    .b2 { fill: #fef3c7; stroke: #d97706; }
+    .b3 { fill: #dcfce7; stroke: #16a34a; }
+    .b4 { fill: #f1f5f9; stroke: #475569; }
+    .title-box { font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+    .sub-box { font-size: 13px; fill: #334155; text-anchor: middle; }
+    .arrow { stroke: #64748b; stroke-width: 2.5; marker-end: url(#arrow3); fill: none; }
+    .title { font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+  </style>
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <text x="350" y="28" class="title">Who Does What</text>
+
+  <g>
+    <rect x="100" y="55" width="500" height="80" class="box b1"/>
+    <text x="350" y="85" class="title-box">Spec Kit</text>
+    <text x="350" y="110" class="sub-box">workflow + specs + repository artifacts</text>
+  </g>
+  <path d="M350,135 V165" class="arrow"/>
+
+  <g>
+    <rect x="100" y="165" width="500" height="80" class="box b2"/>
+    <text x="350" y="195" class="title-box">Claude Code / Codex</text>
+    <text x="350" y="220" class="sub-box">reasoning + coding: edits files, runs commands, implements</text>
+  </g>
+  <path d="M350,245 V275" class="arrow"/>
+
+  <g>
+    <rect x="100" y="275" width="500" height="80" class="box b3"/>
+    <text x="350" y="305" class="title-box">IDE (VS Code / CLion)</text>
+    <text x="350" y="330" class="sub-box">the human workspace: editing, Git, terminal, build, debugging</text>
+  </g>
+  <path d="M350,355 V385" class="arrow"/>
+
+  <g>
+    <rect x="100" y="385" width="500" height="65" class="box b4"/>
+    <text x="350" y="415" class="title-box" font-size="17">The Repository</text>
+    <text x="350" y="438" class="sub-box">specs/ + firmware/ + tests/ + docs/ -- decisions live here permanently</text>
+  </g>
+</svg>
