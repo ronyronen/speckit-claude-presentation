@@ -174,14 +174,15 @@ value as if it were current.
 - **SC-001**: An observer can determine the device's current state (OK /
   WARNING / SENSOR_ERROR) from the OLED alone, without Serial, within one
   sampling interval of a state change.
-- **SC-002**: The WARNING state does not toggle more than once per minute
-  under a temperature oscillating anywhere strictly between 28°C and 30°C
-  (proves hysteresis works).
+- **SC-002**: The WARNING state never toggles for temperature readings
+  strictly between 28.0°C and 30.0°C — zero toggles, not merely a rate
+  limit (proves hysteresis works).
 - **SC-003**: 100% of state transitions defined in FR-003–FR-005 are
   covered by a native unit test (Constitution Principle II).
-- **SC-004**: A sensor disconnection is visible on the OLED within one
-  sampling interval, and the device continues running (no crash/hang)
-  indefinitely while disconnected.
+- **SC-004**: A sensor disconnection is visible on the OLED within 3
+  sampling intervals (the debounce window defined in FR-005), and the
+  device continues running (no crash/hang) indefinitely while
+  disconnected.
 
 ## Assumptions
 

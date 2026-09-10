@@ -105,6 +105,8 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 - [ ] T020 [P] Write `firmware/README.md`: build/test/flash commands, pin/library summary (cross-links to `docs/textbook.md`)
 - [ ] T021 Confirm `pio run -e heltec_wifi_kit_32_V3` builds with zero warnings treated as errors (checkpoint `08-implemented`)
 - [ ] T022 Run full `quickstart.md` end-to-end on the physical board and record actual Serial/OLED output in `firmware/README.md` (checkpoint `09-hardware-verified`)
+- [ ] T023 [P] Add a soak test to `test_monitor_logic.cpp`: feed several hundred consecutive invalid `Reading`s and assert `state` stays a valid enum value and `consecutive_failures` never overflows (analysis-report.md finding E1, covers FR-007)
+- [ ] T024 [P] Add a build-time guard proving `monitor_logic.h`/`.cpp` stay hardware-independent: either a `native`-environment test that compiles them with no Arduino headers on the include path, or a simple grep check in `firmware/README.md`'s verification steps for `Arduino.h`/`Wire.h` (analysis-report.md finding E2, covers FR-008)
 
 ---
 
