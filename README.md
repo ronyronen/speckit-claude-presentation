@@ -90,6 +90,7 @@ see [docs/codex.md](docs/codex.md).)
 - Codex workflow: [docs/codex.md](docs/codex.md)
 - Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
 - Presentation outline (Hebrew): [presentation/presentation-outline.md](presentation/presentation-outline.md)
+- Draft slide decks: [presentation/speckit-workshop-draft.pptx](presentation/speckit-workshop-draft.pptx) (Hebrew) and [presentation/speckit-workshop-draft-en.pptx](presentation/speckit-workshop-draft-en.pptx) (English)
 - Presentation link: _added once the Google Slides deck is published_
 
 ## References
