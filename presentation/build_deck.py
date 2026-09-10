@@ -344,31 +344,50 @@ def main():
     # ---------- Slide 7: What each stage catches ----------
     s = add_slide(prs)
     add_title(s, "מה כל שלב תופס")
+    subtitle = s.shapes.add_textbox(Inches(0.8), Inches(1.05), SW - Inches(1.6), Inches(0.5))
+    stf = subtitle.text_frame
+    stf.word_wrap = True
+    sp = stf.paragraphs[0]
+    sp.alignment = PP_ALIGN.RIGHT
+    set_rtl(sp)
+    sr = sp.add_run()
+    sr.text = "כל שלב קיים כדי לתפוס סוג ספציפי של טעות -- לפני שהיא הופכת לקוד:"
+    sr.font.size = Pt(18)
+    sr.font.italic = True
+    sr.font.name = FONT
+    sr.font.color.rgb = SLATE
+
     rows = [
-        ("Specification", "לא סיכמנו מה זה עושה"),
-        ("Clarify", "סיכמנו את המסלול הראשי, לא את הקצוות"),
-        ("Plan", "סיכמנו מה, לא איך"),
-        ("Analyze", "שני מסמכים שלנו סותרים אחד את השני"),
+        ("constitution", "כלל נשבר בשקט כי אף אחד לא כתב אותו"),
+        ("specify", "לא סיכמנו מה זה עושה"),
+        ("clarify", "סיכמנו את המסלול הראשי, לא את הקצוות"),
+        ("plan", "סיכמנו מה, לא איך -- ול'איך' יש אילוצים אמיתיים"),
+        ("tasks", "אנחנו יודעים את התוכנית, לא את הסדר או התלויות"),
+        ("analyze", "שני מסמכים שלנו סותרים אחד את השני בשקט"),
+        ("implement", "(זה השלב היחיד שממנו פרומפט-בלבד מתחיל)"),
     ]
-    top = Inches(1.6)
+    top = Inches(1.75)
+    row_h = Inches(0.68)
     for en, he in rows:
-        box = s.shapes.add_textbox(Inches(0.8), top, SW - Inches(1.6), Inches(0.8))
+        box = s.shapes.add_textbox(Inches(0.8), top, SW - Inches(1.6), row_h)
         tf = box.text_frame
         p = tf.paragraphs[0]
         p.alignment = PP_ALIGN.RIGHT
         set_rtl(p)
         r = p.add_run()
         r.text = f"{he}    ←    "
-        r.font.size = Pt(24)
+        r.font.size = Pt(20)
         r.font.name = FONT
+        r.font.italic = en == "implement"
         r.font.color.rgb = SLATE
         r2 = p.add_run()
         r2.text = en
-        r2.font.size = Pt(24)
+        r2.font.size = Pt(21)
         r2.font.bold = True
         r2.font.name = "Courier New"
         r2.font.color.rgb = BLUE
-        top += Inches(1.0)
+        top += row_h
+    add_note(s, "לעבור בקצרה על כל שבעת השלבים כאן; ההעמקה בכל אחד מהם מגיעה בהמשך, בקטע ה-Heltec.")
 
     # ---------- Slide 8: Spec Kit definition ----------
     s = add_slide(prs)

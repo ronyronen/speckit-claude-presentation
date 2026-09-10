@@ -268,30 +268,48 @@ def main():
     # ---------- Slide 7: What each stage catches ----------
     s = add_slide(prs)
     add_title(s, "What Each Stage Catches")
+    subtitle = s.shapes.add_textbox(Inches(0.8), Inches(1.05), SW - Inches(1.6), Inches(0.5))
+    stf = subtitle.text_frame
+    stf.word_wrap = True
+    sp = stf.paragraphs[0]
+    sp.alignment = PP_ALIGN.LEFT
+    sr = sp.add_run()
+    sr.text = "Every stage exists to catch one specific kind of mistake -- before it becomes code:"
+    sr.font.size = Pt(18)
+    sr.font.italic = True
+    sr.font.name = FONT
+    sr.font.color.rgb = SLATE
+
     rows = [
-        ("Specification", "We never agreed what this does"),
-        ("Clarify", "We agreed on the happy path, not the edges"),
-        ("Plan", "We agreed on what, not how"),
-        ("Analyze", "Two of our own documents contradict each other"),
+        ("constitution", "A rule gets silently broken because nobody wrote it down"),
+        ("specify", "We never agreed what this does"),
+        ("clarify", "We agreed on the happy path, not the edges"),
+        ("plan", "We agreed on what, not how -- and how has real constraints"),
+        ("tasks", "We know the plan, not the order or the dependencies"),
+        ("analyze", "Two of our own documents quietly contradict each other"),
+        ("implement", "(this is the only step prompt-only starts from)"),
     ]
-    top = Inches(1.6)
+    top = Inches(1.75)
+    row_h = Inches(0.68)
     for term, desc in rows:
-        box = s.shapes.add_textbox(Inches(0.8), top, SW - Inches(1.6), Inches(0.8))
+        box = s.shapes.add_textbox(Inches(0.8), top, SW - Inches(1.6), row_h)
         tf = box.text_frame
         p = tf.paragraphs[0]
         p.alignment = PP_ALIGN.LEFT
         r = p.add_run()
-        r.text = term
-        r.font.size = Pt(24)
+        r.text = f"{term:<13}"
+        r.font.size = Pt(21)
         r.font.bold = True
         r.font.name = "Courier New"
         r.font.color.rgb = BLUE
         r2 = p.add_run()
-        r2.text = f"    →    {desc}"
-        r2.font.size = Pt(24)
+        r2.text = f"  →  {desc}"
+        r2.font.size = Pt(20)
         r2.font.name = FONT
+        r2.font.italic = term == "implement"
         r2.font.color.rgb = SLATE
-        top += Inches(1.0)
+        top += row_h
+    add_note(s, "Walk through all seven stages briefly here; the deep dive on each one comes later in the Heltec walkthrough section.")
 
     # ---------- Slide 8: Spec Kit definition ----------
     s = add_slide(prs)
