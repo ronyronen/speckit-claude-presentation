@@ -14,9 +14,12 @@ Hebrew slide deck.
 
 ## Status
 
-This repository is under active construction, one Spec Kit stage at a time.
-Each stage is preserved as a Git tag so the workshop never depends on an AI
-step completing live — see [Git checkpoints](#git-checkpoints) below.
+Checkpoints `01-start` through `08-implemented` are complete: the full
+Spec Kit workflow ran for real against this exact feature, the firmware
+builds cleanly, and all 11 native unit tests pass. `09-hardware-verified`
+is pending physical hardware verification. Each stage is preserved as a
+Git tag so the workshop never depends on an AI step completing
+live — see [Git checkpoints](#git-checkpoints) below.
 
 ## The example
 
@@ -44,15 +47,20 @@ firmware implementation. Compare [examples/prompt-only](examples/prompt-only)
 ```text
 .
 ├── README.md
-├── docs/                    # textbook, setup guides, images
+├── docs/                          # textbook, setup guides, images
 │   └── textbook.md
-├── presentation/            # source material for the Google Slides deck
-├── firmware/                # PlatformIO project for Heltec WiFi Kit V3
-├── specs/                   # Spec Kit artifacts (spec/plan/tasks/...)
-├── .specify/                # Spec Kit project configuration (generated)
+├── presentation/                  # source material for the Google Slides deck
+│   ├── presentation-outline.md    # Hebrew, slide-by-slide
+│   ├── slide-links.md
+│   └── assets/
+├── firmware/                      # PlatformIO project for Heltec WiFi Kit V3
+├── specs/001-heltec-monitor/      # spec, plan, tasks, research, analysis
+├── .specify/                      # Spec Kit project configuration (generated)
+├── .claude/skills/                # Spec Kit skills for Claude Code (/speckit-*)
+├── .agents/skills/                # Spec Kit skills for Codex ($speckit-*)
 └── examples/
-    ├── prompt-only/         # what a vague prompt produces, unedited
-    └── speckit-driven/      # pointer to the final, specified result
+    ├── prompt-only/               # what a vague prompt produces, unedited
+    └── speckit-driven/            # pointer to the final, specified result
 ```
 
 ## Git checkpoints
@@ -61,17 +69,21 @@ firmware implementation. Compare [examples/prompt-only](examples/prompt-only)
 |---|---|
 | `01-start` | Empty repository skeleton |
 | `02-prompt-only` | Vague-prompt implementation, unedited |
-| `03-spec-created` | `/speckit.specify` output |
-| `04-spec-clarified` | `/speckit.clarify` output |
-| `05-plan-created` | `/speckit.plan` output |
-| `06-tasks-created` | `/speckit.tasks` output |
-| `07-analysis-complete` | `/speckit.analyze` output |
-| `08-implemented` | `/speckit.implement` output, builds cleanly |
-| `09-hardware-verified` | Verified on physical Heltec WiFi Kit V3 |
+| `03-spec-created` | `/speckit-specify` output |
+| `04-spec-clarified` | `/speckit-clarify` output |
+| `05-plan-created` | `/speckit-plan` output |
+| `06-tasks-created` | `/speckit-tasks` output |
+| `07-analysis-complete` | `/speckit-analyze` output — finds a real spec inconsistency |
+| `08-implemented` | `/speckit-implement` output — builds cleanly, 11/11 native tests pass |
+| `09-hardware-verified` | _Pending_ — verified on physical Heltec WiFi Kit V3 |
+
+(Claude Code uses `/speckit-<command>`; Codex uses `$speckit-<command>` —
+see [docs/codex.md](docs/codex.md).)
 
 ## Learn more
 
 - Full textbook: [docs/textbook.md](docs/textbook.md)
+- Setup: [docs/setup.md](docs/setup.md)
 - VS Code setup: [docs/vscode.md](docs/vscode.md)
 - JetBrains / CLion setup: [docs/jetbrains.md](docs/jetbrains.md)
 - Claude Code workflow: [docs/claude-code.md](docs/claude-code.md)

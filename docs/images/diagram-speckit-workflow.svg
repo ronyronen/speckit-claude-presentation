@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 220" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .box { fill: #eef2ff; stroke: #4f46e5; stroke-width: 2; rx: 10; }
+    .lbl { font-size: 15px; fill: #1e1b4b; text-anchor: middle; font-weight: bold; }
+    .lbl-en { font-size: 12px; fill: #4338ca; text-anchor: middle; font-family: monospace; }
+    .arrow { stroke: #64748b; stroke-width: 2.5; marker-end: url(#arrow2); fill: none; }
+    .title { font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+  </style>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <text x="525" y="28" class="title">תהליך העבודה של Spec Kit</text>
+
+  <!-- 7 stages -->
+  <g>
+    <rect x="10" y="60" width="130" height="60" class="box"/>
+    <text x="75" y="88" class="lbl">חוקה</text>
+    <text x="75" y="106" class="lbl-en">constitution</text>
+  </g>
+  <path d="M140,90 H165" class="arrow"/>
+
+  <g>
+    <rect x="165" y="60" width="130" height="60" class="box"/>
+    <text x="230" y="88" class="lbl">הגדרה</text>
+    <text x="230" y="106" class="lbl-en">specify</text>
+  </g>
+  <path d="M295,90 H320" class="arrow"/>
+
+  <g>
+    <rect x="320" y="60" width="130" height="60" class="box"/>
+    <text x="385" y="88" class="lbl">הבהרה</text>
+    <text x="385" y="106" class="lbl-en">clarify</text>
+  </g>
+  <path d="M450,90 H475" class="arrow"/>
+
+  <g>
+    <rect x="475" y="60" width="130" height="60" class="box"/>
+    <text x="540" y="88" class="lbl">תכנון</text>
+    <text x="540" y="106" class="lbl-en">plan</text>
+  </g>
+  <path d="M605,90 H630" class="arrow"/>
+
+  <g>
+    <rect x="630" y="60" width="130" height="60" class="box"/>
+    <text x="695" y="88" class="lbl">משימות</text>
+    <text x="695" y="106" class="lbl-en">tasks</text>
+  </g>
+  <path d="M760,90 H785" class="arrow"/>
+
+  <g>
+    <rect x="785" y="60" width="130" height="60" class="box"/>
+    <text x="850" y="88" class="lbl">ניתוח</text>
+    <text x="850" y="106" class="lbl-en">analyze</text>
+  </g>
+  <path d="M915,90 H940" class="arrow"/>
+
+  <g>
+    <rect x="940" y="60" width="100" height="60" class="box"/>
+    <text x="990" y="88" class="lbl">יישום</text>
+    <text x="990" y="106" class="lbl-en">implement</text>
+  </g>
+
+  <text x="525" y="160" class="lbl-en" font-style="italic" font-family="Arial">Claude Code: /speckit-&lt;command&gt;   |   Codex: $speckit-&lt;command&gt;</text>
+  <text x="525" y="185" class="lbl" font-weight="normal" font-style="italic">כל שלב מייצר קובץ אמיתי ברפוזיטורי -- לא רק תשובת צ'אט</text>
+</svg>
