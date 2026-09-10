@@ -20,8 +20,8 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 Create PlatformIO project skeleton: `firmware/platformio.ini`, `firmware/include/`, `firmware/src/`, `firmware/test/test_monitor_logic/`
-- [ ] T002 Configure `firmware/platformio.ini` with two environments: `heltec_wifi_kit_32_V3` (platform=espressif32, framework=arduino, lib_deps: adafruit/Adafruit BME280 Library, adafruit/Adafruit Unified Sensor, ThingPulse/ESP8266 and ESP32 OLED driver for SSD1306 displays) and `native` (no lib_deps, for host-only unit tests)
+- [x] T001 Create PlatformIO project skeleton: `firmware/platformio.ini`, `firmware/include/`, `firmware/src/`, `firmware/test/test_monitor_logic/`
+- [x] T002 Configure `firmware/platformio.ini` with two environments: `heltec_wifi_kit_32_V3` (platform=espressif32, framework=arduino, lib_deps: adafruit/Adafruit BME280 Library, adafruit/Adafruit Unified Sensor, ThingPulse/ESP8266 and ESP32 OLED driver for SSD1306 displays) and `native` (no lib_deps, for host-only unit tests)
 
 **Checkpoint**: `pio run -e heltec_wifi_kit_32_V3` and `pio test -e native` both execute (even with empty sources) before any logic is written.
 
@@ -31,8 +31,8 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 Define `MonitorState` enum (`OK`, `WARNING`, `SENSOR_ERROR`) and `Reading` struct in `firmware/include/monitor_logic.h`, with zero includes of `Arduino.h`/`Wire.h` (Constitution Principle I; data-model.md)
-- [ ] T004 [P] Implement Vext power helper (`vext_on()`/`vext_off()`, GPIO36 active LOW) in `firmware/src/power.h` / `firmware/src/power.cpp`, used by both the sensor and display adapters (research.md)
+- [x] T003 Define `MonitorState` enum (`OK`, `WARNING`, `SENSOR_ERROR`) and `Reading` struct in `firmware/include/monitor_logic.h`, with zero includes of `Arduino.h`/`Wire.h` (Constitution Principle I; data-model.md)
+- [x] T004 [P] Implement Vext power helper (`vext_on()`/`vext_off()`, GPIO36 active LOW) in `firmware/src/power.h` / `firmware/src/power.cpp`, used by both the sensor and display adapters (research.md)
 
 **Checkpoint**: Foundation ready — user stories can now proceed.
 
@@ -46,9 +46,9 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 ### Implementation for User Story 1
 
-- [ ] T005 [P] [US1] Implement `sensor_adapter` (`firmware/src/sensor_adapter.h/.cpp`): initializes BME280 at I2C address 0x76 (fallback 0x77) on `SDA_OLED`/`SCL_OLED`, returns a `Reading` (valid + temperature, or invalid) each call
-- [ ] T006 [P] [US1] Implement `display_adapter` (`firmware/src/display_adapter.h/.cpp`): initializes `SSD1306Wire` on `SDA_OLED=17`, `SCL_OLED=18`, `RST_OLED=21`, address `0x3C`; renders temperature + "OK" for the `OK` state
-- [ ] T007 [US1] Implement `firmware/src/main.cpp`: `setup()` enables Vext (T004) then initializes sensor_adapter (T005) and display_adapter (T006); `loop()` samples once per second (FR-001) and renders via display_adapter — no state-machine logic yet, straight pass-through
+- [x] T005 [P] [US1] Implement `sensor_adapter` (`firmware/src/sensor_adapter.h/.cpp`): initializes BME280 at I2C address 0x76 (fallback 0x77) on `SDA_OLED`/`SCL_OLED`, returns a `Reading` (valid + temperature, or invalid) each call
+- [x] T006 [P] [US1] Implement `display_adapter` (`firmware/src/display_adapter.h/.cpp`): initializes `SSD1306Wire` on `SDA_OLED=17`, `SCL_OLED=18`, `RST_OLED=21`, address `0x3C`; renders temperature + "OK" for the `OK` state
+- [x] T007 [US1] Implement `firmware/src/main.cpp`: `setup()` enables Vext (T004) then initializes sensor_adapter (T005) and display_adapter (T006); `loop()` samples once per second (FR-001) and renders via display_adapter — no state-machine logic yet, straight pass-through
 - [ ] T008 [US1] Manual hardware check (quickstart.md step 3): flash and confirm OLED + Serial show a temperature and OK at room temperature
 
 **Checkpoint**: User Story 1 fully functional and independently demonstrable.
@@ -65,14 +65,14 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 > Write these first; they must fail until T009 is implemented.
 
-- [ ] T009 [P] [US2] Native unit tests in `firmware/test/test_monitor_logic/test_monitor_logic.cpp`: OK→WARNING at 30.1°C, no transition at exactly 30.0°C, WARNING→OK at 27.9°C, no transition at exactly 28.0°C, no toggling across repeated readings anywhere in [28.0, 30.0] (data-model.md transition table)
+- [x] T009 [P] [US2] Native unit tests in `firmware/test/test_monitor_logic/test_monitor_logic.cpp`: OK→WARNING at 30.1°C, no transition at exactly 30.0°C, WARNING→OK at 27.9°C, no transition at exactly 28.0°C, no toggling across repeated readings anywhere in [28.0, 30.0] (data-model.md transition table)
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Implement the `OK`/`WARNING` transition logic in `firmware/src/monitor_logic.cpp` (function operating only on `MonitorState`/`Reading`, no hardware includes) until T009 passes
-- [ ] T011 [US2] Extend `display_adapter` (T006) to render the `WARNING` state distinctly (e.g. inverted/bold text) on the OLED
-- [ ] T012 [US2] Implement `serial_reporter` (`firmware/src/serial_reporter.h/.cpp`) per `contracts/serial-diagnostic-line.md`, printed once per cycle from `main.cpp`
-- [ ] T013 [US2] Wire `monitor_logic` (T010) into `main.cpp`'s `loop()`, replacing the pass-through from T007
+- [x] T010 [US2] Implement the `OK`/`WARNING` transition logic in `firmware/src/monitor_logic.cpp` (function operating only on `MonitorState`/`Reading`, no hardware includes) until T009 passes
+- [x] T011 [US2] Extend `display_adapter` (T006) to render the `WARNING` state distinctly (e.g. inverted/bold text) on the OLED
+- [x] T012 [US2] Implement `serial_reporter` (`firmware/src/serial_reporter.h/.cpp`) per `contracts/serial-diagnostic-line.md`, printed once per cycle from `main.cpp`
+- [x] T013 [US2] Wire `monitor_logic` (T010) into `main.cpp`'s `loop()`, replacing the pass-through from T007
 - [ ] T014 [US2] Manual hardware check (quickstart.md step 4): physically verify the hysteresis band on the real board — this is the checkpoint the whole workshop's teaching point rests on
 
 **Checkpoint**: User Stories 1 AND 2 both work independently; hysteresis is verified in code (T009) and on hardware (T014).
@@ -87,13 +87,13 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T015 [P] [US3] Native unit tests in `test_monitor_logic.cpp`: 1–2 consecutive invalid readings do not change `state` or `last_valid_temperature_c`; the 3rd consecutive invalid reading transitions to `SENSOR_ERROR`; a valid reading after `SENSOR_ERROR` re-evaluates `OK`/`WARNING` from that reading (data-model.md)
+- [x] T015 [P] [US3] Native unit tests in `test_monitor_logic.cpp`: 1–2 consecutive invalid readings do not change `state` or `last_valid_temperature_c`; the 3rd consecutive invalid reading transitions to `SENSOR_ERROR`; a valid reading after `SENSOR_ERROR` re-evaluates `OK`/`WARNING` from that reading (data-model.md)
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] Extend `monitor_logic.cpp` (T010) with `consecutive_failures` tracking and the `SENSOR_ERROR` transition until T015 passes
-- [ ] T017 [US3] Extend `display_adapter` to render `SENSOR_ERROR`: "SENSOR ERROR" plus last valid reading marked stale, or the label alone if no valid reading has ever occurred (FR-009)
-- [ ] T018 [US3] Extend `serial_reporter` (T012) to print `-` for temperature only when no valid reading has ever occurred, otherwise the last valid value even while in `SENSOR_ERROR` (contracts/serial-diagnostic-line.md)
+- [x] T016 [US3] Extend `monitor_logic.cpp` (T010) with `consecutive_failures` tracking and the `SENSOR_ERROR` transition until T015 passes
+- [x] T017 [US3] Extend `display_adapter` to render `SENSOR_ERROR`: "SENSOR ERROR" plus last valid reading marked stale, or the label alone if no valid reading has ever occurred (FR-009)
+- [x] T018 [US3] Extend `serial_reporter` (T012) to print `-` for temperature only when no valid reading has ever occurred, otherwise the last valid value even while in `SENSOR_ERROR` (contracts/serial-diagnostic-line.md)
 - [ ] T019 [US3] Manual hardware check (quickstart.md step 5): physically disconnect/reconnect the sensor and confirm the full failure/recovery cycle
 
 **Checkpoint**: All three user stories independently functional; FR-007 (never crash/hang) confirmed by leaving the sensor disconnected for an extended period during T019.
@@ -102,11 +102,11 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T020 [P] Write `firmware/README.md`: build/test/flash commands, pin/library summary (cross-links to `docs/textbook.md`)
-- [ ] T021 Confirm `pio run -e heltec_wifi_kit_32_V3` builds with zero warnings treated as errors (checkpoint `08-implemented`)
+- [x] T020 [P] Write `firmware/README.md`: build/test/flash commands, pin/library summary (cross-links to `docs/textbook.md`)
+- [x] T021 Confirm `pio run -e heltec_wifi_kit_32_V3` builds with zero warnings treated as errors (checkpoint `08-implemented`)
 - [ ] T022 Run full `quickstart.md` end-to-end on the physical board and record actual Serial/OLED output in `firmware/README.md` (checkpoint `09-hardware-verified`)
-- [ ] T023 [P] Add a soak test to `test_monitor_logic.cpp`: feed several hundred consecutive invalid `Reading`s and assert `state` stays a valid enum value and `consecutive_failures` never overflows (analysis-report.md finding E1, covers FR-007)
-- [ ] T024 [P] Add a build-time guard proving `monitor_logic.h`/`.cpp` stay hardware-independent: either a `native`-environment test that compiles them with no Arduino headers on the include path, or a simple grep check in `firmware/README.md`'s verification steps for `Arduino.h`/`Wire.h` (analysis-report.md finding E2, covers FR-008)
+- [x] T023 [P] Add a soak test to `test_monitor_logic.cpp`: feed several hundred consecutive invalid `Reading`s and assert `state` stays a valid enum value and `consecutive_failures` never overflows (analysis-report.md finding E1, covers FR-007)
+- [x] T024 [P] Add a build-time guard proving `monitor_logic.h`/`.cpp` stay hardware-independent: either a `native`-environment test that compiles them with no Arduino headers on the include path, or a simple grep check in `firmware/README.md`'s verification steps for `Arduino.h`/`Wire.h` (analysis-report.md finding E2, covers FR-008)
 
 ---
 
