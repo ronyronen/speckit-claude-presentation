@@ -9,3 +9,7 @@
 .DS_Store
 .idea/
 cmake-build-*/
+
+# Spec Kit agent folders may cache local credentials/auth artifacts
+.claude/settings.local.json
+.codex/auth.json
