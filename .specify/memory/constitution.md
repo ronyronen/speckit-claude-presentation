@@ -1,50 +1,71 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Heltec Environmental Monitor Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Decision Logic Is Hardware-Independent
+Application/decision logic (state transitions, thresholds, hysteresis,
+failure handling) MUST live in plain C++ functions/classes that do not
+call Arduino, ESP-IDF, or library APIs directly. Sensor reading, OLED
+rendering, and Serial output are adapters around this logic, not part of
+it. This is what makes the logic unit-testable on a development machine
+without hardware.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Test-First For Decision Logic (NON-NEGOTIABLE)
+Every state transition and threshold in the spec (normal → warning,
+warning → normal, sensor failure entry/exit) MUST have a native unit test
+(PlatformIO `test/`, run via `pio test -e native`) written before or
+alongside the implementation. A behavior that is only "tested" by staring
+at the OLED is not tested.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. No Invented Hardware Facts
+Sensor models, pin assignments, I2C addresses, power-rail requirements,
+and board capabilities MUST be verified against current, authoritative
+sources (official Heltec documentation/schematics, PlatformIO board
+definitions, official Arduino core headers) before being written into
+`spec.md`, `plan.md`, or code. When a fact cannot be verified, it is
+recorded as an open question, not guessed.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Every Threshold Decision Is Explicit
+"Too high," "cleared," and "failed" are product decisions, not
+implementation details. The spec MUST state exact numeric thresholds,
+comparison operators (`>` vs `>=`), hysteresis bands, and debounce/timing
+behavior. Code MUST NOT introduce a threshold, comparison, or timing value
+that does not trace back to the spec.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Fail Visibly, Never Silently
+A sensor read failure MUST be visible on both the OLED and Serial, MUST
+preserve (and label) the last known-good reading rather than showing
+stale data as if it were current, and MUST NOT crash, hang, or reboot the
+device. Recovery behavior (what happens when the sensor starts working
+again) MUST be explicitly specified.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- **Target hardware**: Heltec WiFi Kit V3 (ESP32-S3), PlatformIO,
+  `framework = arduino`. Toolchain/board/library choices must be verified
+  against current PlatformIO and Heltec documentation, not assumed from
+  generic ESP32 knowledge (this board's OLED pins are not the ESP32
+  default I2C pins — see `docs/textbook.md`).
+- **Portability**: Spec Kit artifacts and firmware must remain usable from
+  both Claude Code and Codex CLI. Nothing in `specs/`, `firmware/`, or
+  `docs/` may assume one specific coding agent.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Firmware changes affecting decision logic require the corresponding
+  native unit tests to be updated in the same change.
+- A change that touches thresholds, hysteresis, or failure handling must
+  update `specs/001-heltec-monitor/spec.md` in the same change — the spec
+  and the code are not allowed to drift apart.
+- Hardware-facing changes (pins, sensor wiring, power sequencing) are not
+  considered done until verified on the physical Heltec WiFi Kit V3.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes ad hoc implementation choices for this
+project. Any deviation (e.g., a threshold implemented without a spec
+change, or decision logic that reaches into a hardware library) must be
+called out explicitly in the pull request/commit description and
+justified against these principles, not silently merged.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-09-10 | **Last Amended**: 2026-09-10
