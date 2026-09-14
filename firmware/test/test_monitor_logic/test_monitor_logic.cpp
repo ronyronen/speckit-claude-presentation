@@ -33,36 +33,36 @@ void test_first_valid_reading_below_threshold_is_ok() {
 
 // --- User Story 2: hysteresis (FR-003, FR-004; spec.md Clarifications) --
 
-void test_warning_triggers_strictly_above_30() {
+void test_warning_triggers_strictly_above_27() {
   State s;
-  s = valid(s, 30.1f);
+  s = valid(s, 27.1f);
   TEST_ASSERT_EQUAL(static_cast<int>(MonitorState::WARNING), static_cast<int>(s.state));
 }
 
-void test_exactly_30_does_not_trigger_warning() {
+void test_exactly_27_does_not_trigger_warning() {
   State s;
-  s = valid(s, 30.0f);
+  s = valid(s, 27.0f);
   TEST_ASSERT_EQUAL(static_cast<int>(MonitorState::OK), static_cast<int>(s.state));
 }
 
-void test_warning_clears_strictly_below_28() {
+void test_warning_clears_strictly_below_25() {
   State s;
-  s = valid(s, 31.0f);  // enter WARNING
-  s = valid(s, 27.9f);
+  s = valid(s, 28.0f);  // enter WARNING
+  s = valid(s, 24.9f);
   TEST_ASSERT_EQUAL(static_cast<int>(MonitorState::OK), static_cast<int>(s.state));
 }
 
-void test_exactly_28_does_not_clear_warning() {
+void test_exactly_25_does_not_clear_warning() {
   State s;
-  s = valid(s, 31.0f);  // enter WARNING
-  s = valid(s, 28.0f);
+  s = valid(s, 28.0f);  // enter WARNING
+  s = valid(s, 25.0f);
   TEST_ASSERT_EQUAL(static_cast<int>(MonitorState::WARNING), static_cast<int>(s.state));
 }
 
 void test_no_toggling_anywhere_inside_hysteresis_band() {
   State s;
-  s = valid(s, 31.0f);  // enter WARNING
-  const float band_samples[] = {29.5f, 28.5f, 29.9f, 28.1f, 29.0f};
+  s = valid(s, 28.0f);  // enter WARNING
+  const float band_samples[] = {26.5f, 25.5f, 26.9f, 25.1f, 26.0f};
   for (float t : band_samples) {
     s = valid(s, t);
     TEST_ASSERT_EQUAL(static_cast<int>(MonitorState::WARNING), static_cast<int>(s.state));
@@ -133,10 +133,10 @@ void test_consecutive_failures_saturate_instead_of_overflowing() {
 int main(int argc, char** argv) {
   UNITY_BEGIN();
   RUN_TEST(test_first_valid_reading_below_threshold_is_ok);
-  RUN_TEST(test_warning_triggers_strictly_above_30);
-  RUN_TEST(test_exactly_30_does_not_trigger_warning);
-  RUN_TEST(test_warning_clears_strictly_below_28);
-  RUN_TEST(test_exactly_28_does_not_clear_warning);
+  RUN_TEST(test_warning_triggers_strictly_above_27);
+  RUN_TEST(test_exactly_27_does_not_trigger_warning);
+  RUN_TEST(test_warning_clears_strictly_below_25);
+  RUN_TEST(test_exactly_25_does_not_clear_warning);
   RUN_TEST(test_no_toggling_anywhere_inside_hysteresis_band);
   RUN_TEST(test_one_or_two_failures_do_not_change_state);
   RUN_TEST(test_third_consecutive_failure_enters_sensor_error);

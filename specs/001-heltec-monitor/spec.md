@@ -31,12 +31,45 @@
   Decided alongside the sampling interval since both are driven by the
   same cycle; not treated as a separate high-stakes decision.
 
+### Session 2026-09-14
+
+- Q: The originally-chosen BME280 isn't available for this workshop; an
+  AM2302 (DHT22) is on hand instead. How should the device support it? →
+  A: Support both sensors, selected at build time via PlatformIO
+  environment, rather than replacing BME280 outright — this doubles as a
+  teaching example of how cheaply a spec absorbs a hardware substitution.
+  The DHT22 environment becomes the default (it's the sensor most
+  workshop attendees will physically have); the BME280 environment
+  remains available and explicitly named. See GitHub issue #2.
+- Q: Does the DHT22 path also report humidity, since the sensor measures
+  it? → A: No — temperature only, matching the BME280 path's contribution
+  to `MonitorState` today. Humidity is intentionally out of scope here
+  and called out as a suggested student extension exercise.
+- Q: DHT22's datasheet minimum interval between reads (~2 seconds) is
+  slower than the existing 1 Hz sampling rate. How is this resolved? → A:
+  The sampling/render/report cadence changes uniformly to once every 2
+  seconds for **both** sensor paths (not just DHT22), so the device
+  behaves identically regardless of which sensor environment was built.
+  This supersedes the 2026-09-10 "once per second" answer above.
+- Q: During hardware bring-up with the DHT22, the WARNING thresholds were
+  revised. What are the new values? → A: WARNING now triggers on
+  temperature strictly above **27.0°C** and clears only strictly below
+  **25.0°C** — the same 2°C hysteresis band as before, just moved down to
+  a range reachable by cupping a hand around the sensor at normal room
+  temperature, without needing a hair dryer to demonstrate WARNING. This
+  supersedes the 2026-09-10 30.0°C/28.0°C answer above; the "strictly
+  greater/less" and "no toggling" rules from that answer are otherwise
+  unchanged.
+
 **Input**: User description: "Build an application for a Heltec WiFi Kit V3 that reads a sensor, shows the value on the display, and shows a warning when the value is too high."
 
 **Hardware context** (verified, not assumed): Heltec WiFi Kit V3 (ESP32-S3),
-0.96" 128x64 SSD1306 OLED at I2C address `0x3C`, BME280 environmental
-sensor on the same I2C bus, both powered through `Vext` (GPIO36, active
-LOW). See `docs/textbook.md` for sourcing.
+0.96" 128x64 SSD1306 OLED at I2C address `0x3C`, both powered through
+`Vext` (GPIO36, active LOW). Two interchangeable temperature sensors are
+supported, selected at build time: a BME280 environmental sensor on the
+same I2C bus as the OLED (also Vext-powered), or an AM2302/DHT22 on a
+dedicated single-wire GPIO (also Vext-powered). See `docs/textbook.md`
+for sourcing and GitHub issue #2 for the DHT22 addition.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -81,12 +114,12 @@ same value.
 **Acceptance Scenarios**:
 
 1. **Given** the device is in the OK state, **When** the temperature rises
-   above 30°C, **Then** the device enters the WARNING state on the OLED and
+   above 27°C, **Then** the device enters the WARNING state on the OLED and
    Serial.
 2. **Given** the device is in the WARNING state, **When** the temperature
-   drops below 28°C, **Then** the device returns to the OK state.
+   drops below 25°C, **Then** the device returns to the OK state.
 3. **Given** the device is in the WARNING state, **When** the temperature
-   is between 28°C and 30°C, **Then** the device remains in the WARNING
+   is between 25°C and 27°C, **Then** the device remains in the WARNING
    state (this is the hysteresis band — see FR-004).
 
 ---
@@ -126,30 +159,39 @@ value as if it were current.
 - A run of 1–2 consecutive failed reads does not change MonitorState; only
   3 consecutive failures trigger SENSOR_ERROR (see Clarifications).
 - Threshold comparisons are strict (`>` and `<`, never `>=`/`<=`); readings
-  of exactly 30.0°C or exactly 28.0°C do not by themselves change state
+  of exactly 27.0°C or exactly 25.0°C do not by themselves change state
   (see Clarifications).
 - Serial prints once per sampling cycle (see Clarifications).
+- Which sensor is fitted (BME280 or DHT22) does not change any of the
+  above — both produce the same `valid`/`temperature_c` shape, so the
+  same threshold, debounce, and display/Serial rules apply unmodified to
+  either (see Clarifications, session 2026-09-14).
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: The system MUST sample temperature from the sensor once per
-  second.
+- **FR-001**: The system MUST sample temperature from the sensor once
+  every 2 seconds, regardless of which supported sensor (BME280 or
+  DHT22) is fitted.
 - **FR-002**: The system MUST display the current temperature reading on
   the OLED after every successful sample.
+- **FR-010**: The system MUST support both a BME280 and an AM2302/DHT22
+  as the temperature sensor, selected at build time, with identical
+  OK/WARNING/SENSOR_ERROR behavior regardless of which is fitted (FR-003–
+  FR-009 apply unmodified to either).
 - **FR-003**: The system MUST enter WARNING state when temperature is
-  strictly above 30.0°C (not at exactly 30.0°C).
+  strictly above 27.0°C (not at exactly 27.0°C).
 - **FR-004**: The system MUST leave WARNING state only when temperature
-  falls strictly below 28.0°C (hysteresis band of 2°C; not at exactly
-  28.0°C). The system MUST NOT toggle WARNING state for temperatures in
-  the closed range [28.0°C, 30.0°C].
+  falls strictly below 25.0°C (hysteresis band of 2°C; not at exactly
+  25.0°C). The system MUST NOT toggle WARNING state for temperatures in
+  the closed range [25.0°C, 27.0°C].
 - **FR-005**: The system MUST enter SENSOR_ERROR state only after 3
   consecutive failed sensor reads. Fewer than 3 consecutive failures MUST
   NOT change MonitorState or overwrite the last valid reading.
 - **FR-006**: The system MUST print one Serial line per sampling cycle
-  (1 Hz) containing the current MonitorState and the current-or-last-valid
-  temperature.
+  (every 2 seconds) containing the current MonitorState and the
+  current-or-last-valid temperature.
 - **FR-007**: The system MUST NOT crash, hang, or silently reboot on a
   sensor read failure.
 - **FR-008**: The decision logic for FR-003–FR-005 (the state machine)
@@ -175,7 +217,7 @@ value as if it were current.
   WARNING / SENSOR_ERROR) from the OLED alone, without Serial, within one
   sampling interval of a state change.
 - **SC-002**: The WARNING state never toggles for temperature readings
-  strictly between 28.0°C and 30.0°C — zero toggles, not merely a rate
+  strictly between 25.0°C and 27.0°C — zero toggles, not merely a rate
   limit (proves hysteresis works).
 - **SC-003**: 100% of state transitions defined in FR-003–FR-005 are
   covered by a native unit test (Constitution Principle II).
@@ -186,13 +228,17 @@ value as if it were current.
 
 ## Assumptions
 
-- The sensor is a BME280 environmental sensor (temperature, humidity,
-  pressure) on the shared I2C bus with the OLED — this was a hardware
-  choice made explicitly with the project owner before this spec was
-  written, not invented by the AI mid-implementation.
-- Humidity and pressure are read from the BME280 for future use but are
-  out of scope for the warning/state logic in this feature; only
-  temperature drives MonitorState.
+- Two sensors are supported, chosen at build time, not at runtime: a
+  BME280 environmental sensor (temperature, humidity, pressure) on the
+  shared I2C bus with the OLED, or an AM2302/DHT22 (temperature and
+  humidity) on a dedicated single-wire GPIO. Both were hardware choices
+  made explicitly with the project owner (BME280 with the original spec;
+  DHT22 added 2026-09-14 per GitHub issue #2), not invented by the AI
+  mid-implementation.
+- Humidity is available from both sensors (pressure from BME280 only) but
+  is out of scope for the warning/state logic in this feature; only
+  temperature drives MonitorState. Surfacing humidity is a suggested
+  extension exercise for students, not part of this spec.
 - Single-device, no networking/WiFi feature is in scope here, even though
   the board has WiFi capability — this monitor is local-only (OLED +
   Serial).
