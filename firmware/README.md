@@ -66,6 +66,10 @@ on the OLED, the 27.0°C/25.0°C hysteresis band, and sensor
 disconnect/reconnect recovery per `quickstart.md` steps 3–5 — all working
 as specified.
 
+| OK state | WARNING state |
+|---|---|
+| ![OLED showing OK and 24.0C, DHT22 wired to GPIO4](../docs/images/hardware-dht22-ok.jpg) | ![OLED showing WARNING and 26.6C](../docs/images/hardware-dht22-warning.jpg) |
+
 ## Source layout
 
 | File | Role |

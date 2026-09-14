@@ -30,6 +30,11 @@ driving the onboard 0.96" OLED, with a warning state that uses
 **hysteresis** (`ON` above 27°C, `OFF` below 25°C) and explicit sensor
 failure handling. See [firmware/README.md](firmware/README.md).
 
+<p align="center">
+  <img src="docs/images/hardware-dht22-ok.jpg" alt="Heltec WiFi Kit V3 with a DHT22 sensor, OLED showing OK and 24.0C" width="360">
+  <img src="docs/images/hardware-dht22-warning.jpg" alt="Heltec WiFi Kit V3 with a DHT22 sensor, OLED showing WARNING and 26.6C" width="360">
+</p>
+
 ## Installation
 
 Everything below works the same on **macOS** and **Windows**. If you get
