@@ -1,9 +1,11 @@
 # Contract: Serial diagnostic line
 
 This device exposes exactly one external interface: a Serial line printed
-once per sampling cycle (1 Hz, FR-006). This is the "contract" for that
+once per sampling cycle (every 2 seconds, FR-006 — uniform across both
+supported sensors, see GitHub issue #2). This is the "contract" for that
 line — anything reading Serial output (a human, a script, a future log
-collector) can rely on this format.
+collector) can rely on this format, regardless of which sensor is
+fitted.
 
 ## Format
 
@@ -21,10 +23,10 @@ collector) can rely on this format.
 ## Examples
 
 ```text
-1000,OK,26.4
-2000,OK,26.5
+2000,OK,26.4
+4000,OK,26.5
 ...
-31000,WARNING,31.2
+32000,WARNING,31.2
 ...
 90000,SENSOR_ERROR,31.2
 ```

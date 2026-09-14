@@ -6,7 +6,7 @@ namespace monitor {
 
 namespace {
 
-// FR-003/FR-004: strict comparisons, exact 30.0/28.0 hold the prior state.
+// FR-003/FR-004: strict comparisons, exact 27.0/25.0 hold the prior state.
 MonitorState evaluate_temperature(MonitorState prev_state, float temperature_c) {
   if (prev_state == MonitorState::WARNING) {
     if (temperature_c < kWarningOffThresholdC) {

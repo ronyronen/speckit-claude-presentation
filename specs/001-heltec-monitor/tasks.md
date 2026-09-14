@@ -57,15 +57,15 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 ## Phase 4: User Story 2 - Get warned before it's a problem (Priority: P1)
 
-**Goal**: WARNING state on strictly >30.0°C, clears only on strictly <28.0°C, no toggling inside the [28.0, 30.0] band (FR-003, FR-004).
+**Goal**: WARNING state on strictly >27.0°C, clears only on strictly <25.0°C, no toggling inside the [25.0, 27.0] band (FR-003, FR-004; thresholds revised 2026-09-14, see spec.md Clarifications).
 
-**Independent Test**: Warm the sensor above 30.0°C, confirm WARNING; cool below 28.0°C, confirm it clears; hold between 28–30°C, confirm no toggling.
+**Independent Test**: Warm the sensor above 27.0°C, confirm WARNING; cool below 25.0°C, confirm it clears; hold between 25–27°C, confirm no toggling.
 
 ### Tests for User Story 2 ⚠️
 
 > Write these first; they must fail until T009 is implemented.
 
-- [x] T009 [P] [US2] Native unit tests in `firmware/test/test_monitor_logic/test_monitor_logic.cpp`: OK→WARNING at 30.1°C, no transition at exactly 30.0°C, WARNING→OK at 27.9°C, no transition at exactly 28.0°C, no toggling across repeated readings anywhere in [28.0, 30.0] (data-model.md transition table)
+- [x] T009 [P] [US2] Native unit tests in `firmware/test/test_monitor_logic/test_monitor_logic.cpp`: OK→WARNING at 27.1°C, no transition at exactly 27.0°C, WARNING→OK at 24.9°C, no transition at exactly 25.0°C, no toggling across repeated readings anywhere in [25.0, 27.0] (data-model.md transition table; thresholds revised 2026-09-14)
 
 ### Implementation for User Story 2
 
@@ -110,12 +110,75 @@ Single PlatformIO project at `firmware/` (see plan.md Project Structure).
 
 ---
 
+## Phase 7: Sensor Portability - Support DHT22 alongside BME280 (GitHub issue #2)
+
+**Goal**: Both BME280 and AM2302/DHT22 are supported as interchangeable
+temperature sensors, selected at PlatformIO build time; DHT22 becomes the
+default env since it's the sensor on hand for this workshop run. No
+change to `monitor_logic`, `display_adapter`, or `serial_reporter` — this
+phase only touches the sensor adapter, `platformio.ini`, `main.cpp`'s
+cadence constant, and docs (spec.md FR-010, FR-001/FR-006 already
+amended; see spec.md Clarifications session 2026-09-14).
+
+**Independent Test**: `pio run` with no `-e` builds the DHT22 env and
+flashes/runs identically to the existing BME280 behavior (same OLED/
+Serial contract, same thresholds/debounce); `pio run -e
+heltec_wifi_kit_32_V3` still builds and runs the BME280 path unchanged.
+
+### Implementation for Sensor Portability
+
+- [x] T025 [US1] Rename `firmware/src/sensor_adapter.cpp` to
+  `firmware/src/sensor_adapter_bme280.cpp` (no logic change); trim
+  `firmware/src/sensor_adapter.h` to the sensor-agnostic `SensorAdapter`
+  interface (`begin()`/`read()` returning `monitor::Reading`) shared by
+  both implementations, per research.md's revised Sensor section
+- [x] T026 [P] [US1] Implement `firmware/src/sensor_adapter_dht22.cpp`:
+  DHT22 on **GPIO4** via `adafruit/DHT sensor library`, same
+  `SensorAdapter` interface as T025; a failed/checksum read (library
+  returns NaN or an error code) maps to `monitor::Reading{false, 0.0f}`,
+  feeding the existing 3-consecutive-failure debounce (FR-005) unchanged
+- [x] T027 [US1] Update `firmware/platformio.ini`: add
+  `default_envs = heltec_wifi_kit_32_V3_dht22`; add the new
+  `[env:heltec_wifi_kit_32_V3_dht22]` (lib_deps: `adafruit/DHT sensor
+  library`, `adafruit/Adafruit Unified Sensor`; `build_src_filter`
+  selecting `sensor_adapter_dht22.cpp` and excluding
+  `sensor_adapter_bme280.cpp`); give `[env:heltec_wifi_kit_32_V3]` its own
+  `build_src_filter` excluding `sensor_adapter_dht22.cpp` so only one
+  adapter ever compiles per env (mirrors the `native` env's existing
+  pattern)
+- [x] T028 [P] [US1] Update `firmware/src/main.cpp`:
+  `kSampleIntervalMs` `1000` → `2000` (FR-001/FR-006, spec.md
+  Clarifications session 2026-09-14), update the `// FR-001` comment
+- [x] T029 [P] Update `firmware/README.md`: document both sensors, both
+  envs, the GPIO4/DHT22 wiring (3-pin, on-board pull-up, Vext-powered),
+  and that `heltec_wifi_kit_32_V3_dht22` is now the default `pio run`
+  target
+- [x] T030 [US1] Manual hardware check (quickstart.md steps 3–5, DHT22
+  env): flash the new default env and re-verify temperature display,
+  hysteresis, and sensor-failure handling on the DHT22
+- [ ] T031 [US1] Manual hardware check (quickstart.md steps 3–5, BME280
+  env): re-verify `pio run -e heltec_wifi_kit_32_V3` still behaves
+  identically after the T025 rename/split (regression check)
+- [x] T032 Record verified Serial/OLED output for the DHT22 env in
+  `firmware/README.md` (extends T022's checkpoint); BME280 output still
+  pending (see T031)
+
+**Checkpoint**: DHT22 path fully verified on hardware (2026-09-14),
+including the revised 27.0°C/25.0°C hysteresis (spec.md FR-010
+satisfied for this path). T008/T014/T019/T022 (the original BME280-era
+hardware checks) and T031 remain open pending access to BME280 hardware
+— functionally superseded on the DHT22 path by T030/T032, but not yet
+re-verified on BME280 itself.
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
 
-- Setup (Phase 1) → Foundational (Phase 2) → User Stories (Phases 3–5) → Polish (Phase 6)
+- Setup (Phase 1) → Foundational (Phase 2) → User Stories (Phases 3–5) → Polish (Phase 6) → Sensor Portability (Phase 7)
 - Foundational blocks all user stories (T003 defines the shared enum/struct every story extends)
+- Phase 7 (DHT22 support, GitHub issue #2) depends on Phase 3 (T005–T007 established the original `sensor_adapter`) but is otherwise independent of Phases 4–6 — it only touches the sensor adapter, build config, and the sampling-interval constant
 
 ### User Story Dependencies
 
@@ -148,6 +211,8 @@ device is still meaningfully demonstrable after Phase 4 alone.
 3. Phase 4 (US2) → hysteresis warning, verified on hardware
 4. Phase 5 (US3) → sensor failure handling, verified on hardware
 5. Phase 6 → checkpoints `08-implemented` and `09-hardware-verified`
+6. Phase 7 → DHT22 support added alongside BME280 (GitHub issue #2),
+   DHT22 becomes the default env, both verified on hardware
 
 ## Notes
 

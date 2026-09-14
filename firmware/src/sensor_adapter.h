@@ -1,30 +1,25 @@
 #pragma once
 
-#include <cstdint>
-
-#include <Adafruit_BME280.h>
-
 #include "monitor_logic.h"
 
 namespace hw {
 
-// BME280 on the shared I2C bus with the OLED (SDA_OLED/SCL_OLED).
-// Address verified in specs/001-heltec-monitor/research.md.
-constexpr uint8_t kBme280PrimaryAddress = 0x76;
-constexpr uint8_t kBme280FallbackAddress = 0x77;
-
+// Shared interface for the fitted temperature sensor, implemented by
+// exactly one of sensor_adapter_bme280.cpp / sensor_adapter_dht22.cpp
+// per PlatformIO env (see firmware/platformio.ini build_src_filter and
+// specs/001-heltec-monitor/research.md). main.cpp is identical
+// regardless of which sensor is fitted.
 class SensorAdapter {
  public:
-  // Returns true if the BME280 was found and initialized on either
-  // candidate address. Call after hw::vext_on().
+  // Returns true if the sensor was found/initialized. Call after
+  // hw::vext_on().
   bool begin();
 
-  // Always returns a Reading; valid=false if the I2C transaction failed
-  // or begin() was never successful (spec.md FR-005 handles the rest).
+  // Always returns a Reading; valid=false if the read failed or begin()
+  // was never successful (spec.md FR-005 handles the rest).
   monitor::Reading read();
 
  private:
-  Adafruit_BME280 bme_;
   bool initialized_ = false;
 };
 
