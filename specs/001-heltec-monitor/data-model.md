@@ -2,11 +2,14 @@
 
 ## Reading
 
-A single sensor sample attempt.
+A single sensor sample attempt. Unchanged by the BME280/DHT22 dual-sensor
+support (GitHub issue #2) — both `sensor_adapter_bme280.cpp` and
+`sensor_adapter_dht22.cpp` produce this exact same shape, which is
+precisely what lets `monitor_logic` stay sensor-agnostic.
 
 | Field | Type | Notes |
 |---|---|---|
-| `valid` | bool | `true` if the BME280 read succeeded this cycle |
+| `valid` | bool | `true` if the fitted sensor's read succeeded this cycle |
 | `temperature_c` | float | Only meaningful when `valid == true` |
 
 ## MonitorState
@@ -28,8 +31,8 @@ Given the current `state` and a new `Reading`:
 1. **Reading valid** (`valid == true`):
    - `consecutive_failures` → 0
    - `last_valid_temperature_c` → `reading.temperature_c`
-   - If `state != WARNING` and `reading.temperature_c > 30.0` → `state = WARNING`
-   - Else if `state == WARNING` and `reading.temperature_c < 28.0` → `state = OK`
+   - If `state != WARNING` and `reading.temperature_c > 27.0` → `state = WARNING`
+   - Else if `state == WARNING` and `reading.temperature_c < 25.0` → `state = OK`
    - Else if `state == SENSOR_ERROR` → `state = OK` or `WARNING` based on
      the same two rules above, evaluated fresh (a recovering sensor is
      treated exactly like a normal reading, per spec User Story 3,

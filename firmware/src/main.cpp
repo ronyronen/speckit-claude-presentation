@@ -7,7 +7,7 @@
 #include "serial_reporter.h"
 
 namespace {
-constexpr unsigned long kSampleIntervalMs = 1000;  // FR-001: 1 Hz
+constexpr unsigned long kSampleIntervalMs = 2000;  // FR-001: every 2s (both sensor envs)
 
 hw::SensorAdapter sensor;
 hw::DisplayAdapter oled;
@@ -18,16 +18,17 @@ unsigned long last_sample_ms = 0;
 void setup() {
   Serial.begin(115200);
 
-  // Both the OLED and the BME280 sit on the Vext-gated rail; it must be
-  // enabled before either is initialized (research.md).
+  // Both the OLED and the fitted sensor (BME280 or DHT22) sit on the
+  // Vext-gated rail; it must be enabled before either is initialized
+  // (research.md).
   hw::vext_on();
-  delay(50);  // let the rail stabilize before I2C traffic
+  delay(50);  // let the rail stabilize before use
 
   if (!oled.begin()) {
     Serial.println("OLED init failed");
   }
   if (!sensor.begin()) {
-    Serial.println("BME280 not found at 0x76/0x77 -- starting in SENSOR_ERROR");
+    Serial.println("Sensor init failed -- starting in SENSOR_ERROR");
   }
 }
 

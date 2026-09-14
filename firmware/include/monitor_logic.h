@@ -20,9 +20,10 @@ struct Reading {
   float temperature_c;
 };
 
-// spec.md Clarifications, 2026-09-10.
-constexpr float kWarningOnThresholdC = 30.0f;   // strictly above -> WARNING
-constexpr float kWarningOffThresholdC = 28.0f;  // strictly below -> OK
+// spec.md Clarifications, 2026-09-10 (thresholds revised 2026-09-14
+// during DHT22 hardware bring-up).
+constexpr float kWarningOnThresholdC = 27.0f;   // strictly above -> WARNING
+constexpr float kWarningOffThresholdC = 25.0f;  // strictly below -> OK
 constexpr uint8_t kFailureDebounceCount = 3;    // consecutive failures -> SENSOR_ERROR
 
 // Accumulated monitor state (spec.md data-model.md "MonitorState").
