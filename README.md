@@ -35,6 +35,8 @@ failure handling. See [firmware/README.md](firmware/README.md).
   <img src="docs/images/hardware-dht22-warning.jpg" alt="Heltec WiFi Kit V3 with a DHT22 sensor, OLED showing WARNING and 26.6C" width="360">
 </p>
 
+📊 [View the slide deck](presentation/speckit-workshop.pptx)
+
 ## Installation
 
 Everything below works the same on **macOS** and **Windows**. If you get
