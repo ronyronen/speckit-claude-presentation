@@ -1,7 +1,7 @@
-# Technical Design: Theory-First SDD Talk (EN + HE decks)
+# Technical Design: Theory-First SDD Talk for Beginners (EN + HE decks)
 
-- **Brief:** [2026-11-18-theory-deck-brief.md](2026-11-18-theory-deck-brief.md). Read it first; this design does not restate its stories, outline or fact-check register.
-- **Status:** design decisions approved by the human 2026-11-18. Implementation not started (on hold per human request).
+- **Brief:** [2026-11-18-theory-deck-brief.md](2026-11-18-theory-deck-brief.md). The brief holds the stories, the 27-slide outline, the fact-check register, the negotiation log and the human decisions, and this design does not restate them.
+- **Status:** design decisions approved by the human on 2026-11-18 (rounds 1 and 2). Implementation has not started and is on hold at the human's request.
 - **Reference article:** V. Dwarampudi, "Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers" (Medium, Jun 2026). The PDF is local only, in `.tmp/`, and is not committed.
 
 ## 1. Architecture
@@ -9,85 +9,107 @@
 ```
 presentation/
   content/
-    deck.yaml          # single source of truth: 25 timed + 4 appendix slides, EN+HE
+    deck.yaml          # single source of truth: 27 timed + 6 appendix slides, EN+HE
   build/
     build_decks.py     # python-pptx generator: YAML -> two .pptx files
-    validate.py        # sync + timing checks (also run by build_decks.py)
+    validate.py        # sync, timing, tone and fact checks (also run by build_decks.py)
     render_check.sh    # soffice -> pdf -> pdftoppm PNGs for visual review
-    theme.py           # palette, fonts, geometry constants, RTL helpers
-    shapes.py          # native diagram primitives (box, arrow, loop, rail, curve)
+    theme.py           # palette, fonts, geometry constants (incl. tip band), RTL helpers
+    shapes.py          # native diagram primitives (box, arrow, loop, rail, curve, pill)
   assets/              # background PNG, photos, code cards extracted from current deck
   speckit-workshop.pptx      # EN output (path unchanged)
   speckit-workshop-he.pptx   # HE output (new)
 ```
 
-**Flow:** `deck.yaml` → `validate.py` → `build_decks.py --lang en|he` → `.pptx` → `render_check.sh` → PNGs to review.
+**Build pipeline:** `deck.yaml` → `validate.py` → `build_decks.py --lang en|he` → `.pptx` → `render_check.sh` → PNGs, which a person reviews.
 
 ## 2. Content model (`deck.yaml`)
 
 ```yaml
-meta: { total_budget: "45:00", article_credit: {...} }
+meta: { total_budget: "45:00", qa_budget: "3:00", article_credit: {...} }
 slides:
   - id: intent-gap            # stable key, shared by both languages
     part: I
     budget: "2:30"            # m:ss; appendix slides use 0
-    layout: title-bullets-diagram   # one of a small fixed set of layouts
-    diagram: sdlc-vs-adlc     # optional, references shapes.py builder
+    layout: title-bullets-diagram
+    diagram: { name: sdlc-vs-adlc }          # or { name: branch-flow, highlight: [issue, pr] }
     title:   { en: "...", he: "..." }
-    bullets:                  # keyed: both languages must have the same keys
+    bullets:                  # keyed, max 5; both languages must have the same keys
       - { key: static-docs, en: "...", he: "..." }
-    notes:   { en: "...", he: "..." }   # generator prepends "[m:ss] [@mm:ss]"
-    sources: [F6]             # links to fact-check register IDs
+    tip:     { key: start-small, en: "...", he: "..." }   # optional, ≤20 words each
+    notes:   { en: "Analogy: ...\n...", he: "Analogy: ...\n..." }  # generator prepends "[m:ss] [@mm:ss]"
+    sources: [F6]             # fact-check register IDs → notes must contain a URL
 ```
 
-**Layouts:** a fixed set of 6 to 8, covering title, section, title-bullets, title-bullets-diagram, two-column compare, table, photo pair, and code card. Each layout is a function in `build_decks.py` that takes a `dir` flag (`ltr` or `rtl`), so the HE deck mirrors the geometry rather than only aligning text to the right.
+**Layouts:** there is a fixed set of 6 to 8: title, section, title-bullets, title-bullets-diagram, two-column compare, table, photo pair, and code card. Each layout is a function that takes `dir` (`ltr` or `rtl`) and `has_tip`. When `has_tip` is true, the content area shrinks to make room for the tip band. The HE deck mirrors the geometry, not only the text alignment.
 
-## 3. Validation (fails the build)
+## 3. Tip box (US-11)
 
-These map to the US-3 and US-4 acceptance criteria:
-1. Both languages have the same slide IDs, in the same order. Every slide has `title.en` and `title.he`.
-2. Bullet keys and counts are identical in EN and HE.
-3. The timed budgets sum to exactly 45:00. The generator computes the `[@mm:ss]` cumulative-end markers rather than taking them from authors.
-4. Every timed slide has non-empty notes in both languages.
-5. No slash commands or CLI syntax appear in Part I–III slide text (a regex for `/\w+-` and `$ `), per Ruling 5.
-6. No star counts (`\d+k\+? stars`) appear in slide text, per N4.
+- **Placement:** a fixed band at the bottom of the slide, about 0.7 in tall, defined in `theme.py`.
+- **Marker:** a native pill shape labelled "TIP" in EN and "טיפ" in HE, never an emoji. The pill sits on the left in EN and on the right in HE.
+- **Text:** the Tip text is RTL in HE, and each Tip is at most 20 whitespace-separated words per language.
+- **Testing:** P1a renders every layout both with and without a Tip.
 
-## 4. Theme and RTL
+## 4. Validation (10 checks, any failure fails the build)
 
-- **Visual baseline:** keep the current deck's dark navy background PNG, colour palette, OK/WARNING photos and code-card look, all extracted into `assets/`. The hand-placed PNG fragments are rebuilt as native shapes.
-- **EN fonts:** Plus Jakarta Sans and JetBrains Mono, as now. The fonts must be installed locally so render checks use them and not substitutes.
-- **HE font:** Arial in `<a:latin>` and `<a:cs>`, so it works on venue machines. Noto Sans Hebrew is a fallback.
-- **HE paragraphs:** `a:pPr rtl="1" algn="r"` and runs with `lang="he-IL"`. Use bullet dots, not numbered lists, because of the known RTL numbering bug. No literal newlines inside a single run. The old `set_rtl` helper is recovered from `git show f85a550:presentation/build_deck.py`.
-- **Diagrams in HE:** labels are translated, but the direction of process flow stays left-to-right. This matches the existing HE SVGs and the convention for technical flow diagrams.
+1. Both languages have the same slide IDs, in the same order. Every slide has a title in both languages.
+2. Bullet keys match between languages, as does the Tip key (or the absence of a Tip). No slide has more than 5 bullets.
+3. Timed budgets sum to exactly 45:00, and Q&A is exactly 3:00.
+4. The generator computes the notes prefix `[m:ss] [@mm:ss]`, where `@` is the elapsed time at the end of the slide. The last timed slide is `[@45:00]`.
+5. Every timed slide's notes contain an `Analogy:` line. Exemptions: Title, Resources and Q&A. Part IV slides may use `Analogy: see slide N` (Ruling R2-5).
+6. The deck has at least 10 Tips, at most 1 per slide, each at most 20 words per language.
+7. No slash commands or CLI syntax appear in the slide text of Parts I to III.
+8. No star counts appear in slide text.
+9. Every slide with a `sources:` entry has at least one URL in its notes, in both languages.
+10. Every `diagram.name` refers to a builder that exists in `shapes.py`.
 
-## 5. Diagrams (native shapes)
+## 5. Theme and RTL
 
-| Diagram | Slide | Phase | Primitive |
+- **Visual baseline:** keep the current deck's dark navy background PNG, colour palette, OK/WARNING photos and code-card look, all extracted into `assets/`. The hand-placed PNG pieces are rebuilt as native shapes. The human has accepted that the result approximates the old look rather than copying it.
+- **EN fonts:** Plus Jakarta Sans and JetBrains Mono. Both must be installed locally so that render checks show the real fonts.
+- **HE font:** Arial, set in both `<a:latin>` and `<a:cs>`. Noto Sans Hebrew is the fallback.
+- **HE paragraph settings:**
+  - Use `a:pPr rtl="1" algn="r"`, with `lang="he-IL"` on each run.
+  - Use bullet dots, not numbered lists.
+  - Never put a literal newline inside a run.
+  - Recover the old `set_rtl` helper with `git show f85a550:presentation/build_deck.py`.
+- **Diagrams in HE:** labels are translated, but process flow stays left to right.
+
+## 6. Diagrams (native shapes)
+
+| Diagram | Slide | Phase | Primitives |
 |---|---|---|---|
-| Four metaphors, two layers | 13 | P1 (Must) | 2×2 grid inside a two-band layer stack: planning/governance vs execution discipline |
-| Decision rule flowchart | 15 | P1 (Must) | 3 decision diamonds: long sessions? / human review each phase? / strong TDD habit? → add GSD / add Superpowers |
+| Four metaphors, two layers | 12 | P1 | 2×2 grid inside a two-band stack (planning/governance vs execution discipline) |
+| Decision rule flowchart | 13 | P1 | 3 diamonds: long sessions? / human review each phase? / strong TDD habit? → add GSD / add Superpowers |
+| Branch flow | 19–21 | P1 | linear chain: issue #2 → feature branch → PR #3 → dev → PRs #4–7 → main; `highlight` varies per slide |
 | SDLC vs ADLC | 3 | P2 | linear chevrons vs circular loop |
-| SDD pipeline | 5 | P2 | 5 stages + 2 gate markers + feedback arc + constitution rail |
-| Context rot | 8 | P2 | freeform qualitative curve, unlabeled axes |
+| SDD pipeline | 5 | P2 | 5 stages, 2 gate markers, feedback arc, constitution rail |
+| Context rot | 7 | P2 | freeform qualitative curve, unlabeled axes |
+| /team roles | 23 | P2 (Could) | 3 boxes (architect, PO, dev) with relay arrows through the architect |
 
-## 6. Verification
+## 7. Verification
 
 - `validate.py` exits 0.
-- `render_check.sh` produces PNGs for every slide of both decks, and a reviewer looks at them for overflow and overlap.
-- One manual pass in PowerPoint on the HE deck, over the listed mixed Hebrew/English lines (US-4).
-- The F7 citation URL is fetched and confirmed before it goes into the notes.
+- `render_check.sh` produces PNGs of every slide of both decks. Review them for overflow and overlap, with and without the tip band.
+- Do one manual pass in PowerPoint on the HE deck, checking the listed lines that mix Hebrew and English.
+- Before adding the F7 citation to the notes, fetch its URL and confirm it works.
+- Hold a timed rehearsal. If it overruns, apply the relief valves in order: valve 0 (slide 21 drops to 1:30), then the three valves the human approved.
 
-## 7. Phases (from the brief)
+## 8. Phases
 
 | Phase | Scope | Est. |
 |---|---|---|
-| P1 | asset extraction, generator, validator, EN content for all 25+4 slides, diagrams for slides 13 and 15, case-study DHT22 fixes | ~1.5–2 d |
-| P2 | remaining 3 diagrams | ~0.5 d |
-| P3 | HE content and RTL deck, PowerPoint bidi pass, README links (US-10) | ~1–1.5 d |
+| P1a | extract assets; theme; all layouts in LTR and RTL, with and without a Tip; shapes.py primitives; validator; a placeholder skeleton deck that passes all 10 checks and renders cleanly | ~1 d |
+| P1b | EN content in a beginner tone for all 27+6 slides (analogies, at least 10 Tips, GitHub section, What's next); the slide 12, 13 and 19–21 diagrams; DHT22 fixes in the case study | ~1.5–2 d |
+| P2 | the remaining diagrams (slides 3, 5, 7, plus the optional /team diagram) | ~0.5–0.75 d |
+| P3 | HE content and RTL deck; the PowerPoint bidi pass; README links (US-10) | ~1.5–2 d |
 
-## 8. Decisions and trade-offs
+**Total:** about 4.5 to 5.5 working days.
 
-- **The generator replaces the hand edits.** EN and HE stay in sync, and timing is checked by machine. The cost is that the current deck's hand polish is only approximated (open question 1 in the brief).
-- **Diagrams are drawn in PowerPoint, not as SVG/PNG.** They match the dark theme and are translated from the same YAML. The SVG pairs in `docs/images` stay untouched.
-- **Old deck.** The current EN deck is overwritten at the same path, but git keeps the previous version, and a tag `pre-theory-deck` is created first.
-- **`.tmp/` stays out of the repo.** It holds the article PDF, a third-party copyrighted article, which the talk credits and links instead.
+## 9. Decisions and trade-offs
+
+- **A generator instead of hand edits.** The EN and HE decks stay in sync, and timing, tone and facts are checked by machine. The cost is that the hand polish of the current deck is only approximated. The human accepted this.
+- **Native diagrams instead of SVG.** They match the dark theme and are translated from the same YAML. The existing SVG pairs in `docs/images` are left untouched.
+- **Repo history as an illustration, not a claim.** The GitHub section teaches the ideal team flow, using the real numbers (issue #2 and PRs #3–7). It does not claim that this repo was built by a team, or that the repo enforces CI or branch protection. Issue #2 stays open until the deck ships, because a slide uses it as a teaching example.
+- **Safe overwrite of the old deck.** The current EN deck is overwritten at the same path. Before that happens, the tag `pre-theory-deck` is created.
+- **`.tmp/` stays out of the repo.** The article is credited and linked, not redistributed.

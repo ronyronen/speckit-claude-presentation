@@ -191,7 +191,7 @@ Any freed time goes to the beginner-heavy slides 3-5.
 | Context-rot curve (no numbers) | 7 | Should, P2 |
 | Four metaphors, two layers | 12 | Must, P1 |
 | Decision rule | 13 | Must, P1 |
-| Branch flow: issue → `dev` → PR → `main` | 19 | Should, P2; a text-only fallback is acceptable |
+| Branch flow: issue #2 → feature branch → PR #3 → `dev` → PRs #4–7 → `main` (one diagram, highlight varies on 19/20/21) | 19–21 | Must, P1 (Ruling R2-2) |
 | /team roles | 23 | Could |
 
 ## Fact-check register
@@ -300,3 +300,23 @@ The work is not done until P3 ships. **The 3-4 day estimate needs a re-estimate 
 5. Tips go in a visible 💡 Tip box on the slide, as US-11 describes.
 6. The GitHub section teaches the ideal team flow and uses this repo's real issue and PR numbers to illustrate it. It does not claim the repo had a team. Issue #2 being still open becomes a Tip: "Close issues from PRs with 'Fixes #2'".
 7. The overrun relief valves follow the PO's order: (1) collapse What's next into 1 slide, (2) merge GSD and Superpowers, (3) fold context engineering into context rot.
+
+**Round 2: developer feasibility and architect rulings (2026-11-18)**
+
+The developer's re-estimate is **4.5–5.5 working days**:
+
+| Phase | Estimate |
+|---|---|
+| P1 | 2.5–3 d, split into P1a (template, layouts with and without a Tip, validator, skeleton deck) and P1b (content) |
+| P2 | 0.5–0.75 d |
+| P3 | 1.5–2 d |
+
+F13 is confirmed: `main` has no branch protection and the repo has no CI. "Merge only after tests pass" is therefore taught as a team rule, not shown as something this repo enforces.
+
+- Ruling R2-1: Accept the P1a/P1b split. — Why: layout overflow surfaces before content is written. — Cost if wrong: about 0.25 d of scaffolding overhead.
+- Ruling R2-2: The branch-flow diagram moves to P1 as a single linear chain built from box and arrow primitives, with a `highlight` parameter. It is reused on slides 19–21. There is no two-lane gitflow picture. — Why: a beginner GitHub section needs a visual, and the chain uses real issue and PR numbers. — Cost if wrong: about 45 minutes.
+- Ruling R2-3: The Tip marker is a native pill shape labelled "TIP" / "טיפ", not an emoji, placed in a fixed bottom band, with the label side mirrored in HE. — Why: LibreOffice did not render emoji, and a native pill renders the same in both decks by construction. — Cost if wrong: only cosmetic.
+- Ruling R2-4: The validator is the union of the brief's checks and the design's checks, plus "5 bullets or fewer" and "every F-ID slide has a URL in its notes", for 10 checks in total. — Why: cheap, and each check enforces an AC. — Cost if wrong: none.
+- Ruling R2-5: Part IV slides (14–18) satisfy the Analogy rule with `Analogy: see slide N`. — Why: forced analogies on slides about real artifacts read as contrived. — Cost if wrong: novices get slightly less scaffolding in the case study, which reuses analogies from earlier slides.
+- Ruling R2-6: Add relief valve 0, ahead of the human-approved order: slide 21 reuses the diagram and drops to 1:30, freeing 0:30. — Why: it cuts no content, so the approved order is unchanged. — Cost if wrong: none.
+- Ruling R2-7: Do not close issue #2 until the deck ships. — Why: slide 20/21 uses it as a live teaching example.
