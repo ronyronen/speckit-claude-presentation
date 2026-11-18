@@ -66,7 +66,7 @@ def pill(slide, x, y, text, lang):
     sh.fill.fore_color.rgb = COLORS["tip"]
     sh.line.fill.background()
     sh.shadow.inherit = False
-    _text(sh, text, lang, [], 14, COLORS["bg"], bold=True)
+    _text(sh, text, lang, [], 18, COLORS["bg"], bold=True)
     return sh
 
 
@@ -92,31 +92,59 @@ def layers(slide, area, diagram, lang, glossary):
         cy += box_h + gap
 
 
+# (question, outcome, edge label key). Source article rule: skip GSD if
+# sessions are short AND a human reviews each phase; skip Superpowers if the
+# team already has strong TDD habits.
+DECISION_EDGES = [
+    ("q_long", "add_gsd", "yes"),
+    ("q_review", "add_gsd", "no"),
+    ("q_tdd", "add_superpowers", "no"),
+]
+_DECISION_CHAIN = [("q_long", "q_review", "no"), ("q_review", "q_tdd", "yes")]
+
+
+def _edge_label(slide, diagram, key, lang, glossary, cx, cy):
+    w, h = Inches(0.6), Inches(0.4)
+    tb = slide.shapes.add_textbox(int(cx - w // 2), int(cy - h // 2), w, h)
+    tb.name = f"edge-{key}"
+    _text(tb, _label(diagram, key, lang), lang, glossary, 18, COLORS["muted"],
+          bold=True)
+    tb.text_frame.margin_left = tb.text_frame.margin_right = 0
+    return tb
+
+
 def decision(slide, area, diagram, lang, glossary):
-    """Three diamond questions in a row; outcomes below."""
+    """Three diamond questions in a row (yes/no edges); outcomes below."""
     x, y, w, h = area
-    gap = Inches(0.5)
+    gap = Inches(0.6)
     dw = (w - 2 * gap) // 3
-    dh = int(h * 0.5)
-    oh = int(h * 0.25)
-    ow = int(dw * 0.8)
+    dh = Inches(2.4)
+    oh = Inches(0.9)
+    ow = Inches(2.9)
     oy = y + h - oh
-    qs = []
+    qs = {}
     for i, k in enumerate(["q_long", "q_review", "q_tdd"]):
-        qs.append(_box(slide, MSO_SHAPE.DIAMOND, x + i * (dw + gap), y, dw, dh,
-                       f"q-{k}", _label(diagram, k, lang), lang, glossary, 14))
-        if i:
-            _arrow(slide, qs[i - 1], _RIGHT, qs[i], _LEFT)
-    gsd = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + (dw - ow) // 2, oy, ow, oh,
-               "out-gsd", _label(diagram, "add_gsd", lang), lang, glossary, 24,
-               fill="accent", bold=True)
-    sp = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE,
-              x + 2 * (dw + gap) + (dw - ow) // 2, oy, ow, oh, "out-superpowers",
-              _label(diagram, "add_superpowers", lang), lang, glossary, 24,
-              fill="accent", bold=True)
-    _arrow(slide, qs[0], _BOTTOM, gsd, _TOP)
-    _arrow(slide, qs[1], _BOTTOM, sp, _TOP)
-    _arrow(slide, qs[2], _BOTTOM, sp, _TOP)
+        d = _box(slide, MSO_SHAPE.DIAMOND, x + i * (dw + gap), y, dw, dh,
+                 f"q-{k}", _label(diagram, k, lang), lang, glossary, 18)
+        d.text_frame.margin_left = d.text_frame.margin_right = 0
+        d.text_frame.margin_top = d.text_frame.margin_bottom = 0
+        qs[k] = d
+    for a_, b_, lab in _DECISION_CHAIN:
+        _arrow(slide, qs[a_], _RIGHT, qs[b_], _LEFT)
+        _edge_label(slide, diagram, lab, lang, glossary,
+                    qs[a_].left + qs[a_].width + gap // 2, y + dh // 2 - Inches(0.3))
+    outs = {}
+    for k, qk, cx in (("add_gsd", "q_long", x + (dw - ow) // 2),
+                      ("add_superpowers", "q_tdd", x + w - dw + (dw - ow) // 2)):
+        outs[k] = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, oy, ow, oh,
+                       f"out-{k}", _label(diagram, k, lang), lang, glossary, 24,
+                       fill="accent", bold=True)
+    for q, out, lab in DECISION_EDGES:
+        _arrow(slide, qs[q], _BOTTOM, outs[out], _TOP)
+        qb, ot = qs[q], outs[out]
+        mx = (qb.left + qb.width // 2 + ot.left + ot.width // 2) // 2
+        _edge_label(slide, diagram, lab, lang, glossary,
+                    mx + Inches(0.4), (qb.top + qb.height + ot.top) // 2)
 
 
 _FLOW = ["issue", "feature", "pr3", "dev", "prs", "main"]
@@ -126,15 +154,15 @@ def branch_flow(slide, area, diagram, lang, glossary):
     """Six nodes zig-zagging over two rows, always left to right (also in HE)."""
     x, y, w, h = area
     highlight = set(diagram.get("highlight") or [])
-    nw = Inches(2.9)
-    nh = min(Inches(1.3), h // 3)
+    nw = Inches(3.4)
+    nh = min(Inches(1.6), h // 3)
     step = (w - nw) // (len(_FLOW) - 1)
-    row_y = [y + (h // 2 - nh) // 2, y + h // 2 + (h // 2 - nh) // 2]
+    row_y = [y, y + h - nh]
     nodes = []
     for i, k in enumerate(_FLOW):
         nodes.append(_box(
             slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + i * step, row_y[i % 2], nw,
-            nh, f"node-{k}", _label(diagram, k, lang), lang, glossary, 16,
+            nh, f"node-{k}", _label(diagram, k, lang), lang, glossary, 18,
             fill="accent" if k in highlight else "surface", bold=k in highlight))
     for i in range(len(nodes) - 1):
         if i % 2 == 0:

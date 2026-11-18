@@ -3,7 +3,7 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.util import Inches
 
-from presentation.build.shapes import DIAGRAMS, pill
+from presentation.build.shapes import DECISION_EDGES, DIAGRAMS, pill
 from presentation.build.theme import COLORS, content_box
 
 KEYS = ["issue", "feature", "pr3", "dev", "prs", "main"]
@@ -91,3 +91,50 @@ def test_pill():
     p = pill(s, Inches(1), Inches(1), "TIP", "he")
     assert p.text_frame.text == "TIP"
     assert p.fill.fore_color.rgb == COLORS["tip"]
+
+
+def _all_runs(s):
+    return [r for sh in s.shapes if sh.has_text_frame
+            for p in sh.text_frame.paragraphs for r in p.runs]
+
+
+ALLKEYS = KEYS + ["band_plan", "band_exec", "bmad", "speckit", "gsd", "superpowers",
+                  "q_long", "q_review", "q_tdd", "add_gsd", "add_superpowers",
+                  "yes", "no"]
+
+
+@pytest.mark.parametrize("name", ["layers", "decision", "branch-flow"])
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_min_font_18(name, lang):
+    s = _build(name, lang=lang, keys=ALLKEYS)
+    runs = _all_runs(s)
+    assert runs and min(r.font.size.pt for r in runs) >= 18
+
+
+def test_pill_font_18():
+    s = _slide()
+    pill(s, 0, 0, "TIP", "en")
+    assert min(r.font.size.pt for r in _all_runs(s)) >= 18
+
+
+def test_decision_edges_by_connector_endpoints():
+    s = _build("decision", keys=ALLKEYS)
+    names = {sh.shape_id: sh.name for sh in s.shapes}
+    ns = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
+    got = set()
+    for sh in s.shapes:
+        st = sh._element.xpath(".//a:stCxn/@id")
+        en = sh._element.xpath(".//a:endCxn/@id")
+        if st and en:
+            got.add((names[int(st[0])], names[int(en[0])]))
+    assert DECISION_EDGES == [("q_long", "add_gsd", "yes"),
+                              ("q_review", "add_gsd", "no"),
+                              ("q_tdd", "add_superpowers", "no")]
+    for q, out, _ in DECISION_EDGES:
+        assert (f"q-{q}", f"out-{out}") in got
+    assert ("q-q_long", "q-q_review") in got and ("q-q_review", "q-q_tdd") in got
+    # Q3 never leads to GSD, Q1/Q2 never to Superpowers
+    assert not any(a in ("q-q_long", "q-q_review") and b == "out-add_superpowers"
+                   for a, b in got)
+    assert {sh.text_frame.text for sh in s.shapes if sh.name.startswith("edge-")} \
+        == {"EN yes", "EN no"}
