@@ -7,8 +7,9 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 1. title
 - [ ] פיתוח מבוסס spec עם AI
-- [ ] Spec-Driven Development (SDD) עם AI (בינה מלאכותית)
+- [ ] קודם כותבים מה רוצים. אחר כך ה-AI בונה.
 - [ ] על בסיס המאמר של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)
+- [ ] עם AI
 
 ## 2. hidden-questions
 - [ ] prompt אחד, הרבה שאלות נסתרות

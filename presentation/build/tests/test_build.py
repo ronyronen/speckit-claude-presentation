@@ -497,3 +497,20 @@ def test_transcript_is_current_and_complete(lang):
         assert first.strip() in md
     assert md.count("💡") == sum(1 for s in deck.slides if s.tip)
     assert ("<div dir=\"rtl\">" in md) == (lang == "he")
+
+
+def test_opening_slide_is_keynote_style(decks):
+    from presentation.build.theme import ASSETS
+    assert (ASSETS / "bg.png").exists() and (ASSETS / "bg-title.png").exists()
+    for lang, accent in (("en", "with AI"), ("he", "עם AI")):
+        sl = decks[lang].slides[0]
+        names = {sh.name: sh for sh in sl.shapes}
+        assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-body",
+                "lay-credit"} <= set(names)
+        assert names["lay-title-accent"].text_frame.text.replace("‎", "").replace(
+            "‏", "").strip() == accent
+        runs = [r for p in names["lay-title-accent"].text_frame.paragraphs for r in p.runs]
+        assert runs and all(r._r.rPr.find(
+            "{http://schemas.openxmlformats.org/drawingml/2006/main}gradFill") is not None
+            for r in runs)
+        assert min(r.font.size.pt for r in runs) >= 40

@@ -110,6 +110,14 @@ to every [GitHub release](https://github.com/ronyronen/speckit-claude-presentati
   python3 -m pytest presentation/build/tests -q
   ```
 
+- **Backgrounds.** `assets/bg.png` (content slides: a faint blueprint grid)
+  and `assets/bg-title.png` (opening and section slides: a keynote-style
+  horizon of light) are drawn by code. To redraw them:
+
+  ```bash
+  python3 -m presentation.build.backgrounds
+  ```
+
 - **Fonts.** Both decks use Arial, with Courier New for code: fonts every
   PowerPoint machine already has, so nothing needs installing.
 

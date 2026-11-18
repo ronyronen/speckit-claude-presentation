@@ -17,6 +17,7 @@ presentation/
     theme.py           # palette, fonts, geometry constants (incl. tip band), RTL helpers
     shapes.py          # native diagram primitives (box, arrow, loop, rail, curve)
     icons.py           # draws assets/tip-bulb.png
+    backgrounds.py     # draws assets/bg.png (blueprint grid) and assets/bg-title.png (keynote horizon)
   assets/              # background PNG, photos, code cards extracted from current deck
   speckit-workshop.pptx      # EN output (path unchanged)
   speckit-workshop-he.pptx   # HE output (new)

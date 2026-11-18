@@ -37,8 +37,10 @@ slides:
     budget: "0:30"
     layout: title
     title: { en: "Spec-Driven Development with AI", he: "פיתוח מבוסס spec עם AI" }
+    eyebrow: { en: "SDD · Spec Kit · BMAD · GSD · Superpowers", he: "SDD · Spec Kit · BMAD · GSD · Superpowers" }
+    accent: { en: "with AI", he: "עם AI" }
     bullets:
-      - { key: subtitle, en: "Spec-Driven Development (SDD) with artificial intelligence (AI)", he: "Spec-Driven Development (SDD) עם AI (בינה מלאכותית)" }
+      - { key: subtitle, en: "Write the intent first. Then let the AI build it.", he: "קודם כותבים מה רוצים. אחר כך ה-AI בונה." }
       - { key: credit, en: "Based on V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "על בסיס המאמר של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)" }
     sources: [article]
     notes:
