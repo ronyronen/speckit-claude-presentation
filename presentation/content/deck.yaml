@@ -735,7 +735,7 @@ slides:
       name: team-roles
       labels:
         architect: { en: "Architect", he: "ארכיטקט" }
-        product_owner: { en: "Product owner", he: "Product owner" }
+        product_owner: { en: "Product owner", he: "product owner" }
         senior_dev: { en: "Senior developer", he: "מפתח בכיר" }
         human: { en: "Human (approves)", he: "אדם (מאשר)" }
     notes:
