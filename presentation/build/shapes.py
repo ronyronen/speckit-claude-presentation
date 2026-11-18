@@ -300,10 +300,10 @@ def sdd_pipeline(slide, area, diagram, lang, glossary):
     sw = Inches(1.9)
     gap = (w - n * sw) // (n - 1)
     gate_h, gate_w = Inches(0.5), Inches(1.4)
-    sh_ = Inches(1.2)
-    rail_h = Inches(0.7)
-    fb_drop = Inches(0.55)
-    sy = y + gate_h + Inches(0.3)
+    sh_ = Inches(1.0)
+    rail_h = Inches(0.6)
+    fb_drop = Inches(0.35)
+    sy = y + gate_h + Inches(0.2)
     stages = {}
     for i, k in enumerate(_SDD):
         stages[k] = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + i * (sw + gap), sy,
@@ -330,7 +330,7 @@ def sdd_pipeline(slide, area, diagram, lang, glossary):
     spx = stages["specify"].left + stages["specify"].width // 2
     _polyline(slide, "feedback", [(ix, by), (ix, fy), (spx, fy), (spx, by)],
               "warn", 2.5, arrow=True)
-    _caption(slide, "caption-feedback", spx, fy + Inches(0.05), ix - spx, Inches(0.5),
+    _caption(slide, "caption-feedback", spx, fy, ix - spx, Inches(0.45),
              _label(diagram, "feedback", lang), lang, glossary, "warn")
     rail = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + h - rail_h, w, rail_h,
                 "rail", _label(diagram, "rail", lang), lang, glossary, 20,
@@ -342,7 +342,7 @@ def context_rot(slide, area, diagram, lang, glossary):
     """Qualitative curve: quality falls as the context fills. Words only."""
     x, y, w, h = area
     lab_h = Inches(0.5)
-    pad = Inches(0.2)
+    pad = Inches(0.1)
     ox, oy = x + pad, y + h - lab_h - pad       # axis origin
     top, right = y + lab_h + pad, x + w - pad
     _caption(slide, "axis-y-label", x, y, Inches(4.5), lab_h,
@@ -362,7 +362,7 @@ def context_rot(slide, area, diagram, lang, glossary):
     pts = []
     for i in range(steps + 1):
         t = i / steps
-        pts.append((ox + Inches(0.3) + t * pw, top + Inches(0.3) + ph * (0.9 * t ** 2.2)))
+        pts.append((ox + Inches(0.3) + t * pw, top + Inches(0.3) + ph * (0.92 * t ** 1.5)))
     split = int(steps * 0.6)
     _polyline(slide, "curve", pts[:split + 1], "ok", 5)
     _polyline(slide, "curve-rot", pts[split:], "warn", 5)
