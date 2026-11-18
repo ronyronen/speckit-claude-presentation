@@ -115,3 +115,45 @@ def test_lrm_only_where_needed():
     en = _tf()
     write_paragraphs(en, ["/speckit-analyze"], "en", 20, [])
     assert LRM not in en.text
+
+
+RLM = "‏"
+
+
+def _he_runs(line, glossary=()):
+    tf = _tf()
+    write_paragraphs(tf, [line], "he", 20, list(glossary))
+    return [r.text for r in tf.paragraphs[0].runs]
+
+
+def test_trailing_punctuation_after_english_is_hebrew():
+    """'... prompt.' must end with the period on the far left in RTL."""
+    segs = split_runs("לפני שאתם כותבים prompt.", [])
+    assert segs[-2:] == [("prompt", "en"), (".", "he")]
+    assert split_runs("אחרי קריאה 1, או 3?", [])[-1] == ("?", "he")
+    assert "prompt" + LRM not in "".join(_he_runs("כותבים prompt."))
+
+
+def test_sentence_punctuation_between_english_words_is_hebrew():
+    """'ה-agent: skills': the colon belongs to the Hebrew sentence, so the
+    prefix stays glued to 'agent' and an RLM breaks the LTR run."""
+    segs = split_runs("בשביל ה-agent: skills שהוא", [])
+    assert ("agent", "en") in segs and (": ", "he") in segs and ("skills", "en") in segs
+    assert RLM + ": " in _he_runs("בשביל ה-agent: skills שהוא")
+    assert (", ", "he") in split_runs("עם Claude Code, Codex ואחרים", [])
+    assert (" (", "he") in split_runs("PR (pull request) = בקשה", [])
+
+
+def test_quotes_stay_glued_to_english():
+    line = "של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)"
+    segs = split_runs(line, [])
+    assert "".join(s for s, _ in segs) == line
+    assert ("“Spec-Driven AI”", "en") in segs
+    assert LRM + "“Spec-Driven AI”" + LRM in _he_runs(line)
+
+
+def test_all_english_line_unchanged():
+    for t in ["plan.md, tasks.md", "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD",
+              "feature branch (DHT22)", "PR #4"]:
+        assert split_runs(t, []) == [(t, "en")]
+    assert RLM not in "".join(_he_runs("plan.md, tasks.md"))

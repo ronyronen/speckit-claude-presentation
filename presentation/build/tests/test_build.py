@@ -7,7 +7,7 @@ from pptx.enum.text import MSO_AUTO_SIZE
 from presentation.build.model import Bullet, Slide, Tip, load_deck
 from presentation.build.shapes import DIAGRAMS
 from presentation.build.theme import SLIDE_H, SLIDE_W, tip_box
-from presentation.build.validate import validate
+from presentation.build.validate import _he_term_re, validate
 
 ROOT = Path(__file__).resolve().parents[3]
 DECK = ROOT / "presentation" / "content" / "deck.yaml"
@@ -73,7 +73,15 @@ def test_tip_pill_label_english_in_he(decks):
              if any(sh.name == "lay-tip-pill" for sh in s.shapes)]
     assert len(pills) >= 10
     assert all(p.text_frame.text == "TIP" for p in pills)
-    assert not any("טיפ" in t for t in _all_text(he))
+    tip_re = _he_term_re("טיפ")
+    assert not any(tip_re.search(t) for t in _all_text(he))
+
+
+def test_tip_term_matcher_word_boundaries():
+    tip_re = _he_term_re("טיפ")
+    assert not tip_re.search("אב-טיפוס")
+    assert tip_re.search("הטיפ")
+    assert tip_re.search("טיפ")
 
 
 def test_tip_band_mirrored(decks):
@@ -389,3 +397,33 @@ def test_short_code_keeps_default_size():
     s = _long_slide("code")
     s.extra["code"] = "cd heltec-monitor\n"
     assert _runs_pt(_render(s), "lay-code") == {CODE_PT}
+
+
+def test_list_mixed_lines():
+    from presentation.build.build_decks import list_mixed_lines
+    from presentation.build.model import Deck
+    s = Slide(id="s1", part="intro", budget_s=60, layout="bullets",
+              title={"en": "T", "he": "כותרת"},
+              bullets=[Bullet("a", "x", "עם Spec Kit"), Bullet("b", "y", "רק עברית")],
+              tip=Tip("t", "tip", "טיפ עם AI"), notes={"he": "הערה עם AI"},
+              diagram={"name": "d", "labels": {"k": {"en": "L", "he": "תווית PR #4"}}},
+              sources=[], appendix=False,
+              extra={"table": {"rows": [[{"en": "a", "he": "spec.md"}]]}})
+    deck = Deck(meta={}, glossary_keep_en=[], glossary_forbidden_he=[], slides=[s])
+    assert list_mixed_lines(deck) == [("s1", "עם Spec Kit"), ("s1", "טיפ עם AI"),
+                                      ("s1", "תווית PR #4")]
+    real = list_mixed_lines(load_deck(str(DECK)))
+    assert ("superpowers", "checklist של טייס בשביל ה-agent: skills שהוא חייב לפעול לפיהם") in real
+
+
+def test_manual_check_md_lists_mixed_lines_and_tips_once():
+    from presentation.build.build_decks import list_mixed_lines, manual_check_md
+    deck = load_deck(str(DECK))
+    md = manual_check_md(deck)
+    tips = {s.tip.he for s in deck.slides if s.tip}
+    for sid, line in list_mixed_lines(deck):
+        assert f"- [ ] {line}" in md or line in tips
+    for s in deck.slides:
+        if s.tip:
+            assert md.count(f"- [ ] TIP: {s.tip.he}") == 1
+            assert f"- [ ] {s.tip.he}\n" not in md

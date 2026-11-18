@@ -12,14 +12,34 @@ _LATIN = re.compile(r"[A-Za-z0-9]")
 _NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main"
 
 
+_SENTENCE_PUNCT = re.compile(r"[,;:()!?]")
+_CLOSE_Q = "”’\"'"
+_OPEN_Q = "“‘\"'"
+
+
+def _hebrew_gap(text, labels, i, j):
+    """In a Hebrew line, a neutral gap after English that ends the line or
+    holds sentence punctuation ("agent: skills", "prompt.") belongs to the
+    Hebrew sentence. Quote marks glued to an English word stay English."""
+    while i < j and text[i] in _CLOSE_Q:
+        i += 1
+    if j < len(text):  # followed by English: an opening quote stays with it
+        while j > i and text[j - 1] in _OPEN_Q:
+            j -= 1
+    labels[i:j] = ["he"] * (j - i)
+
+
 def split_runs(text, glossary):
     """Split text into (segment, "en"|"he") pairs; ''.join(segments) == text.
 
     Latin letters/digits and glossary terms are "en", Hebrew is "he".
     Neutral chars (space, punctuation) join the Hebrew neighbour, except
     between two English chars where they stay English (e.g. "Spec Kit").
+    In a line with Hebrew, sentence punctuation between English words and
+    trailing punctuation after English join the Hebrew flow instead.
     """
     labels = [None] * len(text)
+    has_he = bool(_HE.search(text))
     for term in sorted(set(glossary), key=len, reverse=True):
         for m in re.finditer(re.escape(term), text):
             if all(l is None for l in labels[m.start():m.end()]):
@@ -45,6 +65,9 @@ def split_runs(text, glossary):
         else:
             lab = prev or nxt or "en"
         labels[i:j] = [lab] * (j - i)
+        if has_he and prev == "en" and (nxt is None or (
+                nxt == "en" and _SENTENCE_PUNCT.search(text[i:j]))):
+            _hebrew_gap(text, labels, i, j)
         i = j
     # A slash glued to an English word belongs to it ("/speckit-x", "specs/").
     changed = True
@@ -66,6 +89,7 @@ def split_runs(text, glossary):
 
 
 LRM = "\u200e"
+RLM = "\u200f"
 
 
 def _isolate(seg):
@@ -76,6 +100,20 @@ def _isolate(seg):
     if seg[-1:] and not (seg[-1].isalnum() or seg[-1].isspace()):
         seg = seg + LRM
     return seg
+
+
+def _he_text(segs):
+    """Run texts for an HE paragraph: LRM-isolate English edges, and start a
+    letterless Hebrew run between two English runs with RLM so the bidi
+    algorithm does not fold its punctuation into the LTR run."""
+    out = []
+    for k, (seg, lab) in enumerate(segs):
+        if lab == "en":
+            seg = _isolate(seg)
+        elif 0 < k < len(segs) - 1 and not _HE.search(seg):
+            seg = RLM + seg
+        out.append(seg)
+    return out
 
 
 def set_rtl(paragraph):
@@ -112,9 +150,11 @@ def write_paragraphs(tf, items, lang, size_pt, glossary, bullet=True,
         if lang == "he":
             set_rtl(p)
         _bullet(p, bullet)
-        for seg, seg_lang in split_runs(line, glossary):
+        segs = split_runs(line, glossary)
+        texts = _he_text(segs) if lang == "he" else [s for s, _ in segs]
+        for (_, seg_lang), text in zip(segs, texts):
             r = p.add_run()
-            r.text = _isolate(seg) if (lang == "he" and seg_lang == "en") else seg
+            r.text = text
             r.font.size = Pt(size_pt)
             r.font.bold = bold
             r.font.color.rgb = color
