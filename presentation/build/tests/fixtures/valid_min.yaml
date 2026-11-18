@@ -1,0 +1,32 @@
+meta:
+  total_budget: "3:00"
+  qa_budget: "1:00"
+  min_tips: 1
+glossary_keep_en: [TIP, pull request, branch]
+glossary_forbidden_he: ["טיפ", "בקשת משיכה", "ענף", "מאגר"]
+slides:
+  - id: title
+    part: "0"
+    budget: "0:30"
+    layout: title
+    title: { en: "Spec-driven development", he: "פיתוח מבוסס מפרט" }
+    notes: { en: "Welcome.", he: "ברוכים הבאים." }
+  - id: intent-gap
+    part: I
+    budget: "1:30"
+    layout: title-bullets
+    title: { en: "The intent gap", he: "פער הכוונה" }
+    bullets:
+      - { key: docs, en: "Docs go stale", he: "מסמכים מתיישנים" }
+      - { key: code, en: "Code is truth", he: "הקוד הוא האמת" }
+    tip: { key: start-small, en: "Start small", he: "מתחילים בקטן" }
+    notes:
+      en: "Analogy: a map versus the territory.\nExplain the gap."
+      he: "Analogy: מפה מול שטח.\nמסבירים את הפער."
+    sources: []
+  - id: qa
+    part: close
+    budget: "1:00"
+    layout: section
+    title: { en: "Q&A", he: "שאלות" }
+    notes: { en: "Questions.", he: "שאלות." }
