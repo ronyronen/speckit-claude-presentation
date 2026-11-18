@@ -117,24 +117,51 @@ def test_pill_font_18():
     assert min(r.font.size.pt for r in _all_runs(s)) >= 18
 
 
-def test_decision_edges_by_connector_endpoints():
-    s = _build("decision", keys=ALLKEYS)
+def _connectors(s):
     names = {sh.shape_id: sh.name for sh in s.shapes}
-    ns = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
-    got = set()
+    out = []
     for sh in s.shapes:
         st = sh._element.xpath(".//a:stCxn/@id")
         en = sh._element.xpath(".//a:endCxn/@id")
         if st and en:
-            got.add((names[int(st[0])], names[int(en[0])]))
-    assert DECISION_EDGES == [("q_long", "add_gsd", "yes"),
-                              ("q_review", "add_gsd", "no"),
-                              ("q_tdd", "add_superpowers", "no")]
-    for q, out, _ in DECISION_EDGES:
-        assert (f"q-{q}", f"out-{out}") in got
-    assert ("q-q_long", "q-q_review") in got and ("q-q_review", "q-q_tdd") in got
-    # Q3 never leads to GSD, Q1/Q2 never to Superpowers
-    assert not any(a in ("q-q_long", "q-q_review") and b == "out-add_superpowers"
-                   for a, b in got)
-    assert {sh.text_frame.text for sh in s.shapes if sh.name.startswith("edge-")} \
-        == {"EN yes", "EN no"}
+            out.append((names[int(st[0])], names[int(en[0])]))
+    return out
+
+
+def _pref(k):
+    return ("q-" if k.startswith("q_") else "out-") + k
+
+
+def test_decision_two_independent_tracks():
+    s = _build("decision", keys=ALLKEYS + ["track_context", "track_discipline",
+                                           "skip_gsd", "skip_superpowers"])
+    got = _connectors(s)
+    assert sorted(got) == sorted((_pref(a), _pref(b)) for a, b, _ in DECISION_EDGES)
+    gsd = {"q-q_long", "q-q_review", "out-add_gsd", "out-skip_gsd"}
+    sp = {"q-q_tdd", "out-add_superpowers", "out-skip_superpowers"}
+    for a, b in got:  # no connector crosses tracks
+        assert ({a, b} <= gsd) or ({a, b} <= sp)
+    # Q3 unreachable from Q1/Q2 (and vice versa): graph components are disjoint
+    reach = {"q-q_long"}
+    for _ in got:
+        reach |= {b for a, b in got if a in reach}
+    assert "q-q_tdd" not in reach and "out-add_superpowers" not in reach
+    # every question has both a yes and a no outgoing edge
+    for q in ("q_long", "q_review", "q_tdd"):
+        assert {l for a, _, l in DECISION_EDGES if a == q} == {"yes", "no"}
+    # article rule
+    assert ("q_long", "add_gsd", "yes") in DECISION_EDGES
+    assert ("q_review", "add_gsd", "no") in DECISION_EDGES
+    assert ("q_review", "skip_gsd", "yes") in DECISION_EDGES
+    assert ("q_tdd", "add_superpowers", "no") in DECISION_EDGES
+    assert ("q_tdd", "skip_superpowers", "yes") in DECISION_EDGES
+    labels = sorted(sh.text_frame.text for sh in s.shapes if sh.name.startswith("edge-"))
+    assert labels == ["EN no"] * 3 + ["EN yes"] * 3
+    tracks = {sh.text_frame.text for sh in s.shapes if sh.name.startswith("track-")}
+    assert tracks == {"EN track_context", "EN track_discipline"}
+
+
+def test_decision_missing_labels_fall_back():
+    s = _slide()
+    DIAGRAMS["decision"](s, AREA, {"name": "decision"}, "he", [])
+    assert any(sh.text_frame.text == "skip_gsd" for sh in s.shapes if sh.has_text_frame)

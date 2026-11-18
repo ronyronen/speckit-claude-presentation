@@ -92,15 +92,33 @@ def layers(slide, area, diagram, lang, glossary):
         cy += box_h + gap
 
 
-# (question, outcome, edge label key). Source article rule: skip GSD if
-# sessions are short AND a human reviews each phase; skip Superpowers if the
-# team already has strong TDD habits.
+# Two independent tracks (GSD and Superpowers are separate layers).
+# (source, destination, label key). Article rule: skip GSD if sessions are
+# short AND a human reviews each phase; skip Superpowers with strong TDD.
 DECISION_EDGES = [
     ("q_long", "add_gsd", "yes"),
+    ("q_long", "q_review", "no"),
     ("q_review", "add_gsd", "no"),
+    ("q_review", "skip_gsd", "yes"),
     ("q_tdd", "add_superpowers", "no"),
+    ("q_tdd", "skip_superpowers", "yes"),
 ]
-_DECISION_CHAIN = [("q_long", "q_review", "no"), ("q_review", "q_tdd", "yes")]
+# Connection sites (source site, destination site) per edge.
+_EDGE_SITES = {
+    ("q_long", "add_gsd"): (_BOTTOM, _TOP),
+    ("q_long", "q_review"): (_RIGHT, _LEFT),
+    ("q_review", "add_gsd"): (_BOTTOM, _TOP),
+    ("q_review", "skip_gsd"): (_RIGHT, _TOP),
+    ("q_tdd", "add_superpowers"): (_BOTTOM, _TOP),
+    ("q_tdd", "skip_superpowers"): (_BOTTOM, _TOP),
+}
+
+
+def _site_xy(sh, site):
+    return {_TOP: (sh.left + sh.width // 2, sh.top),
+            _BOTTOM: (sh.left + sh.width // 2, sh.top + sh.height),
+            _LEFT: (sh.left, sh.top + sh.height // 2),
+            _RIGHT: (sh.left + sh.width, sh.top + sh.height // 2)}[site]
 
 
 def _edge_label(slide, diagram, key, lang, glossary, cx, cy):
@@ -114,37 +132,56 @@ def _edge_label(slide, diagram, key, lang, glossary, cx, cy):
 
 
 def decision(slide, area, diagram, lang, glossary):
-    """Three diamond questions in a row (yes/no edges); outcomes below."""
+    """Left track: GSD (Q1, Q2). Right track: Superpowers (Q3). Independent."""
     x, y, w, h = area
-    gap = Inches(0.6)
-    dw = (w - 2 * gap) // 3
-    dh = Inches(2.4)
-    oh = Inches(0.9)
-    ow = Inches(2.9)
+    track_gap = Inches(0.5)
+    lw = Inches(7.4)
+    rw = w - lw - track_gap
+    rx = x + lw + track_gap
+    lab_h = Inches(0.5)
+    dw, dh = Inches(3.0), Inches(2.6)
+    oh = Inches(1.0)
     oy = y + h - oh
-    qs = {}
-    for i, k in enumerate(["q_long", "q_review", "q_tdd"]):
-        d = _box(slide, MSO_SHAPE.DIAMOND, x + i * (dw + gap), y, dw, dh,
-                 f"q-{k}", _label(diagram, k, lang), lang, glossary, 18)
-        d.text_frame.margin_left = d.text_frame.margin_right = 0
-        d.text_frame.margin_top = d.text_frame.margin_bottom = 0
-        qs[k] = d
-    for a_, b_, lab in _DECISION_CHAIN:
-        _arrow(slide, qs[a_], _RIGHT, qs[b_], _LEFT)
-        _edge_label(slide, diagram, lab, lang, glossary,
-                    qs[a_].left + qs[a_].width + gap // 2, y + dh // 2 - Inches(0.3))
-    outs = {}
-    for k, qk, cx in (("add_gsd", "q_long", x + (dw - ow) // 2),
-                      ("add_superpowers", "q_tdd", x + w - dw + (dw - ow) // 2)):
-        outs[k] = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, oy, ow, oh,
-                       f"out-{k}", _label(diagram, k, lang), lang, glossary, 24,
-                       fill="accent", bold=True)
-    for q, out, lab in DECISION_EDGES:
-        _arrow(slide, qs[q], _BOTTOM, outs[out], _TOP)
-        qb, ot = qs[q], outs[out]
-        mx = (qb.left + qb.width // 2 + ot.left + ot.width // 2) // 2
-        _edge_label(slide, diagram, lab, lang, glossary,
-                    mx + Inches(0.4), (qb.top + qb.height + ot.top) // 2)
+    dy = y + lab_h + Inches(0.1)
+
+    for key, tx, tw in (("track_context", x, lw), ("track_discipline", rx, rw)):
+        tb = slide.shapes.add_textbox(int(tx), int(y), int(tw), int(lab_h))
+        tb.name = f"track-{key}"
+        _text(tb, _label(diagram, key, lang), lang, glossary, 18,
+              COLORS["accent2"], bold=True)
+
+    def diamond(k, dx):
+        d = _box(slide, MSO_SHAPE.DIAMOND, dx, dy, dw, dh, f"q-{k}",
+                 _label(diagram, k, lang), lang, glossary, 18)
+        tf = d.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = Inches(0.05)
+        return d
+
+    def outcome(k, ox, ow, fill):
+        return _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, ox, oy, ow, oh,
+                    f"out-{k}", _label(diagram, k, lang), lang, glossary, 18,
+                    fill=fill, bold=True)
+
+    shapes = {
+        "q_long": diamond("q_long", x),
+        "q_review": diamond("q_review", x + dw + Inches(0.7)),
+        "q_tdd": diamond("q_tdd", rx + (rw - dw) // 2),
+        "add_gsd": outcome("add_gsd", x + Inches(1.6), Inches(2.4), "accent"),
+        "skip_gsd": outcome("skip_gsd", x + lw - Inches(2.4), Inches(2.4), "surface"),
+        "add_superpowers": outcome("add_superpowers", rx, (rw - Inches(0.15)) // 2, "accent"),
+        "skip_superpowers": outcome("skip_superpowers", rx + (rw + Inches(0.15)) // 2,
+                                    (rw - Inches(0.15)) // 2, "surface"),
+    }
+    for src, dst, lab in DECISION_EDGES:
+        ss, ds = _EDGE_SITES[(src, dst)]
+        _arrow(slide, shapes[src], ss, shapes[dst], ds)
+        (x1, y1), (x2, y2) = _site_xy(shapes[src], ss), _site_xy(shapes[dst], ds)
+        mx, my = (x1 + x2) // 2, (y1 + y2) // 2
+        if y1 == y2:
+            my -= Inches(0.3)
+        else:
+            mx += Inches(0.4) if x2 >= x1 else -Inches(0.4)
+        _edge_label(slide, diagram, lab, lang, glossary, mx, my)
 
 
 _FLOW = ["issue", "feature", "pr3", "dev", "prs", "main"]
