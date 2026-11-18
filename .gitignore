@@ -18,3 +18,5 @@ cmake-build-*/
 # SDD workspace scratch
 .superpowers/
 .tmp/
+__pycache__/
+.pytest_cache/

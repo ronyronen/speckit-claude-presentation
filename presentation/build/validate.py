@@ -10,7 +10,7 @@ PARTS = {"0", "I", "II", "III", "IV", "V", "VI", "close"}
 THEORY = {"0", "I", "II", "III"}
 EXEMPT = {"title", "resources", "qa"}
 CLI_RE = re.compile(r"(^|\s)/[a-z]+-[a-z]+|\$ \w")
-STAR_RE = re.compile(r"\d[\d,.]*k?\+?\s*stars")
+STAR_RE = re.compile(r"\d[\d,.]*k?\+?\s*stars", re.I)
 BANNED = ["21+", "Lex Christopherson"]
 ANALOGY_RE = re.compile(r"(?m)^Analogy:\s*\S")
 ANALOGY_REF_RE = re.compile(r"(?m)^Analogy:\s*see slide\b")
@@ -29,6 +29,11 @@ def _slide_text(s: Slide) -> list[tuple[str, str]]:
 
 def _all_text(s: Slide) -> list[tuple[str, str]]:
     return _slide_text(s) + [(f"notes.{l}", s.notes.get(l, "")) for l in LANGS]
+
+
+def _he_term_re(term: str) -> re.Pattern:
+    """Term not followed by a Hebrew letter; optional one-letter prefix allowed."""
+    return re.compile(r"(?<![\u05d0-\u05ea])[הובלמשכ]?" + re.escape(term) + r"(?![\u05d0-\u05ea])")
 
 
 def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
@@ -76,6 +81,10 @@ def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
     for s in deck.slides:
         if s.appendix and s.budget_s != 0:
             errs.append(f"{s.id}: appendix slide must have budget 0:00")
+        if s.appendix:
+            for l in LANGS:
+                if not s.notes.get(l, "").startswith("backup, not timed"):
+                    errs.append(f"{s.id}: appendix notes.{l} must start with 'backup, not timed'")
         if s.id == "qa" and s.budget_s != qa:
             errs.append(f"qa: budget must be exactly {qa_label}")
 
@@ -90,15 +99,16 @@ def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
             elif s.part != "IV" and ANALOGY_REF_RE.search(n):
                 errs.append(f"{s.id}: notes.{l} 'Analogy: see slide' only allowed in part IV")
 
-    # 6. tips
+    # 6. tips (shape checks on all slides; the minimum counts timed slides only)
     tips = 0
-    for s in timed:
+    for s in deck.slides:
         if not s.tip:
             continue
         if s.id in EXEMPT:
             errs.append(f"{s.id}: tip not allowed on this slide")
             continue
-        tips += 1
+        if not s.appendix:
+            tips += 1
         for l in LANGS:
             w = len(getattr(s.tip, l).split())
             if w > 20:
@@ -113,13 +123,15 @@ def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
             for loc, t in _slide_text(s):
                 if CLI_RE.search(t):
                     errs.append(f"{s.id}: CLI syntax in {loc}")
-        # 8. star counts, and banned claims
-        for loc, t in _all_text(s):
+        # 8. star counts in slide text (dated counts allowed in notes)
+        for loc, t in _slide_text(s):
             if STAR_RE.search(t):
                 errs.append(f"{s.id}: star count in {loc}")
-            for b in BANNED:
-                if b in t:
-                    errs.append(f"{s.id}: banned claim {b!r} in {loc}")
+            # banned claims: slide text of theory parts only
+            if s.part in THEORY:
+                for b in BANNED:
+                    if b in t:
+                        errs.append(f"{s.id}: banned claim {b!r} in {loc}")
         # 9. sources need URL
         if s.sources:
             for l in LANGS:
@@ -134,7 +146,7 @@ def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
         he = [(loc, t) for loc, t in _all_text(s) if loc.endswith(".he")]
         for loc, t in he:
             for term in deck.glossary_forbidden_he:
-                if term in t:
+                if _he_term_re(term).search(t):
                     errs.append(f"{s.id}: forbidden Hebrew term {term!r} in {loc}")
     return errs
 

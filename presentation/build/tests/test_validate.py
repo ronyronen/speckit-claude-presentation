@@ -77,8 +77,7 @@ def test_prefixes_cumulative_end(raw):
 
 
 def test_appendix_prefix_and_excluded_from_timing(raw):
-    raw["slides"].append({"id": "a1", "part": "close", "budget": "0:00", "appendix": True,
-                          "title": {"en": "A", "he": "א"}})
+    raw["slides"].append(_appendix())
     d = build(raw)
     assert timing_prefixes(d)["a1"] == "[backup, not timed]"
     assert validate(d, set()) == []
@@ -130,6 +129,49 @@ def test_star_count_in_text(raw, text):
 def test_banned_claims(raw, text):
     content(raw)["bullets"][0]["en"] = f"About {text}"
     assert has(errs(raw), "banned claim")
+
+
+def test_star_count_allowed_in_notes_only(raw):
+    content(raw)["notes"]["en"] += "\n300k+ stars (Nov 2026)"
+    assert errs(raw) == []
+    content(raw)["bullets"][0]["en"] = "300K+ stars (Nov 2026)"
+    assert has(errs(raw), "star count")
+
+
+def test_banned_claim_ignored_in_notes_and_later_parts(raw):
+    content(raw)["notes"]["en"] += "\nLex Christopherson 21+"
+    assert errs(raw) == []
+    content(raw)["bullets"][0]["en"] = "21+"
+    content(raw)["part"] = "V"
+    assert errs(raw) == []
+
+
+def _appendix(**kw):
+    d = {"id": "a1", "part": "close", "budget": "0:00", "appendix": True,
+         "title": {"en": "A", "he": "א"},
+         "notes": {"en": "backup, not timed", "he": "backup, not timed"}}
+    d.update(kw)
+    return d
+
+
+def test_appendix_notes_must_start_with_backup(raw):
+    raw["slides"].append(_appendix(notes={"en": "x", "he": "backup, not timed"}))
+    assert has(errs(raw), "appendix notes.en")
+
+
+def test_appendix_tip_rules_apply(raw):
+    raw["slides"].append(_appendix(tip={"key": "k", "en": " ".join(["w"] * 21), "he": ""}))
+    e = errs(raw)
+    assert has(e, "tip.en has 21 words") and has(e, "tip key mismatch")
+    raw["meta"]["min_tips"] = 2  # appendix tip must not count
+    assert has(errs(raw), "only 1 tips")
+
+
+def test_hebrew_term_token_boundaries(raw):
+    content(raw)["tip"]["he"] = "טיפול טיפוס"
+    assert errs(raw) == []
+    content(raw)["tip"]["he"] = "הטיפ שלנו"
+    assert has(errs(raw), "forbidden Hebrew term")
 
 
 def test_sources_need_url(raw):
