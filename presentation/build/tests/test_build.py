@@ -434,7 +434,7 @@ def test_list_mixed_lines():
     assert list_mixed_lines(deck) == [("s1", "עם Spec Kit"), ("s1", "טיפ עם AI"),
                                       ("s1", "תווית PR #4")]
     real = list_mixed_lines(load_deck(str(DECK)))
-    assert ("superpowers", "checklist של טייס בשביל ה-agent: skills שהוא חייב לפעול לפיהם") in real
+    assert ("superpowers", "כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם") in real
 
 
 def test_manual_check_md_lists_mixed_lines_and_tips_once():

@@ -12,13 +12,13 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 2. hidden-questions
 - [ ] prompt אחד, הרבה שאלות נסתרות
-- [ ] ה-AI עונה על כל אלה בכל מקרה, בשקט, בניחוש
+- [ ] ה-AI עונה על כולן בעצמו: בשקט, בניחוש
 - [ ] TIP: רשמו שלוש שאלות שה-AI יצטרך לנחש, וענו עליהן לפני שאתם כותבים prompt.
 
 ## 3. intent-gap
 - [ ] פער הכוונה: SDLC מול ADLC
 - [ ] הדרך הישנה: SDLC (מחזור חיי פיתוח תוכנה), איטית
-- [ ] הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מילולית
+- [ ] הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מבינה הכול מילולית
 - [ ] SDLC: הדרך הישנה
 - [ ] ADLC: מחזור פיתוח עם agents
 - [ ] ה-AI agent בונה
@@ -26,21 +26,21 @@ place in the right-to-left sentence, and that nothing is clipped.
 ## 4. vibe-vs-sdd
 - [ ] vibe coding מול SDD
 - [ ] vibe coding: סקיצה על מפית
-- [ ] prompt, מאשרים, חוזרים, עד שזה נראה עובד
+- [ ] כותבים prompt, מאשרים, וחוזר חלילה עד שזה נראה עובד
 - [ ] SDD: שרטוט של אדריכל
-- [ ] TIP: חקרו עם vibe coding; עברו ל-spec ברגע שהקוד צריך לשרוד.
+- [ ] TIP: לניסויים, vibe coding; כשהקוד צריך להחזיק לאורך זמן, עברו ל-spec.
 
 ## 5. sdd-core
 - [ ] SDD: ה-spec הוא מקור האמת
-- [ ] ה-constitution (חוקי הבית): כללים שכל שלב חייב לכבד
+- [ ] ה-constitution (חוקי הבית): כללים שכל שלב חייב לציית להם
 - [ ] למדתם משהו? מעדכנים את ה-spec ומייצרים מחדש
 - [ ] שינוי? מעדכנים את ה-spec
-- [ ] TIP: תקנו קודם את ה-spec כשהקוד וה-spec לא מסכימים, ואז ייצרו את הקוד מחדש.
+- [ ] TIP: כשהקוד וה-spec סותרים, תקנו קודם את ה-spec ורק אז ייצרו את הקוד מחדש.
 
 ## 6. context-engineering
 - [ ] context engineering: מה ה-AI רואה
 - [ ] ה-AI יודע רק מה שמונח על השולחן שלו עכשיו
-- [ ] השולחן הזה הוא ה-context window: ה-prompt, הקבצים, הצ'אט עד כה
+- [ ] השולחן הזה הוא ה-context window: ה-prompt, הקבצים, הצ'אט עד עכשיו
 - [ ] context engineering: לבחור מה עולה על השולחן
 - [ ] TIP: הפנו את ה-agent לקבצים המדויקים שהוא צריך, לא לכל הפרויקט.
 
@@ -51,25 +51,25 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 8. bmad
 - [ ] BMAD: צוות agile של AI
-- [ ] agents משחקים תפקידים: אנליסט, מנהל מוצר, ארכיטקט, מפתח
+- [ ] כל agent ממלא תפקיד: אנליסט, מנהל מוצר, ארכיטקט, מפתח
 - [ ] TIP: קחו רק את התפקידים שחסרים לכם; פרויקט קטן כמעט אף פעם לא צריך צוות שלם.
 
 ## 9. speckit
 - [ ] Spec Kit: ה-spec החי
-- [ ] קוד שמתרחק מה-spec
+- [ ] קוד שסוטה מה-spec
 
 ## 10. gsd
 - [ ] GSD: התחלה נקייה לכל משימה
 - [ ] כמו מרוץ שליחים: כל משימה מקבלת רץ חדש ו-context נקי
-- [ ] נבנה כדי לחמוק מ-context rot בפרויקטים ארוכים
-- [ ] TIP: כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מהן.
+- [ ] נועד למנוע context rot בפרויקטים ארוכים
+- [ ] TIP: כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה.
 
 ## 11. superpowers
 - [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
-- [ ] checklist של טייס בשביל ה-agent: skills שהוא חייב לפעול לפיהם
+- [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
 - [ ] workflow של 7 שלבים, מ-brainstorming ועד merge
 - [ ] TDD (פיתוח מונחה בדיקות): קוד שנכתב לפני הבדיקה שלו נמחק
-- [ ] שני reviews: זה תואם ל-spec? והקוד עצמו טוב?
+- [ ] שני reviews: האם זה תואם ל-spec? האם הקוד טוב?
 - [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
 
 ## 12. two-layers
@@ -82,12 +82,12 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] שכבת context: GSD
 - [ ] שכבת משמעת: Superpowers
 - [ ] sessions ארוכים?
-- [ ] הרגל TDD חזק?
+- [ ] רגילים לעבוד עם TDD?
 - [ ] הוסיפו GSD
 - [ ] ותרו על GSD
 - [ ] הוסיפו Superpowers
 - [ ] ותרו על Superpowers
-- [ ] TIP: התחילו עם כלי תכנון אחד; הוסיפו שכבה רק כשאתם מרגישים את הכאב שלה.
+- [ ] TIP: התחילו עם כלי תכנון אחד; הוסיפו שכבה רק כשאתם נתקלים בבעיה שהיא פותרת.
 
 ## 14. heltec-board
 - [ ] לוח Heltec עם DHT22: מרומז מול מפורש
@@ -98,10 +98,10 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] 3 קריאות כושלות ברצף: SENSOR ERROR
 
 ## 15. specify-hysteresis
-- [ ] specify: ה-hysteresis הוחלט, לא נוחש
-- [ ] specify כתב פס הדלקה וכיבוי; clarify שאל: ומה בדיוק על הגבול?
+- [ ] specify: ה-hysteresis הוגדר, לא נוחש
+- [ ] specify הגדיר טווח הדלקה וכיבוי; clarify שאל: ומה קורה בדיוק על הגבול?
 - [ ] הוחלט: נדלק רק מעל 27 °C, כבה רק מתחת ל-25 °C
-- [ ] TIP: שאלו על מקרי הקצה: בדיוק על הסף, חיישן חסר, הדלקה ראשונה.
+- [ ] TIP: שאלו על מקרי הקצה: בדיוק על הסף, חיישן חסר, הפעלה ראשונה.
 
 ## 16. plan-tested
 - [ ] plan ולוגיקה בדוקה (11/11)
@@ -118,7 +118,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] התנהגות: OK ו-WARNING על הלוח
 - [ ] OK ב-24.0 °C
 - [ ] WARNING ב-26.6 °C: נשאר בגלל ה-hysteresis
-- [ ] TIP: צלמו תוצאות אמיתיות מהחומרה; מי שעושה review סומך על תמונה מהר יותר מעל log.
+- [ ] TIP: צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log.
 
 ## 19. main-vs-dev
 - [ ] main מול dev: מהדורה מול טיוטה
@@ -130,12 +130,12 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] issues ו-pull requests
 - [ ] issue = כרטיס משימה: מה שבור או חסר, ולמה
 - [ ] PR (pull request) = בקשת שינוי שמישהו עושה לה review
-- [ ] TIP: כתבו 'Fixes #2' ב-PR שנכנס ל-main; GitHub יסגור את ה-issue ב-merge.
+- [ ] TIP: כתבו 'Fixes #2' ב-PR שנכנס ל-main, וה-issue ייסגר אוטומטית ב-merge.
 
 ## 21. shared-repo
 - [ ] repo משותף, specs/ משותף
 - [ ] specs/ = מחברת הצוות: מה כל אחד בונה, ולמה
-- [ ] ה-specs נוסעים באותו PR עם הקוד שהם מתארים
+- [ ] ה-specs נכנסים באותו PR יחד עם הקוד שהם מתארים
 - [ ] TIP: עברו קודם על שינויי ה-spec בכל pull request, ורק אחר כך על הקוד.
 
 ## 22. skills
@@ -155,7 +155,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 25. takeaways
 - [ ] כתבו את הכוונה לפני שה-AI כותב את הקוד
-- [ ] שמרו על השולחן של ה-AI מסודר: context נרקב ב-sessions ארוכים
+- [ ] שמרו על השולחן של ה-AI מסודר: ב-sessions ארוכים יש context rot
 - [ ] בפרויקט Heltec: Spec Kit עם review אנושי הספיק
 - [ ] branches, PRs ו-specs/ משותף הופכים את זה לעבודת צוות
 - [ ] TIP: כתבו spec של עמוד אחד לפני ה-session הבא שלכם עם AI, כבר מחר.
@@ -170,7 +170,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 29. a2-overlap-gaps
 - [ ] גם BMAD וגם Spec Kit מתכננים לפני הקוד
-- [ ] ה-checklist של Spec Kit, הבודק של BMAD: שערים קלים
+- [ ] ה-checklist של Spec Kit, הבודק של BMAD: בקרות קלות
 - [ ] כלי תכנון לא עוצרים context rot
 - [ ] כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד
 
@@ -188,5 +188,5 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] TIP: השאירו את ה-spec פתוח בחלונית תצוגה בזמן שה-agent עובד.
 
 ## 33. a6-git-checkpoints
-- [ ] גיבוי: נקודות ביקורת ב-Git לכל שלב
+- [ ] גיבוי: נקודות שמירה ב-Git לכל שלב
 - [ ] tag אחד לכל שלב, מ-01-start ועד 09-hardware-verified
