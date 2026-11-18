@@ -46,11 +46,11 @@ slides:
 ## 3. Tip box (US-11)
 
 - **Placement:** a fixed band at the bottom of the slide, about 0.7 in tall, defined in `theme.py`.
-- **Marker:** a native pill shape labelled "TIP" in EN and "טיפ" in HE, never an emoji. The pill sits on the left in EN and on the right in HE.
+- **Marker:** a native pill shape labelled "TIP" in **both** decks (human decision 8), never an emoji. The pill sits on the left in EN and on the right in HE.
 - **Text:** the Tip text is RTL in HE, and each Tip is at most 20 whitespace-separated words per language.
 - **Testing:** P1a renders every layout both with and without a Tip.
 
-## 4. Validation (10 checks, any failure fails the build)
+## 4. Validation (11 checks, any failure fails the build)
 
 1. Both languages have the same slide IDs, in the same order. Every slide has a title in both languages.
 2. Bullet keys match between languages, as does the Tip key (or the absence of a Tip). No slide has more than 5 bullets.
@@ -62,6 +62,7 @@ slides:
 8. No star counts appear in slide text.
 9. Every slide with a `sources:` entry has at least one URL in its notes, in both languages.
 10. Every `diagram.name` refers to a builder that exists in `shapes.py`.
+11. HE text contains none of the forbidden Hebrew renderings of terms in `glossary_keep_en` (for example "טיפ", "בקשת משיכה", "ענף").
 
 ## 5. Theme and RTL
 
@@ -74,6 +75,7 @@ slides:
   - Never put a literal newline inside a run.
   - Recover the old `set_rtl` helper with `git show f85a550:presentation/build_deck.py`.
 - **Diagrams in HE:** labels are translated, but process flow stays left to right.
+- **English terms in HE (human decision 9):** any word or acronym that Hebrew-speaking developers normally say in English stays in English inside the HE deck. Examples: Tip, Spec Kit, BMAD, GSD, Superpowers, SDD, SDLC, ADLC, AI, agent, prompt, context window, context rot, constitution, spec, plan, tasks, TDD, Git, GitHub, main, dev, branch, issue, PR / pull request, merge, commit, skill, CLI, OLED, DHT22. `deck.yaml` keeps a `glossary_keep_en` list, and validator check 11 fails the build if a Hebrew translation of a listed term appears in HE text. Each embedded English run gets `lang="en-US"` so mixed Hebrew/English lines render the right way round.
 
 ## 6. Diagrams (native shapes)
 

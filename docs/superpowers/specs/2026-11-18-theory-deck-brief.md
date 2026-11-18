@@ -320,3 +320,9 @@ F13 is confirmed: `main` has no branch protection and the repo has no CI. "Merge
 - Ruling R2-5: Part IV slides (14–18) satisfy the Analogy rule with `Analogy: see slide N`. — Why: forced analogies on slides about real artifacts read as contrived. — Cost if wrong: novices get slightly less scaffolding in the case study, which reuses analogies from earlier slides.
 - Ruling R2-6: Add relief valve 0, ahead of the human-approved order: slide 21 reuses the diagram and drops to 1:30, freeing 0:30. — Why: it cuts no content, so the approved order is unchanged. — Cost if wrong: none.
 - Ruling R2-7: Do not close issue #2 until the deck ships. — Why: slide 20/21 uses it as a live teaching example.
+
+**Human decisions, round 3 (2026-11-18)**
+
+8. The Tip label reads "TIP" in English in both decks.
+9. In the HE deck, any word or acronym normally said in English stays in English: framework names, acronyms, Git/GitHub vocabulary, and AI terms such as prompt, agent, context and spec. This replaces any earlier "טיפ" wording.
+10. The human approved the brief and design and said to proceed with implementation ("go").
