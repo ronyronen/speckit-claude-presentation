@@ -49,18 +49,20 @@ failure handling. See [firmware/README.md](firmware/README.md).
 ## Slide decks
 
 📊 Two decks, same content, timed speaker notes in each. Each deck has
-26 timed slides (45:00, including 3:00 of Q&A) and 8 backup slides at
+28 timed slides (45:00, including 3:00 of Q&A) and 8 backup slides at
 the end. A divider slide opens each of the six parts and the backup
-section (41 slides in all). The vibe coding vs SDD, BMAD, Spec Kit and Superpowers slides
+section (43 slides in all). Right after the Spec Kit slide, one
+birthday-cake order walks through all seven Spec Kit steps, then a table
+maps each step to the real Heltec project. The vibe coding vs SDD, BMAD, Spec Kit and Superpowers slides
 each carry a native diagram (drawn from `deck.yaml`, in both languages).
 One backup slide explains GSD as a relay diagram, and the last one is a
 learning path ([Where to go next](#where-to-go-next)).
 
 | Part | Time |
 |---|---|
-| Opening, the intent gap, vibe coding vs SDD | 9:00 |
-| Context engineering and context rot | 4:30 |
-| BMAD, Spec Kit, GSD and Superpowers as layers, plus the decision rule | 10:30 |
+| Opening, the intent gap, vibe coding vs SDD | 8:00 |
+| Context engineering and context rot | 4:00 |
+| BMAD, Spec Kit (with a cake-order walkthrough), GSD and Superpowers as layers, plus the decision rule | 12:00 |
 | Case study: Heltec firmware with Spec Kit | 8:00 |
 | GitHub team workflow | 5:00 |
 | What's next | 3:00 |

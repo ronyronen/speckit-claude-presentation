@@ -84,7 +84,7 @@ slides:
 
   - id: intent-gap
     part: I
-    budget: "2:30"
+    budget: "2:00"
     layout: bullets-diagram
     title: { en: "The intent gap: SDLC vs ADLC", he: "פער הכוונה: SDLC מול ADLC" }
     bullets:
@@ -174,7 +174,7 @@ slides:
 
   - id: sdd-core
     part: I
-    budget: "2:30"
+    budget: "2:00"
     layout: bullets-diagram
     title: { en: "SDD: the spec is the source of truth", he: "SDD: ה-spec הוא מקור האמת" }
     bullets:
@@ -232,7 +232,7 @@ slides:
 
   - id: context-engineering
     part: II
-    budget: "2:00"
+    budget: "1:30"
     layout: bullets
     title: { en: "Context engineering: what the AI sees", he: "context engineering: מה ה-AI רואה" }
     bullets:
@@ -279,7 +279,7 @@ slides:
         That is what happens in a long AI session. The context window keeps filling with old messages, failed attempts and files you no longer need. The early decisions are still technically there, but they get buried and quietly ignored.
         This has a name: context rot. And it is not just a feeling. In July 2025, researchers at Chroma, Kelly Hong, Anton Troynikov and Jeff Huber, tested 18 AI models and found that performance becomes less reliable as the input gets longer, even on simple tasks. An earlier paper by Nelson Liu and colleagues, "Lost in the Middle", showed that models use information at the start and the end of a long input much better than information in the middle.
         So quality drops long before the window is full, and a bigger window does not make the problem go away.
-        What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 14.
+        What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 16.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
@@ -288,7 +288,7 @@ slides:
         זה מה שקורה ב-session ארוך עם AI. ה-context window מתמלא בהודעות ישנות, בניסיונות שנכשלו ובקבצים שכבר לא צריך. ההחלטות מההתחלה עדיין שם, טכנית, אבל הן נקברות ונשכחות בשקט.
         לזה יש שם: context rot. וזו לא רק תחושה. ביולי 2025, חוקרים ב-Chroma, Kelly Hong, Anton Troynikov ו-Jeff Huber, בדקו 18 מודלי AI ומצאו שהביצועים נעשים פחות אמינים ככל שהקלט מתארך, גם במשימות פשוטות. מאמר קודם של Nelson Liu ועמיתיו, “Lost in the Middle”, הראה שמודלים משתמשים במידע שבתחילת קלט ארוך ובסופו הרבה יותר טוב מאשר במידע שבאמצע.
         אז האיכות יורדת הרבה לפני שהחלון מתמלא, וחלון גדול יותר לא פותר את הבעיה.
-        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec. כלי בשם GSD עושה את זה אוטומטית לכל משימה; נפגוש אותו בשקף 14.
+        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec. כלי בשם GSD עושה את זה אוטומטית לכל משימה; נפגוש אותו בשקף 16.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
@@ -353,7 +353,7 @@ slides:
 
   - id: speckit
     part: III
-    budget: "2:00"
+    budget: "1:30"
     layout: bullets-diagram
     title: { en: "Spec Kit: the living spec", he: "Spec Kit: ה-spec החי" }
     diagram:
@@ -390,6 +390,90 @@ slides:
         Spec Kit עובדת עם כמה עוזרי קוד, כולל Claude Code ו-Codex, והקבצים שלה לא תלויים באף אחד מהם. מחליפים עוזר באמצע הפרויקט, וה-spec נשאר.
         זה הכלי שהשתמשנו בו ב-case study, אז תראו את השלבים האלה באמת בעוד כמה דקות.
         Source: https://github.com/github/spec-kit · docs: https://github.github.io/spec-kit/
+
+  - id: speckit-cake
+    part: III
+    budget: "1:30"
+    layout: bullets-diagram
+    title: { en: "Spec Kit in a nutshell: one cake order", he: "Spec Kit בקצרה: הזמנת עוגה אחת" }
+    diagram:
+      name: cake-order
+      labels:
+        constitution: { en: "constitution", he: "constitution" }
+        specify: { en: "specify", he: "specify" }
+        clarify: { en: "clarify", he: "clarify" }
+        plan: { en: "plan", he: "plan" }
+        tasks: { en: "tasks", he: "tasks" }
+        analyze: { en: "analyze", he: "analyze" }
+        implement: { en: "implement", he: "implement" }
+        constitution_card: { en: "House rules:\nno nuts, ever", he: "חוקי הבית:\nאף פעם לא אגוזים" }
+        specify_card: { en: "Chocolate, 12 people,\n“Happy 8th, Noa”,\nFriday 5 pm", he: "שוקולד, 12 איש,\nברכה: מזל טוב נועה,\nשישי ב-17:00" }
+        clarify_card: { en: "Any allergies?\nYes: one guest\nis gluten-free", he: "יש אלרגיות?\nכן: אורח אחד\nללא גלוטן" }
+        plan_card: { en: "Two layers,\n20 cm tin,\ngluten-free flour", he: "שתי שכבות,\nתבנית 20 ס״מ,\nקמח ללא גלוטן" }
+        tasks_card: { en: "1 bake  2 cream\n3 assemble\n4 write the text", he: "1 אופים  2 קרם\n3 מרכיבים\n4 כותבים ברכה" }
+        analyze_card: { en: "Clash! 12 people,\nbut a 20 cm tin\nfeeds 8. Fix the plan.", he: "סתירה! 12 איש,\nאבל תבנית 20 ס״מ\nמספיקה ל-8. מתקנים." }
+        implement_card: { en: "Bake, ticking off\neach task against\nthe order", he: "אופים, ומסמנים\nכל משימה\nמול ההזמנה" }
+        note: { en: "Every step writes something down.", he: "כל שלב כותב משהו." }
+    tip: { key: clarify-stranger, en: "Read your spec like a stranger; every question they would ask belongs in clarify.", he: "קראו את ה-spec כמו מישהו זר; כל שאלה שהוא היה שואל שייכת ל-clarify." }
+    notes:
+      en: |
+        Analogy: the birthday cake from the start of the talk, but this time ordered properly.
+        Here is Spec Kit in a nutshell, with one cake. The constitution is the bakery's house rules: no nuts, ever. Every order has to obey it.
+        Specify writes the order: chocolate, twelve people, "Happy 8th, Noa", Friday at five. What and for whom, not how to bake it.
+        Clarify asks what the order left open. Any allergies? Yes, one guest is gluten-free. Without that question, the baker guesses.
+        Plan decides how: two layers, a 20 centimetre tin, gluten-free flour. Tasks turns the plan into steps: bake, make the cream, assemble, write the text.
+        Analyze reads everything side by side before anyone turns the oven on, and finds a clash: the order says twelve people, but a 20 centimetre tin feeds about eight. Fixing that on paper takes a minute; finding it on Friday ruins the party.
+        Implement bakes, ticking off each task against the order.
+        Every step wrote something down. That is the whole idea of Spec Kit.
+      he: |
+        Analogy: עוגת יום ההולדת מתחילת ההרצאה, אבל הפעם מזמינים אותה כמו שצריך.
+        הנה Spec Kit בקצרה, עם עוגה אחת. ה-constitution הוא חוקי הבית של הקונדיטוריה: אף פעם לא אגוזים. כל הזמנה חייבת לעמוד בהם.
+        specify כותב את ההזמנה: שוקולד, 12 איש, “מזל טוב נועה, בת 8”, שישי בחמש. מה ולמי, לא איך אופים.
+        clarify שואל את מה שההזמנה השאירה פתוח. יש אלרגיות? כן, אורח אחד ללא גלוטן. בלי השאלה הזאת, האופה מנחש.
+        plan מחליט איך: שתי שכבות, תבנית של 20 סנטימטר, קמח ללא גלוטן. tasks הופך את התוכנית לצעדים: אופים, מכינים קרם, מרכיבים, כותבים ברכה.
+        analyze קורא את הכול זה לצד זה לפני שמישהו מדליק את התנור, ומוצא סתירה: בהזמנה כתוב 12 איש, אבל תבנית של 20 סנטימטר מספיקה לבערך שמונה. לתקן את זה על הנייר לוקח דקה; לגלות את זה ביום שישי הורס את המסיבה.
+        implement אופה, ומסמן כל משימה מול ההזמנה.
+        כל שלב כתב משהו. זה כל הרעיון של Spec Kit.
+
+  - id: speckit-cake-heltec
+    part: III
+    budget: "1:30"
+    layout: table
+    title: { en: "Same seven steps, real project", he: "אותם שבעה שלבים, פרויקט אמיתי" }
+    table:
+      header:
+        - { en: "Step", he: "שלב" }
+        - { en: "The cake", he: "העוגה" }
+        - { en: "The Heltec firmware", he: "ה-firmware של Heltec" }
+      rows:
+        - [ { en: "constitution", he: "constitution" }, { en: "No nuts, ever", he: "אף פעם לא אגוזים" }, { en: "Logic testable without the board", he: "לוגיקה שנבדקת בלי הלוח" } ]
+        - [ { en: "specify", he: "specify" }, { en: "Chocolate, 12 people, Friday", he: "שוקולד, 12 איש, שישי" }, { en: "Read the sensor, show it, warn when hot", he: "קוראים חיישן, מציגים, מזהירים כשחם" } ]
+        - [ { en: "clarify", he: "clarify" }, { en: "One guest is gluten-free", he: "אורח אחד ללא גלוטן" }, { en: "Warn above 27 °C, clear below 25 °C", he: "אזהרה מעל 27°, ביטול מתחת ל-25°" } ]
+        - [ { en: "plan", he: "plan" }, { en: "Two layers, 20 cm tin", he: "שתי שכבות, תבנית 20 ס״מ" }, { en: "Decision logic split from hardware code", he: "לוגיקת ההחלטה מופרדת מקוד החומרה" } ]
+        - [ { en: "tasks", he: "tasks" }, { en: "Bake, cream, assemble, write", he: "אופים, קרם, מרכיבים, כותבים" }, { en: "Numbered tasks, tests first", he: "משימות ממוספרות, בדיקות קודם" } ]
+        - [ { en: "analyze", he: "analyze" }, { en: "Tin too small for 12", he: "תבנית קטנה מדי ל-12" }, { en: "Error after 1 failed read, or 3?", he: "שגיאה אחרי קריאה כושלת אחת, או 3?" } ]
+        - [ { en: "implement", he: "implement" }, { en: "Bake, tick off each task", he: "אופים ומסמנים כל משימה" }, { en: "Firmware built, 11/11 tests pass", he: "firmware בנוי, 11/11 בדיקות עוברות" } ]
+    tip: { key: toy-first, en: "Learn the steps on a toy example before you use them on real code.", he: "למדו את השלבים על דוגמת צעצוע לפני שמשתמשים בהם על קוד אמיתי." }
+    sources: [repo]
+    notes:
+      en: |
+        Analogy: the same recipe card, now used for a real dish.
+        Now the same seven steps on a real project: the Heltec firmware you will see in detail in Part 4. Read each row as cake on the left, firmware on the right.
+        The constitution: no nuts, ever, becomes "the decision logic must be testable without the board". Specify: twelve people on Friday becomes "read the sensor, show the value, warn when it is too hot". Clarify: the gluten-free guest becomes the exact thresholds, warn above 27 degrees and clear below 25.
+        Plan: the tin and the layers become a design that keeps the decision logic apart from the hardware code. Tasks: numbered steps, with the tests written first.
+        Analyze: the tin that was too small becomes two requirements that disagreed, show an error after one failed read or after three. It was caught on paper, before any code.
+        Implement: the cake is the firmware, built, with eleven of eleven tests passing.
+        Remember the cake, and you remember Spec Kit.
+        Source: https://github.com/ronyronen/speckit-claude-presentation/tree/main/specs/001-heltec-monitor
+      he: |
+        Analogy: אותו כרטיס מתכון, הפעם למנה אמיתית.
+        עכשיו אותם שבעה שלבים על פרויקט אמיתי: ה-firmware של Heltec, שתראו בפירוט בחלק 4. קראו כל שורה כעוגה משמאל ו-firmware מימין.
+        ה-constitution: “אף פעם לא אגוזים” הופך ל“לוגיקת ההחלטה חייבת להיבדק בלי הלוח”. specify: 12 איש ביום שישי הופך ל“לקרוא את החיישן, להציג את הערך, להזהיר כשחם מדי”. clarify: האורח ללא הגלוטן הופך לספים המדויקים, אזהרה מעל 27 מעלות וביטול מתחת ל-25.
+        plan: התבנית והשכבות הופכות לתכנון שמפריד את לוגיקת ההחלטה מקוד החומרה. tasks: צעדים ממוספרים, והבדיקות נכתבות קודם.
+        analyze: התבנית שהייתה קטנה מדי הופכת לשתי דרישות שסתרו זו את זו, האם להציג שגיאה אחרי קריאה כושלת אחת או אחרי שלוש. זה נתפס על הנייר, לפני שנכתב קוד.
+        implement: העוגה היא ה-firmware, בנוי, עם 11 מתוך 11 בדיקות עוברות.
+        זכרו את העוגה, ותזכרו את Spec Kit.
+        Source: https://github.com/ronyronen/speckit-claude-presentation/tree/main/specs/001-heltec-monitor
 
   - id: superpowers
     part: III
@@ -431,7 +515,7 @@ slides:
 
   - id: two-layers
     part: III
-    budget: "2:30"
+    budget: "2:00"
     layout: bullets-diagram
     title: { en: "Four metaphors, two layers", he: "ארבע מטאפורות, שתי שכבות" }
     bullets:
@@ -466,7 +550,7 @@ slides:
 
   - id: decision-rule
     part: III
-    budget: "3:00"
+    budget: "2:30"
     layout: bullets-diagram
     title: { en: "Decision rule: which layers do you need?", he: "איך מחליטים: אילו שכבות צריך?" }
     diagram:
@@ -652,7 +736,7 @@ slides:
     tip: { key: photo-proof, en: "Photograph real hardware results; reviewers trust a photo faster than a log.", he: "צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log." }
     notes:
       en: |
-        Analogy: see slide 18, the thermostat. These photos show it working.
+        Analogy: see slide 20, the thermostat. These photos show it working.
         Pause about 10 seconds on each photo so people can read the screen.
         This is the real board with the DHT22 wired up. On the left, normal room temperature: the screen shows OK and 24.0 degrees.
         On the right, I warmed the sensor with my hand. Look closely at the number: 26.6 degrees, and the screen still says WARNING. A beginner might call that a bug, because 26.6 is below the 27-degree threshold. It is not a bug; it is the spec. The reading went above 27, the warning switched on, and it stays on until the temperature drops below 25. That is the hysteresis band from three slides ago, visible on real hardware.
@@ -660,7 +744,7 @@ slides:
         And what did we not need? GSD or Superpowers. The sessions were short and a human reviewed every stage, so the decision rule says skip GSD. And the constitution already required tests first (Principle II), so the Superpowers question also says skip.
         Tip: photograph real hardware results; reviewers trust a photo faster than a log.
       he: |
-        Analogy: ראו שקף 18, התרמוסטט. התמונות האלה מראות אותו עובד.
+        Analogy: ראו שקף 20, התרמוסטט. התמונות האלה מראות אותו עובד.
         עצרו בערך 10 שניות על כל תמונה, כדי שאנשים יספיקו לקרוא את המסך.
         זה הלוח האמיתי, עם ה-DHT22 מחובר. בתמונת ה-OK, טמפרטורת חדר רגילה: המסך מציג OK ו-24.0 מעלות.
         בתמונת ה-WARNING, חיממתי את החיישן ביד. תסתכלו טוב על המספר: 26.6 מעלות, והמסך עדיין אומר WARNING. מי שרק מתחיל היה קורא לזה באג, כי 26.6 מתחת לסף של 27. זה לא באג; זה ה-spec. הקריאה עלתה מעל 27, האזהרה נדלקה, והיא נשארת דלוקה עד שהטמפרטורה יורדת מתחת ל-25. זה פס ה-hysteresis משלושה שקפים קודם, גלוי על חומרה אמיתית.
@@ -1042,7 +1126,7 @@ slides:
     sources: [F4, F5, F6]
     notes:
       en: |
-        backup, not timed. Use if someone asks about long sessions or GSD (slides 14 and 15 mention it).
+        backup, not timed. Use if someone asks about long sessions or GSD (slides 16 and 17 mention it).
         Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
         GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 9): quality drops as the window fills, so never let it fill.
         Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
@@ -1052,7 +1136,7 @@ slides:
         https://github.com/open-gsd/gsd-core
         https://github.com/gsd-build/get-shit-done
       he: |
-        backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 14 ו-15 מזכירים אותו).
+        backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 16 ו-17 מזכירים אותו).
         Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
         GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, וביסודו הוא כלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 9): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
         כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
@@ -1091,9 +1175,9 @@ slides:
       - { key: combine, en: "Same specs/ work with Claude Code, Codex and others", he: "אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים" }
     notes:
       en: |
-        backup, not timed. Use with slide 14. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+        backup, not timed. Use with slide 16. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
       he: |
-        backup, not timed. משתמשים יחד עם שקף 14. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
+        backup, not timed. משתמשים יחד עם שקף 16. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
 
   - id: a5-vscode-extensions
     part: close

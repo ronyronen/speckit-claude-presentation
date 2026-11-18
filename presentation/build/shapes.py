@@ -40,7 +40,7 @@ def _box(slide, kind, x, y, w, h, name, text, lang, glossary, size,
     sh.line.color.rgb = COLORS["accent"]
     sh.line.width = Pt(1.5)
     sh.shadow.inherit = False
-    on_light = fill in ("accent", "tip")
+    on_light = fill in ("accent", "tip", "warn")
     _text(sh, text, lang, glossary, size,
           COLORS["bg"] if on_light else COLORS["text"], bold)
     return sh
@@ -610,9 +610,49 @@ def superpowers_flow(slide, area, diagram, lang, glossary):
              lang, glossary, "warn", 18)
 
 
+_CAKE = ("constitution", "specify", "clarify", "plan", "tasks", "analyze", "implement")
+
+
+def cake_order(slide, area, diagram, lang, glossary):
+    """One cake order walked through the seven Spec Kit steps, as a snake of
+    cards (1-4 left to right, 5-7 right to left underneath). Each card is the
+    step's name over the file it writes; analyze is amber: it catches a clash."""
+    x, y, w, h = area
+    g = Inches(0.4)
+    cw = (w - 3 * g) // 4
+    head_h = Inches(0.5)
+    row_gap = Inches(0.45)
+    ch = (h - row_gap) // 2
+    row2 = y + ch + row_gap
+    cols = [x + i * (cw + g) for i in range(4)]
+    pos = [(cols[0], y), (cols[1], y), (cols[2], y), (cols[3], y),
+           (cols[3], row2), (cols[2], row2), (cols[1], row2)]
+    bodies = []
+    for k, (cx, cy) in zip(_CAKE, pos):
+        hot = k == "analyze"
+        _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, cy, cw, head_h, f"cake-step-{k}",
+             _label(diagram, k, lang), lang, glossary, 18,
+             fill="warn" if hot else "accent", bold=True)
+        b = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, cy + head_h + Inches(0.06), cw,
+                 ch - head_h - Inches(0.06), f"cake-card-{k}",
+                 _label(diagram, f"{k}_card", lang), lang, glossary, 18)
+        if hot:
+            b.line.color.rgb = COLORS["warn"]
+            b.line.width = Pt(2.5)
+        bodies.append(b)
+    for i in range(3):
+        _arrow(slide, bodies[i], _RIGHT, bodies[i + 1], _LEFT)
+    tasks_head = next(sh for sh in slide.shapes if sh.name == "cake-step-tasks")
+    _arrow(slide, bodies[3], _BOTTOM, tasks_head, _TOP)
+    for i in range(4, 6):
+        _arrow(slide, bodies[i], _LEFT, bodies[i + 1], _RIGHT)
+    _caption(slide, "cake-note", cols[0], row2, cw, ch, _label(diagram, "note", lang),
+             lang, glossary, "accent2", 18)
+
+
 DIAGRAMS = {"layers": layers, "decision": decision, "branch-flow": branch_flow,
             "sdlc-adlc": sdlc_adlc, "sdd-pipeline": sdd_pipeline,
             "context-rot": context_rot, "team-roles": team_roles,
             "fresh-context": fresh_context, "vibe-sdd": vibe_sdd,
             "bmad-phases": bmad_phases, "speckit-flow": speckit_flow,
-            "superpowers-flow": superpowers_flow}
+            "superpowers-flow": superpowers_flow, "cake-order": cake_order}

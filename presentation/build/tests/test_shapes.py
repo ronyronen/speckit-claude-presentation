@@ -156,7 +156,7 @@ def test_decision_missing_labels_fall_back():
 
 # ---- P2 diagrams (Task 7 part A) ----
 P2 = ["sdlc-adlc", "sdd-pipeline", "context-rot", "team-roles", "fresh-context",
-      "vibe-sdd", "bmad-phases", "speckit-flow", "superpowers-flow"]
+      "vibe-sdd", "bmad-phases", "speckit-flow", "superpowers-flow", "cake-order"]
 P2KEYS = ["sdlc_title", "adlc_title", "requirements", "design", "build", "test", "release",
           "intent", "agent_builds", "check", "correct",
           "constitution", "specify", "plan", "tasks", "implement", "clarify", "analyze",
@@ -168,7 +168,9 @@ P2KEYS = ["sdlc_title", "adlc_title", "requirements", "design", "build", "test",
           "p1", "p2", "p3", "p4", "a1", "a2", "a3", "a4", "d1", "d2", "d3", "d4",
           "quick", "q1", "q2", "q3", "optional", "folder"] + \
          [f"{k}_out" for k in ("specify", "clarify", "plan", "tasks", "analyze", "implement")] + \
-         [f"s{i}" for i in range(1, 8)] + ["gate"]
+         [f"s{i}" for i in range(1, 8)] + ["gate", "constitution", "specify", "clarify", "plan", "tasks",
+          "analyze", "implement", "note"] + [f"{k}_card" for k in (
+          "constitution", "specify", "clarify", "plan", "tasks", "analyze", "implement")]
 
 
 def _by(s, prefix):
@@ -316,3 +318,13 @@ def test_superpowers_seven_steps_in_order():
     steps = [f"sp-s{i}" for i in range(1, 8)]
     assert [(a, b) for a, b in zip(steps, steps[1:])] == got
     assert next(sh for sh in s.shapes if sh.name == "sp-s5").fill.fore_color.rgb == COLORS["accent"]
+
+
+def test_cake_order_seven_steps_analyze_hot():
+    s = _build("cake-order", keys=P2KEYS)
+    heads = [f"cake-step-{k}" for k in ("constitution", "specify", "clarify", "plan",
+                                         "tasks", "analyze", "implement")]
+    names = {sh.name: sh for sh in s.shapes}
+    assert set(heads) <= set(names)
+    assert names["cake-step-analyze"].fill.fore_color.rgb == COLORS["warn"]
+    assert len(_connectors(s)) == 6

@@ -9,7 +9,7 @@
 ```
 presentation/
   content/
-    deck.yaml          # single source of truth: 26 timed + 8 appendix slides + 7 part dividers, EN+HE (GSD moved to backup; vibe/BMAD/Spec Kit/Superpowers diagrams and a learning-path backup added 2026-11-18)
+    deck.yaml          # single source of truth: 28 timed + 8 appendix slides + 7 part dividers (incl. the Spec Kit cake walkthrough), EN+HE (GSD moved to backup; vibe/BMAD/Spec Kit/Superpowers diagrams and a learning-path backup added 2026-11-18)
   build/
     build_decks.py     # python-pptx generator: YAML -> two .pptx files
     validate.py        # sync, timing, tone and fact checks (also run by build_decks.py)

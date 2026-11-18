@@ -41,10 +41,10 @@ def test_skeleton_validates():
 
 def test_build_both_langs(decks):
     ids = [s.id for s in load_deck(DECK).slides]
-    assert len(ids) == 41
+    assert len(ids) == 43
     for lang in ("en", "he"):
         prs = decks[lang]
-        assert len(prs.slides) == 41
+        assert len(prs.slides) == 43
         assert (prs.slide_width, prs.slide_height) == (SLIDE_W, SLIDE_H)
         got = [s.name for s in prs.slides]  # slide name == slide id
         assert got == ids
@@ -531,3 +531,10 @@ def test_part_dividers_open_each_part(decks):
         sl = {s.name: s for s in decks[lang].slides}["part-3"]
         names = {sh.name for sh in sl.shapes}
         assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-footer-num"} <= names
+
+
+def test_speckit_cake_pair_follows_speckit():
+    order = [s.id for s in load_deck(DECK).slides]
+    i = order.index("speckit")
+    assert order[i + 1:i + 3] == ["speckit-cake", "speckit-cake-heltec"]
+    assert order.index("part-4") > i + 2  # the Heltec case study stays later

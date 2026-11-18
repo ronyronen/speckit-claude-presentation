@@ -80,7 +80,16 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] Spec Kit: ה-spec החי
 - [ ] תיקייה אחת לכל feature בתוך specs/
 
-## 13. superpowers
+## 13. speckit-cake
+- [ ] Spec Kit בקצרה: הזמנת עוגה אחת
+- [ ] TIP: קראו את ה-spec כמו מישהו זר; כל שאלה שהוא היה שואל שייכת ל-clarify.
+
+## 14. speckit-cake-heltec
+- [ ] ה-firmware של Heltec
+- [ ] firmware בנוי, 11/11 בדיקות עוברות
+- [ ] TIP: למדו את השלבים על דוגמת צעצוע לפני שמשתמשים בהם על קוד אמיתי.
+
+## 15. superpowers
 - [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
 - [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
 - [ ] branch מבודד
@@ -90,13 +99,13 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] בכל שלב נכנס skill. ה-agent לא יכול לדלג עליו.
 - [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
 
-## 14. two-layers
+## 16. two-layers
 - [ ] BMAD: הצוות
 - [ ] Spec Kit: ה-spec החי
 - [ ] GSD: context נקי
 - [ ] Superpowers: משמעת
 
-## 15. decision-rule
+## 17. decision-rule
 - [ ] שכבת context: GSD
 - [ ] שכבת משמעת: Superpowers
 - [ ] sessions ארוכים?
@@ -107,11 +116,11 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] ותרו על Superpowers
 - [ ] TIP: התחילו עם כלי תכנון אחד; הוסיפו שכבה רק כשאתם נתקלים בבעיה שהיא פותרת.
 
-## 16. part-4
+## 18. part-4
 - [ ] case study אמיתי
 - [ ] firmware ל-Heltec WiFi Kit V3, שנבנה עם Spec Kit
 
-## 17. heltec-board
+## 19. heltec-board
 - [ ] לוח Heltec עם DHT22: מרומז מול מפורש
 - [ ] מרומז: ה-prompt
 - [ ] מפורש: ה-spec
@@ -119,88 +128,88 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C
 - [ ] 3 קריאות כושלות ברצף: SENSOR ERROR
 
-## 18. specify-hysteresis
+## 20. specify-hysteresis
 - [ ] specify: ה-hysteresis הוגדר, לא נוחש
 - [ ] specify הגדיר טווח הדלקה וכיבוי; clarify שאל: ומה קורה בדיוק על הגבול?
 - [ ] הוחלט: נדלק רק מעל 27 °C, כבה רק מתחת ל-25 °C
 - [ ] TIP: שאלו על מקרי הקצה: בדיוק על הסף, חיישן חסר, הפעלה ראשונה.
 
-## 19. plan-tested
+## 21. plan-tested
 - [ ] plan ולוגיקה בדוקה (11/11)
 - [ ] plan: להפריד את ההחלטות מקוד החומרה
 
-## 20. analyze-caught
+## 22. analyze-caught
 - [ ] מה /speckit-analyze תפס
 - [ ] HIGH: שגיאה מוצגת אחרי קריאה 1, או 3?
 - [ ] ה-spec נוסח מחדש: תוך 3 קריאות
 - [ ] MEDIUM: לכלל “לא לקרוס” לא הייתה בדיקה
 - [ ] MEDIUM: הכלל “בלי חומרה” לא נבדק
 
-## 21. behavior-photos
+## 23. behavior-photos
 - [ ] התנהגות: OK ו-WARNING על הלוח
 - [ ] OK ב-24.0 °C
 - [ ] WARNING ב-26.6 °C: נשאר בגלל ה-hysteresis
 - [ ] TIP: צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log.
 
-## 22. part-5
+## 24. part-5
 - [ ] branches, pull requests ו-specs משותפים ב-GitHub
 
-## 23. main-vs-dev
+## 25. main-vs-dev
 - [ ] main מול dev: מהדורה מול טיוטה
 - [ ] main = המהדורה המודפסת; dev = שולחן הטיוטות
 - [ ] כלל צוות: merge ל-main רק אחרי שהבדיקות עוברות
 - [ ] TIP: שמרו על main תמיד עובד: עשו merge אליו רק אחרי שהבדיקות עוברות.
 
-## 24. issues-prs
+## 26. issues-prs
 - [ ] issues ו-pull requests
 - [ ] issue = כרטיס משימה: מה שבור או חסר, ולמה
 - [ ] PR (pull request) = בקשת שינוי שמישהו עושה לה review
 - [ ] TIP: כתבו 'Fixes #2' ב-PR שנכנס ל-main, וה-issue ייסגר אוטומטית ב-merge.
 
-## 25. shared-repo
+## 27. shared-repo
 - [ ] repo משותף, specs/ משותף
 - [ ] specs/ = מחברת הצוות: מה כל אחד בונה, ולמה
 - [ ] ה-specs נכנסים באותו PR יחד עם הקוד שהם מתארים
 - [ ] TIP: עברו קודם על שינויי ה-spec בכל pull request, ורק אחר כך על הקוד.
 
-## 26. part-6
+## 28. part-6
 - [ ] skills, צוותים של skills ו-constitution אחד
 
-## 27. skills
+## 29. skills
 - [ ] skills: כרטיסי מתכון ל-AI
 - [ ] כרטיס מתכון ל-AI: צעדים כתובים שהוא טוען כשצריך
 - [ ] הכרטיס הזה הוא skill: כותבים פעם אחת, משתמשים בכל מקום
 - [ ] TIP: הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם.
 
-## 28. team-of-skills
+## 30. team-of-skills
 - [ ] צוותים של skills: הדוגמה של /team
 - [ ] שלושה תפקידי AI: ארכיטקט, product owner, מפתח בכיר
 
-## 29. shared-constitution
+## 31. shared-constitution
 - [ ] constitution אחת לכמה פרויקטים
 - [ ] חוקי הבית על המקרר: בדיקות, שמות, אבטחה, review
 - [ ] TIP: שמרו על constitution קצרה; כללים שאף אחד לא קורא, אף אחד לא מקיים.
 
-## 30. takeaways
+## 32. takeaways
 - [ ] כתבו את הכוונה לפני שה-AI כותב את הקוד
 - [ ] שמרו על השולחן של ה-AI מסודר: ב-sessions ארוכים יש context rot
 - [ ] בפרויקט Heltec: Spec Kit עם review אנושי הספיק
 - [ ] branches, PRs ו-specs/ משותף הופכים את זה לעבודת צוות
 - [ ] TIP: כתבו spec של עמוד אחד לפני ה-session הבא שלכם עם AI, כבר מחר.
 
-## 31. resources
+## 33. resources
 - [ ] חומרי ההרצאה: github.com/ronyronen/speckit-claude-presentation
 
-## 34. a1-stages-catch-mistakes
+## 36. a1-stages-catch-mistakes
 - [ ] הטעות שנתפסה בפרויקט Heltec
 
-## 35. a2-overlap-gaps
+## 37. a2-overlap-gaps
 - [ ] גם BMAD וגם Spec Kit מתכננים לפני הקוד
 - [ ] ה-checklist של Spec Kit, הבודק של BMAD: בקרות קלות
 - [ ] כלי תכנון לא עוצרים context rot
 - [ ] כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד
 
-## 36. a7-gsd
+## 38. a7-gsd
 - [ ] גיבוי: GSD, התחלה נקייה לכל משימה
 - [ ] כל משימה מקבלת agent חדש עם context נקי
 - [ ] session ראשי
@@ -210,24 +219,24 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] קבצי הפרויקט: spec, plan, state
 - [ ] TIP: כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה.
 
-## 37. a3-specify-init
+## 39. a3-specify-init
 - [ ] גיבוי: איך מתחילים פרויקט Spec Kit
 
-## 38. a4-tool-relationship
+## 40. a4-tool-relationship
 - [ ] Spec Kit כותבת את המסמכים; העוזר עושה את העבודה
 - [ ] אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים
 
-## 39. a5-vscode-extensions
+## 41. a5-vscode-extensions
 - [ ] גיבוי: הרחבות ל-VS Code
 - [ ] PlatformIO לבנייה ולצריבה של הלוח
 - [ ] תצוגה מקדימה של Markdown כדי לקרוא specs לצד הקוד
 - [ ] TIP: השאירו את ה-spec פתוח בחלונית תצוגה בזמן שה-agent עובד.
 
-## 40. a6-git-checkpoints
+## 42. a6-git-checkpoints
 - [ ] גיבוי: נקודות שמירה ב-Git לכל שלב
 - [ ] tag אחד לכל שלב, מ-01-start ועד 09-hardware-verified
 
-## 41. a8-next-steps
+## 43. a8-next-steps
 - [ ] מתחילים מספר הלימוד ב-repo: docs/textbook.md
 - [ ] משחזרים את ה-case study: tags מ-01-start ועד 09-hardware-verified
 - [ ] מנסים Spec Kit על feature קטן משלכם
