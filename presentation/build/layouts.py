@@ -14,8 +14,8 @@ from pptx.util import Emu, Inches, Pt
 
 from .shapes import DIAGRAMS, pill
 from .text import write_paragraphs
-from .theme import (ASSETS, COLORS, FONTS, MARGIN, SLIDE_H, SLIDE_W,
-                    content_box, tip_box)
+from .theme import (ASSETS, COLORS, FONTS, MARGIN, PILL_H, PILL_W, SLIDE_H,
+                    SLIDE_W, content_box, tip_box)
 
 TITLE_PT = 36
 BODY_PT = 24
@@ -24,7 +24,6 @@ TIP_PT = 18
 CODE_PT = 18
 GAP = Inches(0.3)
 TIP_GAP = Inches(0.2)  # breathing room between content and the tip band
-PILL_W, PILL_H = Inches(0.9), Inches(0.4)
 
 
 # --- text height estimate (the real overflow guard; autofit is a safety net:
@@ -52,7 +51,9 @@ def est_lines(text, width_emu, size_pt, bold=False, char_em=CHAR_EM):
     n = 0
     for para in str(text).split("\n"):
         lines, cur = 1, 0
-        for word in para.split():
+        for word in para.split(" "):  # not NBSP: "27\u00a0°C" is one word
+            if not word:
+                continue
             need = len(word) if cur == 0 else cur + 1 + len(word)
             if need <= cpl:
                 cur = need

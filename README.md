@@ -63,11 +63,30 @@ failure handling. See [firmware/README.md](firmware/README.md).
   [`presentation/build/requirements.txt`](presentation/build/requirements.txt)):
 
   ```bash
+  pip install -r presentation/build/requirements.txt
   python3 -m presentation.build.build_decks --lang both
   ```
 
-- The validator enforces the 45:00 timing and EN/HE sync (same slides,
-  bullet keys and tips in both languages):
+- Regenerate the Hebrew manual bidi checklist
+  (`presentation/build/he_manual_check.md`):
+
+  ```bash
+  python3 -m presentation.build.build_decks --manual-check
+  ```
+
+- Run the tests:
+
+  ```bash
+  python3 -m pytest presentation/build/tests -q
+  ```
+
+- **Fonts.** The EN deck uses Plus Jakarta Sans and JetBrains Mono (Google
+  Fonts, free); install them on the build and presenting machines. The HE
+  deck uses Arial.
+
+- The validator (10 validator checks plus the generator-enforced timing
+  prefix) enforces the 45:00 timing and EN/HE sync (same slides, bullet keys
+  and tips in both languages):
 
   ```bash
   python3 -m presentation.build.validate presentation/content/deck.yaml
@@ -239,7 +258,6 @@ see [docs/codex.md](docs/codex.md).)
   [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) ·
   [Superpowers](https://github.com/obra/superpowers)
 - Chroma, [“Context Rot”](https://www.trychroma.com/research/context-rot) (2025)
-
 - [Spec Kit](https://github.com/github/spec-kit)
 - [Spec Kit documentation](https://github.github.io/spec-kit/)
 - [Claude Code documentation](https://docs.claude.com/en/docs/claude-code)

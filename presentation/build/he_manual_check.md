@@ -20,7 +20,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] הדרך הישנה: SDLC (מחזור חיי פיתוח תוכנה), איטית
 - [ ] הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מילולית
 - [ ] SDLC: הדרך הישנה
-- [ ] ADLC: הדרך עם AI
+- [ ] ADLC: מחזור פיתוח עם agents
 - [ ] ה-AI agent בונה
 
 ## 4. vibe-vs-sdd
@@ -94,7 +94,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] מרומז: ה-prompt
 - [ ] מפורש: ה-spec
 - [ ] לקרוא את ה-DHT22 כל 2 שניות, טמפרטורה בלבד
-- [ ] WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C
+- [ ] WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C
 - [ ] 3 קריאות כושלות ברצף: SENSOR ERROR
 
 ## 15. specify-hysteresis

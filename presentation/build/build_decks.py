@@ -14,7 +14,7 @@ from pptx import Presentation
 from .layouts import LAYOUTS
 from .model import load_deck, timing_prefixes
 from .shapes import DIAGRAMS
-from .text import set_rtl
+from .text import _HE, set_rtl
 from .theme import SLIDE_H, SLIDE_W
 from .validate import validate
 
@@ -24,7 +24,6 @@ OUT = {"en": PRES / "speckit-workshop.pptx", "he": PRES / "speckit-workshop-he.p
 BLANK = 6
 
 
-_HE = re.compile(r"[\u0590-\u05ff]")
 _LATIN = re.compile(r"[A-Za-z]")
 
 

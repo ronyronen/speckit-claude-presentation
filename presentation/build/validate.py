@@ -1,10 +1,17 @@
-"""Deck validator: the 11 checks from the design spec section 4."""
+"""Deck validator: checks from the design spec section 4, plus the {en, he}
+pair completeness check.
+
+Spec check 4 (timing prefix at the start of every note) is NOT checked here:
+the generator writes the prefix itself (model.timing_prefixes) and
+test_build.py asserts it. So: 10 validator checks plus the generator-enforced
+timing prefix."""
 from __future__ import annotations
 
 import re
 import sys
 
 from .model import Deck, Slide, load_deck, parse_budget
+from .text import HEBREW_CHARS
 
 PARTS = {"0", "I", "II", "III", "IV", "V", "VI", "close"}
 THEORY = {"0", "I", "II", "III"}
@@ -33,7 +40,20 @@ def _all_text(s: Slide) -> list[tuple[str, str]]:
 
 def _he_term_re(term: str) -> re.Pattern:
     """Term not followed by a Hebrew letter; optional one-letter prefix allowed."""
-    return re.compile(r"(?<![\u05d0-\u05ea])[הובלמשכ]?" + re.escape(term) + r"(?![\u05d0-\u05ea])")
+    he = f"[{HEBREW_CHARS}]"
+    return re.compile(f"(?<!{he})[הובלמשכ]?" + re.escape(term) + f"(?!{he})")
+
+
+def _pairs(node, loc):
+    """(location, dict) for every {en, he} dict nested in node."""
+    if isinstance(node, dict):
+        if "en" in node or "he" in node:
+            yield loc, node
+        for k, v in node.items():
+            yield from _pairs(v, f"{loc}.{k}")
+    elif isinstance(node, list):
+        for i, v in enumerate(node):
+            yield from _pairs(v, f"{loc}[{i}]")
 
 
 def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
@@ -148,6 +168,17 @@ def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
             for term in deck.glossary_forbidden_he:
                 if _he_term_re(term).search(t):
                     errs.append(f"{s.id}: forbidden Hebrew term {term!r} in {loc}")
+    # 12. {en, he} pairs in extra and diagram.labels: both values non-empty
+    for s in deck.slides:
+        parts = [("extra", s.extra)]
+        if s.diagram:
+            parts.append(("diagram.labels", s.diagram.get("labels") or {}))
+        for base, node in parts:
+            for loc, d in _pairs(node, base):
+                for l in LANGS:
+                    v = d.get(l)
+                    if not isinstance(v, str) or not v.strip():
+                        errs.append(f"{s.id}: empty {l} in {loc}")
     return errs
 
 
@@ -161,7 +192,11 @@ def main(argv: list[str] | None = None) -> int:
         names = set(DIAGRAMS)
     except ImportError:
         names = set()
-    errs = validate(load_deck(argv[0]), names)
+    try:
+        errs = validate(load_deck(argv[0]), names)
+    except ValueError as e:
+        print(e)
+        return 1
     for e in errs:
         print(e)
     return 1 if errs else 0

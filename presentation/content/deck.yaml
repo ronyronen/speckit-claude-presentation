@@ -87,7 +87,7 @@ slides:
       name: sdlc-adlc
       labels:
         sdlc_title: { en: "SDLC: the old way", he: "SDLC: הדרך הישנה" }
-        adlc_title: { en: "ADLC: the AI way", he: "ADLC: הדרך עם AI" }
+        adlc_title: { en: "ADLC: agentic dev life cycle", he: "ADLC: מחזור פיתוח עם agents" }
         requirements: { en: "Requirements", he: "דרישות" }
         design: { en: "Design", he: "עיצוב" }
         build: { en: "Build", he: "בנייה" }
@@ -474,7 +474,7 @@ slides:
       - heading: { en: "Explicit: the spec", he: "מפורש: ה-spec" }
         items:
           - { en: "Read the DHT22 every 2 s, temperature only", he: "לקרוא את ה-DHT22 כל 2 שניות, טמפרטורה בלבד" }
-          - { en: "WARNING above 27 °C, back to OK below 25 °C", he: "WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C" }
+          - { en: "WARNING above 27 °C, back to OK below 25 °C", he: "WARNING מעל 27 °C, חזרה ל-OK מתחת\u00a0ל-25 °C" }
           - { en: "3 failed reads in a row → SENSOR ERROR", he: "3 קריאות כושלות ברצף: SENSOR ERROR" }
     notes:
       en: |
@@ -711,12 +711,14 @@ slides:
     tip: { key: first-skill, en: "Turn the instruction you repeat most often into your first skill.", he: "הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם." }
     notes:
       en: |
+        What's next, not day one: once the basics feel normal, these three ideas are where teams go.
         Analogy: a recipe card you can hand to any new cook. You write it once, and every cook makes the dish the same way.
         A skill is exactly that for an AI agent: a written procedure, saved as a file, that the agent loads only when it needs it. "How we write a spec." "How we review a pull request." "How we release."
         You have already met skills today. In this project, Spec Kit's stages are installed as skills for the assistant, and Superpowers is essentially a library of skills.
         Write a skill once and you can share it across projects and teammates, so everyone's agent follows the same steps.
         Tip: turn the instruction you repeat most often into your first skill.
       he: |
+        מה הלאה, לא היום הראשון: כשהבסיס כבר מרגיש טבעי, אלה שלושת הרעיונות שצוותים מגיעים אליהם.
         Analogy: כרטיס מתכון שאפשר לתת לכל טבח חדש. כותבים אותו פעם אחת, וכל טבח מכין את המנה באותה צורה.
         skill הוא בדיוק זה בשביל AI agent: נוהל כתוב, שמור כקובץ, שה-agent טוען רק כשהוא צריך אותו. “איך כותבים spec.” “איך עושים review ל-pull request.” “איך משחררים גרסה.”
         כבר פגשתם skills היום. בפרויקט הזה, השלבים של Spec Kit מותקנים כ-skills לעוזר, ו-Superpowers הוא בעצם ספרייה של skills.

@@ -157,3 +157,10 @@ def test_all_english_line_unchanged():
               "feature branch (DHT22)", "PR #4"]:
         assert split_runs(t, []) == [(t, "en")]
     assert RLM not in "".join(_he_runs("plan.md, tasks.md"))
+
+
+def test_hebrew_range_is_shared():
+    from presentation.build import build_decks, text, validate
+    assert build_decks._HE is text._HE
+    assert text.HEBREW_CHARS == "֐-׿"
+    assert validate.HEBREW_CHARS is text.HEBREW_CHARS

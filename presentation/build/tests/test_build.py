@@ -427,3 +427,39 @@ def test_manual_check_md_lists_mixed_lines_and_tips_once():
         if s.tip:
             assert md.count(f"- [ ] TIP: {s.tip.he}") == 1
             assert f"- [ ] {s.tip.he}\n" not in md
+
+
+def test_est_lines_keeps_nbsp_words_together():
+    from presentation.build.layouts import est_lines
+    w = int(7.5 * 20 * 12700 * 0.55)  # 7 chars per line at 20 pt
+    # "27<NBSP>°C" is one 5-char word: it moves to line 2 whole, and "bbb"
+    # then no longer fits beside it (a split on NBSP would give 2 lines).
+    assert est_lines("aa 27\u00a0°C bbb", w, 20) == 3
+    assert est_lines("aa 27 °C bbb", w, 20) == 2
+
+
+def test_pill_size_defined_once_in_theme():
+    from presentation.build import layouts, shapes, theme
+    assert (layouts.PILL_W, layouts.PILL_H) == (theme.PILL_W, theme.PILL_H)
+    assert (shapes.PILL_W, shapes.PILL_H) == (theme.PILL_W, theme.PILL_H)
+
+
+def test_heading_font_is_family_and_bold(decks):
+    from presentation.build.theme import FONTS
+    assert FONTS["en"]["head"] == "Plus Jakarta Sans"
+    t = next(sh for sh in decks["en"].slides[1].shapes if sh.name == "lay-title")
+    runs = [r for p in t.text_frame.paragraphs for r in p.runs]
+    assert runs and all(r.font.bold and r.font.name == "Plus Jakarta Sans" for r in runs)
+
+
+def test_manual_check_md_is_current():
+    from presentation.build.build_decks import CHECK_MD, manual_check_md
+    assert manual_check_md(load_deck(DECK)) == CHECK_MD.read_text(encoding="utf-8")
+
+
+def test_adlc_title_label_fits_and_is_expanded():
+    d = next(s for s in load_deck(DECK).slides if s.id == "intent-gap").diagram
+    lab = d["labels"]["adlc_title"]
+    assert lab["en"] == "ADLC: agentic dev life cycle"
+    assert lab["he"] == "ADLC: מחזור פיתוח עם agents"
+    assert len(lab["en"]) <= 30 and len(lab["he"]) <= 30

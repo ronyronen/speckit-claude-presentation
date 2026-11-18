@@ -23,10 +23,13 @@ COLORS = {
 }
 
 FONTS = {
-    "en": {"body": "Plus Jakarta Sans", "head": "Plus Jakarta Sans ExtraBold",
+    "en": {"body": "Plus Jakarta Sans", "head": "Plus Jakarta Sans",
            "mono": "JetBrains Mono"},
     "he": {"body": "Arial", "head": "Arial", "mono": "JetBrains Mono"},
 }
+
+# TIP pill badge size (shapes.pill draws it, layouts positions it).
+PILL_W, PILL_H = Inches(0.9), Inches(0.4)
 
 # Resolved relative to this file so it works from any cwd.
 ASSETS = Path(__file__).resolve().parents[1] / "assets"

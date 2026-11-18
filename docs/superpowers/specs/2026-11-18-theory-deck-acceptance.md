@@ -1,13 +1,13 @@
 # Acceptance Report: Theory-First SDD Talk (EN + HE decks)
 
 **Date:** 2026-11-18 | **Reviewer:** Product Owner | **Brief:** `docs/superpowers/specs/2026-11-18-theory-deck-brief.md` (round 2)
-**Build under review:** f66f8df, plus the uncommitted Task 10 changes (slide 23 HE label, README).
+**Build under review:** 54e74fd (committed; includes the Task 10 changes: slide 23 HE label, README), plus the final-review fix wave committed on top of it.
 
 ## Evidence used
-- **E1 Validator:** `python3 -m presentation.build.validate presentation/content/deck.yaml` returned rc=0 with all 11 checks passing (reported by the architect).
+- **E1 Validator:** `python3 -m presentation.build.validate presentation/content/deck.yaml` returned rc=0 with all checks passing: 10 validator checks plus the generator-enforced timing prefix (spec check 4, asserted in `test_build.py`) (reported by the architect).
 - **E2 Tests:** 143 pytest tests pass (reported by the architect).
 - **E3 Content source:** I read `presentation/content/deck.yaml` directly for ids, budgets, bullets, tips and notes.
-- **E4 Renders:** EN in `…/scratchpad/render/final-en/`, HE in `…/scratchpad/render/t9-he/`; 33 PNGs each. I viewed EN slides 9, 13, 20 and 25, and HE slides 12, 14 and 18.
+- **E4 Renders:** EN in `…/scratchpad/render/final-en/`, HE in `…/scratchpad/render/t9-he/`; 33 PNGs each. The scratchpad render paths are not durable (a reboot or cleanup can clear them); regenerate renders with `bash presentation/build/render_check.sh <pptx> <outdir>`. I viewed EN slides 9, 13, 20 and 25, and HE slides 12, 14 and 18.
 - **E5 Bidi checklist:** `presentation/build/he_manual_check.md`, generated. Every box is still unchecked.
 - **E6 Fact-check register:** in the brief, plus the developer's `gh api` checks and the two context-rot sources I fetched (Chroma, arXiv 2307.03172).
 - **E7 Content reviews:** the independent EN review (C1–C3, I1–I6, minors), all applied; the timing pass; the HE translation pass.
@@ -112,7 +112,7 @@ Legend: ✅ met · ❌ not met · ⚠️ met with caveats, or waiting on a human
 | Criterion | Status | Evidence |
 |---|---|---|
 | 3 slides (22–24) at 1:00 each | ✅ | E3 |
-| Framed explicitly as "what's next, not day one" | ⚠️ | The section is the final content part, before Takeaways. However, no slide title or notes line says "what's next, not day one" out loud. Suggested fix: one opening sentence in the slide 22 notes (EN + HE). |
+| Framed explicitly as "what's next, not day one" | ✅ | Fixed in the fix wave: the slide 22 notes (EN + HE) now open with "What's next, not day one: once the basics feel normal, these three ideas are where teams go." |
 | Slide 22 Skills (recipe card) · 23 /team meta example · 24 shared constitution (house rules) | ✅ | E3 slides 22–24 |
 | No unverified built-in feature claims (F14–F15) | ✅ | E3: "custom setup … not a product you can download"; "team practice rather than a built-in feature" |
 
@@ -124,7 +124,7 @@ Legend: ✅ met · ❌ not met · ⚠️ met with caveats, or waiting on a human
   3. US-4: the manual PowerPoint bidi pass is not done (human). Check HE slide 14 "ל-25 °C" wrapping and the HE slide 18 °C captions first.
   4. US-5: the "tagged on GitHub" claim depends on the tags push (human, after the account switch).
   5. US-11: the Tip label is "TIP" with no light bulb, per later human decisions. Accept as superseded.
-  6. US-13: "what's next, not day one" framing is not stated explicitly (one-line notes fix).
+  6. US-13: "what's next, not day one" framing. ✅ Resolved in the fix wave (opening line added to the slide 22 notes, EN + HE).
 
   Items 2–4 are the three that stay ⚠️ until the human acts. Items 1, 5 and 6 are copy-level caveats.
-- **Recommendation:** accept for delivery once the human completes the bidi pass, the rehearsal and the tags push. The two optional copy fixes (US-13 framing line, ADLC on-slide expansion) can go in before or after.
+- **Recommendation:** accept for delivery once the human completes the bidi pass, the rehearsal and the tags push. The two optional copy fixes (US-13 framing line, ADLC on-slide expansion) are now in the fix wave.

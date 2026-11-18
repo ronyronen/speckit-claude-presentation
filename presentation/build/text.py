@@ -7,7 +7,8 @@ from pptx.util import Pt
 
 from .theme import COLORS, FONTS
 
-_HE = re.compile(r"[֐-׿]")
+HEBREW_CHARS = "\u0590-\u05ff"  # the Hebrew block; single shared definition
+_HE = re.compile(f"[{HEBREW_CHARS}]")
 _LATIN = re.compile(r"[A-Za-z0-9]")
 _NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main"
 

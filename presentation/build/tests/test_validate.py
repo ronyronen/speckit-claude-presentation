@@ -208,3 +208,37 @@ def test_parse_budget_rejects_malformed(bad):
 
 def test_fmt_mmss():
     assert fmt_mmss(90) == "1:30"
+
+
+# --- check: {en, he} dicts in extra and diagram.labels must be complete ----
+
+def test_extra_pair_missing_he_fails(raw):
+    content(raw)["images"] = [{"file": "a.jpg", "caption": {"en": "Cap", "he": ""}}]
+    assert has(errs(raw), "empty he")
+
+
+def test_extra_pair_whitespace_en_fails(raw):
+    content(raw)["columns"] = [{"title": {"en": "  ", "he": "כותרת"}}]
+    assert has(errs(raw), "empty en")
+
+
+def test_diagram_label_missing_value_fails(raw):
+    content(raw)["diagram"] = {"name": "d", "labels": {"a": {"en": "A"}}}
+    assert has(errs(raw, {"d"}), "empty he")
+
+
+def test_complete_pairs_pass(raw):
+    content(raw)["images"] = [{"file": "a.jpg", "caption": {"en": "Cap", "he": "כיתוב"}}]
+    content(raw)["diagram"] = {"name": "d", "labels": {"a": {"en": "A", "he": "א"}}}
+    assert errs(raw, {"d"}) == []
+
+
+# --- CLI error handling -----------------------------------------------------
+
+def test_main_reports_bad_budget_without_traceback(tmp_path, capsys):
+    from presentation.build.validate import main
+    bad = FIX.read_text(encoding="utf-8").replace('budget: "0:30"', 'budget: "2:5"')
+    p = tmp_path / "bad.yaml"
+    p.write_text(bad, encoding="utf-8")
+    assert main([str(p)]) == 1
+    assert "bad budget" in capsys.readouterr().out

@@ -11,7 +11,7 @@ from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
 
 from .text import write_paragraphs
-from .theme import COLORS
+from .theme import COLORS, PILL_H, PILL_W
 
 _TOP, _LEFT, _BOTTOM, _RIGHT = 0, 1, 2, 3  # connection sites
 
@@ -60,7 +60,7 @@ def _arrow(slide, a, site_a, b, site_b):
 def pill(slide, x, y, text, lang):
     """Small rounded 'pill' badge (used for the TIP label)."""
     sh = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, int(x), int(y),
-                                Inches(0.9), Inches(0.4))
+                                PILL_W, PILL_H)
     sh.adjustments[0] = 0.5
     sh.fill.solid()
     sh.fill.fore_color.rgb = COLORS["tip"]
