@@ -155,12 +155,13 @@ def test_decision_missing_labels_fall_back():
 
 
 # ---- P2 diagrams (Task 7 part A) ----
-P2 = ["sdlc-adlc", "sdd-pipeline", "context-rot", "team-roles"]
+P2 = ["sdlc-adlc", "sdd-pipeline", "context-rot", "team-roles", "fresh-context"]
 P2KEYS = ["sdlc_title", "adlc_title", "requirements", "design", "build", "test", "release",
           "intent", "agent_builds", "check", "correct",
           "constitution", "specify", "plan", "tasks", "implement", "clarify", "analyze",
           "feedback", "rail", "axis_quality", "axis_context", "rot_zone",
-          "architect", "product_owner", "senior_dev", "human"]
+          "architect", "product_owner", "senior_dev", "human",
+          "main", "task1", "task2", "task3", "memory", "baton"]
 
 
 def _by(s, prefix):
@@ -255,3 +256,12 @@ def test_p2_area_font_and_fallback(name, lang):
     s2 = _slide()  # no labels at all: falls back to keys, never raises
     DIAGRAMS[name](s2, AREA, {"name": name}, lang, [])
     assert len(s2.shapes) > 0
+
+
+def test_fresh_context_relay_chain_and_memory():
+    s = _build("fresh-context", keys=P2KEYS)
+    names = {sh.name for sh in s.shapes}
+    assert {"relay-main", "relay-task1", "relay-task2", "relay-task3",
+            "relay-memory"} <= names
+    # main -> t1 -> t2 -> t3, plus one two-way link from each task to memory
+    assert len(_connectors(s)) == 6

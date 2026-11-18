@@ -223,7 +223,7 @@ slides:
 
   - id: context-rot
     part: II
-    budget: "2:00"
+    budget: "2:30"
     layout: bullets-diagram
     title: { en: "Context rot: when the AI forgets", he: "context rot: כשה-AI שוכח" }
     bullets:
@@ -243,7 +243,7 @@ slides:
         That is what happens in a long AI session. The context window keeps filling with old messages, failed attempts and files you no longer need. The early decisions are still technically there, but they get buried and quietly ignored.
         This has a name: context rot. And it is not just a feeling. In July 2025, researchers at Chroma, Kelly Hong, Anton Troynikov and Jeff Huber, tested 18 AI models and found that performance becomes less reliable as the input gets longer, even on simple tasks. An earlier paper by Nelson Liu and colleagues, "Lost in the Middle", showed that models use information at the start and the end of a long input much better than information in the middle.
         So quality drops long before the window is full, and a bigger window does not make the problem go away.
-        What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec.
+        What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 11.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
@@ -252,7 +252,7 @@ slides:
         זה מה שקורה ב-session ארוך עם AI. ה-context window מתמלא בהודעות ישנות, בניסיונות שנכשלו ובקבצים שכבר לא צריך. ההחלטות מההתחלה עדיין שם, טכנית, אבל הן נקברות ונשכחות בשקט.
         לזה יש שם: context rot. וזו לא רק תחושה. ביולי 2025, חוקרים ב-Chroma, Kelly Hong, Anton Troynikov ו-Jeff Huber, בדקו 18 מודלי AI ומצאו שהביצועים נעשים פחות אמינים ככל שהקלט מתארך, גם במשימות פשוטות. מאמר קודם של Nelson Liu ועמיתיו, “Lost in the Middle”, הראה שמודלים משתמשים במידע שבתחילת קלט ארוך ובסופו הרבה יותר טוב מאשר במידע שבאמצע.
         אז האיכות יורדת הרבה לפני שהחלון מתמלא, וחלון גדול יותר לא פותר את הבעיה.
-        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec.
+        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec. כלי בשם GSD עושה את זה אוטומטית לכל משימה; נפגוש אותו בשקף 11.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
@@ -320,37 +320,6 @@ slides:
         זה הכלי שהשתמשנו בו ב-case study, אז תראו את השלבים האלה באמת בעוד כמה דקות.
         Source: https://github.com/github/spec-kit
 
-  - id: gsd
-    part: III
-    budget: "1:30"
-    layout: bullets
-    title: { en: "GSD: a fresh start for every task", he: "GSD: התחלה נקייה לכל משימה" }
-    bullets:
-      - { key: fresh, en: "Like a relay race: each task gets a fresh runner, a clean context", he: "כמו מרוץ שליחים: כל משימה מקבלת רץ חדש ו-context נקי" }
-      - { key: state, en: "Project memory lives in files, not in one long chat", he: "הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד" }
-      - { key: rot, en: "Built to dodge context rot on long projects", he: "נועד למנוע context rot בפרויקטים ארוכים" }
-    tip: { key: decisions-in-files, en: "Write decisions into files, not the chat, so a fresh session can pick them up.", he: "כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה." }
-    sources: [F4, F5, F6]
-    notes:
-      en: |
-        Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
-        GSD is short for a blunt phrase, "Get Sh*t Done", and the article calls it fundamentally a context engineering tool. Its insight is the one from the last slide: quality drops as the window fills, so never let it fill.
-        Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
-        The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
-        One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The article still links the old one. The original project was published under the name TÂCHES.
-        Sources:
-        https://github.com/open-gsd/gsd-core
-        https://github.com/gsd-build/get-shit-done
-      he: |
-        Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
-        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, והמאמר מגדיר אותו ביסודו ככלי context engineering. התובנה שלו היא זו מהשקף הקודם: האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
-        כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
-        הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד, וזה מה שמאפשר לכל רץ חדש לקחת את המקל.
-        הערה מעשית: ה-repository המקורי, gsd-build/get-shit-done, עבר לארכיון, וה-README שלו מפנה ל-open-gsd/gsd-core. המאמר עדיין מקשר לישן. הפרויקט המקורי פורסם תחת השם TÂCHES.
-        Sources:
-        https://github.com/open-gsd/gsd-core
-        https://github.com/gsd-build/get-shit-done
-
   - id: superpowers
     part: III
     budget: "1:30"
@@ -366,7 +335,7 @@ slides:
     notes:
       en: |
         Analogy: a pilot's pre-flight checklist. Pilots are not short on skill. They read the checklist out loud on every flight because skipped steps are how accidents happen.
-        Superpowers, created by Jesse Vincent, starts from a similar insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
+        Superpowers, created by Jesse Vincent, starts from a simple insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
         Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building, review and merge. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
         Then the work passes two reviews: first, does it match the spec? Second, is the code itself good?
         On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers). The article's "170k in three months" figure does not match the record, so I am not repeating it.
@@ -374,7 +343,7 @@ slides:
         Source: https://github.com/obra/superpowers
       he: |
         Analogy: checklist של טייס לפני המראה. לטייסים לא חסר ניסיון. הם מקריאים את ה-checklist בקול בכל טיסה, כי שלבים שמדלגים עליהם הם הדרך שבה קורות תאונות.
-        Superpowers, שנוצר על ידי Jesse Vincent, יוצא מתובנה דומה: הבעיה של קוד עם AI היא לא אינטליגנציה, אלא משמעת. זו ספרייה של skills, נהלים כתובים, שה-agent חייב לפעול לפיהם.
+        Superpowers, שנוצר על ידי Jesse Vincent, יוצא מתובנה פשוטה: הבעיה של קוד עם AI היא לא אינטליגנציה, אלא משמעת. זו ספרייה של skills, נהלים כתובים, שה-agent חייב לפעול לפיהם.
         ה-README שלו מתאר workflow של שבעה שלבים, מ-brainstorming על העיצוב, דרך spec מאושר ו-plan, ועד בנייה, review ו-merge. החלק הכי קשוח הוא TDD, פיתוח מונחה בדיקות: קודם כותבים בדיקה שנכשלת, ואז רק מספיק קוד כדי שתעבור. Superpowers אוכף את זה מילולית: קוד שנכתב לפני הבדיקה שלו נמחק.
         אחר כך העבודה עוברת שני reviews: קודם, האם היא תואמת ל-spec? ושנית, האם הקוד עצמו טוב?
         לגבי אימוץ: ל-repository יש יותר מ-300,000 כוכבים ב-GitHub נכון לנובמבר 2026 (github.com/obra/superpowers). המספר במאמר, “170 אלף בשלושה חודשים”, לא תואם את הנתונים, אז אני לא חוזר עליו.
@@ -383,7 +352,7 @@ slides:
 
   - id: two-layers
     part: III
-    budget: "2:00"
+    budget: "2:30"
     layout: bullets-diagram
     title: { en: "Four metaphors, two layers", he: "ארבע מטאפורות, שתי שכבות" }
     bullets:
@@ -401,7 +370,7 @@ slides:
     notes:
       en: |
         Analogy: building a house needs an architect and a site foreman. The architect decides what to build; the foreman keeps the work on track every day. Neither replaces the other.
-        Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD is fresh context. Superpowers is discipline.
+        Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks. Superpowers is discipline.
         They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is BMAD and Spec Kit. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is GSD and Superpowers.
         This is the article's most useful idea: these tools are not competitors. Planning tools do not solve context rot; a planning agent can drift in a long session like any other. And none of the planning tools enforce TDD at the moment the code is written.
         There is real overlap too. Spec Kit's acceptance checklist is a light quality gate, and BMAD has a tester role, so on smaller projects with careful human review, the planning layer may be enough on its own.
@@ -409,7 +378,7 @@ slides:
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: |
         Analogy: כדי לבנות בית צריך אדריכל ומנהל עבודה. האדריכל מחליט מה בונים; מנהל העבודה דואג שהעבודה תתקדם כמו שצריך, כל יום. אף אחד מהם לא מחליף את השני.
-        הנה ארבעת ה-frameworks בתמונה אחת, כל אחד עם המטאפורה שלו. BMAD הוא הצוות. Spec Kit היא המסמך החי. GSD הוא context נקי. Superpowers הוא משמעת.
+        הנה ארבעת ה-frameworks בתמונה אחת, כל אחד עם המטאפורה שלו. BMAD הוא הצוות. Spec Kit היא המסמך החי. GSD, קיצור של “Get Sh*t Done”, הוא context נקי: כל משימה מקבלת agent חדש עם context window נקי, כך שפרויקטים ארוכים לא נרקבים; יש עליו שקף גיבוי אם מישהו שואל. Superpowers הוא משמעת.
         הם יושבים בשתי שכבות. השכבה העליונה היא תכנון ומשילות: מה בונים, למה, ולפי אילו כללים? זה BMAD ו-Spec Kit. השכבה התחתונה היא משמעת ביצוע: איך בונים באמינות, במשך שעות, בלי שה-AI יסטה או ידלג על בדיקות? זה GSD ו-Superpowers.
         זה הרעיון הכי שימושי במאמר: הכלים האלה לא מתחרים זה בזה. כלי תכנון לא פותרים context rot; agent של תכנון יכול לסטות ב-session ארוך כמו כל אחד אחר. ואף אחד מכלי התכנון לא אוכף TDD ברגע שהקוד נכתב.
         יש גם חפיפה אמיתית. ה-checklist של Spec Kit הוא שער איכות קל, ול-BMAD יש תפקיד של בודק, אז בפרויקטים קטנים עם review אנושי קפדני, שכבת התכנון לבדה אולי מספיקה.
@@ -418,7 +387,7 @@ slides:
 
   - id: decision-rule
     part: III
-    budget: "2:30"
+    budget: "3:00"
     layout: bullets-diagram
     title: { en: "Decision rule: which layers do you need?", he: "איך מחליטים: אילו שכבות צריך?" }
     diagram:
@@ -589,7 +558,7 @@ slides:
     tip: { key: photo-proof, en: "Photograph real hardware results; reviewers trust a photo faster than a log.", he: "צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log." }
     notes:
       en: |
-        Analogy: see slide 15, the thermostat. These photos show it working.
+        Analogy: see slide 14, the thermostat. These photos show it working.
         Pause about 10 seconds on each photo so people can read the screen.
         This is the real board with the DHT22 wired up. On the left, normal room temperature: the screen shows OK and 24.0 degrees.
         On the right, I warmed the sensor with my hand. Look closely at the number: 26.6 degrees, and the screen still says WARNING. A beginner might call that a bug, because 26.6 is below the 27-degree threshold. It is not a bug; it is the spec. The reading went above 27, the warning switched on, and it stays on until the temperature drops below 25. That is the hysteresis band from three slides ago, visible on real hardware.
@@ -597,7 +566,7 @@ slides:
         And what did we not need? GSD or Superpowers. The sessions were short and a human reviewed every stage, so the decision rule says skip GSD. And the constitution already required tests first (Principle II), so the Superpowers question also says skip.
         Tip: photograph real hardware results; reviewers trust a photo faster than a log.
       he: |
-        Analogy: ראו שקף 15, התרמוסטט. התמונות האלה מראות אותו עובד.
+        Analogy: ראו שקף 14, התרמוסטט. התמונות האלה מראות אותו עובד.
         עצרו בערך 10 שניות על כל תמונה, כדי שאנשים יספיקו לקרוא את המסך.
         זה הלוח האמיתי, עם ה-DHT22 מחובר. בתמונת ה-OK, טמפרטורת חדר רגילה: המסך מציג OK ו-24.0 מעלות.
         בתמונת ה-WARNING, חיממתי את החיישן ביד. תסתכלו טוב על המספר: 26.6 מעלות, והמסך עדיין אומר WARNING. מי שרק מתחיל היה קורא לזה באג, כי 26.6 מתחת לסף של 27. זה לא באג; זה ה-spec. הקריאה עלתה מעל 27, האזהרה נדלקה, והיא נשארת דלוקה עד שהטמפרטורה יורדת מתחת ל-25. זה פס ה-hysteresis משלושה שקפים קודם, גלוי על חומרה אמיתית.
@@ -909,6 +878,48 @@ slides:
         backup, not timed. לשאלות שמשוות בין הכלים.
         הטיעון של המאמר: frameworks של תכנון פותרים את “מה לבנות”; GSD ו-Superpowers פותרים את “איך לבנות באמינות במשך שעות”. בפרויקטים קטנים עם review אנושי קפדני, השערים הקלים של שכבת התכנון אולי מספיקים. אף אחד מהארבעה לא מחליף reviewer אנושי, ובדיקות החומרה עדיין עליכם.
 
+  - id: a7-gsd
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: bullets-diagram
+    title: { en: "Backup: GSD, a fresh start for every task", he: "גיבוי: GSD, התחלה נקייה לכל משימה" }
+    bullets:
+      - { key: fresh, en: "Each task gets a fresh agent with a clean context", he: "כל משימה מקבלת agent חדש עם context נקי" }
+      - { key: state, en: "Memory lives in files, not in one long chat", he: "הזיכרון חי בקבצים, לא בצ'אט ארוך אחד" }
+    diagram:
+      name: fresh-context
+      labels:
+        main: { en: "Main session\nstays small", he: "session ראשי\nנשאר קטן" }
+        task1: { en: "Task 1\nfresh context", he: "משימה 1\ncontext נקי" }
+        task2: { en: "Task 2\nfresh context", he: "משימה 2\ncontext נקי" }
+        task3: { en: "Task 3\nfresh context", he: "משימה 3\ncontext נקי" }
+        memory: { en: "Project files: spec, plan, state", he: "קבצי הפרויקט: spec, plan, state" }
+        baton: { en: "Like a relay: each runner starts fresh", he: "כמו מרוץ שליחים: כל רץ מתחיל רענן" }
+    tip: { key: decisions-in-files, en: "Write decisions into files, not the chat, so a fresh session can pick them up.", he: "כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה." }
+    sources: [F4, F5, F6]
+    notes:
+      en: |
+        backup, not timed. Use if someone asks about long sessions or GSD (slides 11 and 12 mention it).
+        Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
+        GSD is short for a blunt phrase, "Get Sh*t Done", and the article calls it fundamentally a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
+        Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
+        The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
+        One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The article still links the old one. The original project was published under the name TÂCHES.
+        Sources:
+        https://github.com/open-gsd/gsd-core
+        https://github.com/gsd-build/get-shit-done
+      he: |
+        backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 11 ו-12 מזכירים אותו).
+        Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
+        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, והמאמר מגדיר אותו ביסודו ככלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 7): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
+        כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
+        הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד, וזה מה שמאפשר לכל רץ חדש לקחת את המקל.
+        הערה מעשית: ה-repository המקורי, gsd-build/get-shit-done, עבר לארכיון, וה-README שלו מפנה ל-open-gsd/gsd-core. המאמר עדיין מקשר לישן. הפרויקט המקורי פורסם תחת השם TÂCHES.
+        Sources:
+        https://github.com/open-gsd/gsd-core
+        https://github.com/gsd-build/get-shit-done
+
   - id: a3-specify-init
     part: close
     appendix: true
@@ -938,9 +949,9 @@ slides:
       - { key: combine, en: "Same specs/ work with Claude Code, Codex and others", he: "אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים" }
     notes:
       en: |
-        backup, not timed. Use with slide 12. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+        backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
       he: |
-        backup, not timed. משתמשים יחד עם שקף 12. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
+        backup, not timed. משתמשים יחד עם שקף 11. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
 
   - id: a5-vscode-extensions
     part: close

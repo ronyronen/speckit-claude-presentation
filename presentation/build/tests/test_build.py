@@ -53,8 +53,8 @@ def test_build_both_langs(decks):
 def test_notes_prefix_and_end(decks):
     for lang in ("en", "he"):
         sl = decks[lang].slides
-        assert _notes(sl[26]).startswith("[3:00] [@45:00]")
-        assert _notes(sl[27]).startswith("[backup, not timed]")
+        assert _notes(sl[25]).startswith("[3:00] [@45:00]")
+        assert _notes(sl[26]).startswith("[backup, not timed]")
 
 
 def _all_text(prs):

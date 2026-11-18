@@ -9,7 +9,7 @@
 ```
 presentation/
   content/
-    deck.yaml          # single source of truth: 27 timed + 6 appendix slides, EN+HE
+    deck.yaml          # single source of truth: 26 timed + 7 appendix slides, EN+HE (GSD moved to backup 2026-11-18)
   build/
     build_decks.py     # python-pptx generator: YAML -> two .pptx files
     validate.py        # sync, timing, tone and fact checks (also run by build_decks.py)
