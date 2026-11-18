@@ -14,6 +14,10 @@ a shared constitution).
 > The problem is usually not that the AI cannot write the code.
 > The problem is that the product behavior was not sufficiently defined.
 
+**Repository:** [github.com/ronyronen/speckit-claude-presentation](https://github.com/ronyronen/speckit-claude-presentation)
+· **Latest release:** [v1.0.0](https://github.com/ronyronen/speckit-claude-presentation/releases/latest)
+(both decks and both transcripts, ready to download)
+
 This repository is the companion material for the talk. It contains a
 working firmware example, the full set of Spec Kit artifacts that produced
 it, a standalone Markdown textbook, and the single content source from
@@ -49,7 +53,22 @@ failure handling. See [firmware/README.md](firmware/README.md).
 
 ## Slide decks
 
-📊 Two decks, same content, timed speaker notes in each:
+📊 Two decks, same content, timed speaker notes in each. Each deck has
+26 timed slides (45:00, including 3:00 of Q&A) and 7 backup slides at
+the end. One backup slide explains GSD as a relay diagram; the timed
+slides only mention GSD briefly.
+
+| Part | Time |
+|---|---|
+| Opening, the intent gap, vibe coding vs SDD | 9:00 |
+| Context engineering and context rot | 4:30 |
+| BMAD, Spec Kit, GSD and Superpowers as layers, plus the decision rule | 10:30 |
+| Case study: Heltec firmware with Spec Kit | 8:00 |
+| GitHub team workflow | 5:00 |
+| What's next | 3:00 |
+| Close and Q&A | 5:00 |
+
+The decks:
 
 - [presentation/speckit-workshop.pptx](presentation/speckit-workshop.pptx) (English)
   · [transcript](presentation/transcript-en.md)
@@ -57,7 +76,8 @@ failure handling. See [firmware/README.md](firmware/README.md).
   · [transcript](presentation/transcript-he.md)
 
 Each transcript is the full talk script, slide by slide, with timings and tips.
-Tips appear on the slides as a light-bulb icon.
+Tips appear on the slides as a light-bulb icon. The same files are attached
+to every [GitHub release](https://github.com/ronyronen/speckit-claude-presentation/releases).
 
 ### Rebuilding the decks
 
@@ -116,7 +136,22 @@ Download from [code.visualstudio.com](https://code.visualstudio.com/download).
 - macOS: `brew install --cask visual-studio-code`
 - Windows: `winget install Microsoft.VisualStudioCode`
 
-### 2. Claude Code CLI
+### 2. Claude Code
+
+**Option A: from inside VS Code (easiest).**
+
+1. Open VS Code and the Extensions view (`Cmd+Shift+X` on macOS,
+   `Ctrl+Shift+X` on Windows).
+2. Search for **Claude Code** (publisher: Anthropic) and click **Install**.
+   Or, from a terminal: `code --install-extension anthropic.claude-code`.
+3. Click the Claude icon in the editor toolbar (or run
+   **Claude Code: Open** from the Command Palette) and sign in.
+
+The extension gives you a Claude Code panel with inline diffs. The
+`/speckit-*` commands and the plugins below work there too.
+
+**Option B: the `claude` CLI** (what the talk demonstrates, in VS Code's
+integrated terminal):
 
 - **macOS/Linux**: `curl -fsSL https://claude.ai/install.sh | bash`
 - **Windows (PowerShell)**: `irm https://claude.ai/install.ps1 | iex`
@@ -135,10 +170,42 @@ Download from [code.visualstudio.com](https://code.visualstudio.com/download).
 > Using bash instead? Same fix, but append to `~/.bashrc`. Then confirm
 > with `claude --version`.
 
-Full install docs (Homebrew, winget, WSL, npm, uninstalling):
-[code.claude.com/docs/en/setup](https://code.claude.com/docs/en/setup).
+Running `claude` once in VS Code's integrated terminal also offers to
+install the extension for you.
 
-### 3. Spec Kit (the `specify` CLI)
+Full install docs (Homebrew, winget, WSL, npm, uninstalling):
+[code.claude.com/docs/en/setup](https://code.claude.com/docs/en/setup) ·
+VS Code guide: [code.claude.com/docs/en/vs-code](https://code.claude.com/docs/en/vs-code).
+
+### 3. Claude Code plugins (Superpowers and friends)
+
+Plugins add skills, agents and commands to Claude Code. The talk shows
+**Superpowers** as the "discipline" layer. Install it from the official
+plugin marketplace by typing these commands inside Claude Code (CLI or
+the VS Code panel):
+
+```text
+/plugin install superpowers@claude-plugins-official
+```
+
+Then restart Claude Code (or open a new session) so the plugin loads.
+
+Run `/plugin` on its own to browse, enable, disable or remove plugins.
+
+The other tools from the talk are not Claude Code plugins. Install them
+from their own repos:
+
+| Tool | Layer in the talk | Install |
+|---|---|---|
+| [Superpowers](https://github.com/obra/superpowers) | discipline (TDD, review, plans) | plugin, see above |
+| [GitHub Spec Kit](https://github.com/github/spec-kit) | the living spec | `specify` CLI, see step 4 |
+| [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) | AI agile team | `npx bmad-method install` (see its README) |
+| [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) | fresh context per task | see its README |
+
+You don't need all of them. Slide 12 (the decision rule) explains which
+layers a project needs.
+
+### 4. Spec Kit (the `specify` CLI)
 
 Needs [`uv`](https://docs.astral.sh/uv/getting-started/installation/) first:
 
@@ -154,18 +221,18 @@ uv tool install specify-cli
 Spec Kit project: [github/spec-kit](https://github.com/github/spec-kit) ·
 [docs](https://github.github.io/spec-kit/).
 
-### 4. PlatformIO (build/flash the firmware)
+### 5. PlatformIO (build/flash the firmware)
 
 Simplest path: skip a separate install and just add the **PlatformIO IDE**
 VS Code extension below — it bundles its own Python and PlatformIO Core
 automatically, no extra setup needed. CLI-only alternative:
 [platformio.org/install/cli](https://platformio.org/install/cli).
 
-### 5. VS Code extensions (addons)
+### 6. VS Code extensions (addons)
 
 | Extension | Marketplace ID | Why |
 |---|---|---|
-| [Claude Code](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) | `anthropic.claude-code` | Native Claude Code panel inside VS Code (optional — the `claude` CLI in the integrated terminal works just as well and is what this workshop demonstrates) |
+| [Claude Code](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) | `anthropic.claude-code` | Claude Code panel inside VS Code (see step 2; the `claude` CLI in the integrated terminal works just as well) |
 | [PlatformIO IDE](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) | `platformio.platformio-ide` | Build/upload/monitor the Heltec firmware from the editor |
 | [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) | `ms-vscode.cpptools` | IntelliSense across `firmware/src` and `firmware/include` |
 
@@ -181,10 +248,10 @@ code --install-extension ms-vscode.cpptools
 `.claude/skills/` and `.agents/skills/` already committed in this repo;
 see [Spec Kit (already initialized in this repo)](docs/setup.md#spec-kit-already-initialized-in-this-repo).)
 
-### 6. Clone and open this repo
+### 7. Clone and open this repo
 
 ```bash
-git clone <this-repo-url>
+git clone https://github.com/ronyronen/speckit-claude-presentation.git
 cd speckit-claude-presentation
 code speckit-claude-presentation.code-workspace
 ```
@@ -249,6 +316,9 @@ see [docs/codex.md](docs/codex.md).)
 
 ## Learn more
 
+- This repo on GitHub: [ronyronen/speckit-claude-presentation](https://github.com/ronyronen/speckit-claude-presentation)
+  · [releases](https://github.com/ronyronen/speckit-claude-presentation/releases)
+  · [issues](https://github.com/ronyronen/speckit-claude-presentation/issues)
 - Full textbook: [docs/textbook.md](docs/textbook.md)
 - Setup: [docs/setup.md](docs/setup.md)
 - VS Code setup: [docs/vscode.md](docs/vscode.md)
@@ -269,7 +339,7 @@ see [docs/codex.md](docs/codex.md).)
 - Chroma, [“Context Rot”](https://www.trychroma.com/research/context-rot) (2025)
 - [Spec Kit](https://github.com/github/spec-kit)
 - [Spec Kit documentation](https://github.github.io/spec-kit/)
-- [Claude Code documentation](https://docs.claude.com/en/docs/claude-code)
+- [Claude Code documentation](https://code.claude.com/docs) · [Claude Code plugins](https://code.claude.com/docs/en/plugins)
 - [Codex documentation](https://developers.openai.com/codex)
 - [PlatformIO](https://platformio.org/)
 - [Heltec WiFi Kit 32 (V3)](https://heltec.org/project/wifi-kit32-v3/)
