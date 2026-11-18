@@ -66,7 +66,11 @@ vibe coding הוא המפית. זו דרך עבודה שבה מתארים מה �
 
 אז זה לא טוב מול רע. זו בחירה, ושאלה אחת מכריעה: האם הקוד הזה צריך לשרוד? אם כן, מגיע לו spec.
 
+הצביעו על התמונה. משמאל, לולאה בלי יציאה: prompt, ה-AI כותב קוד, מאשרים או דוחים, ושוב מההתחלה. שום דבר לא נכתב מחוץ לצ'אט. מימין, קו שמתקדם: spec, plan, tasks, קוד, review מול ה-spec, ורק אז משחררים. כל אחד מארבעת השלבים הראשונים משאיר אחריו קובץ.
+
 זה ה-TIP בשקף: חקרו עם vibe coding, ועברו ל-spec ברגע שהקוד צריך להחזיק מעמד.
+
+התרשים צויר מחדש על בסיס רעיון מהמאמר: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
 ### 5. SDD: ה-spec הוא מקור האמת
 
@@ -142,11 +146,13 @@ BMAD הוא קיצור של Breakthrough Method for Agile AI-Driven Development.
 
 הדבר המרכזי הוא ההעברה. כל תפקיד מייצר מסמך כתוב, brief, מסמך דרישות, ארכיטקטורה, user stories, ומעביר אותו לתפקיד הבא. כך נשאר תיעוד של כל החלטה.
 
+עוברים על התמונה משמאל לימין: ארבעה שלבים, ניתוח, תכנון, עיצוב הפתרון ומימוש. בכל עמודה, ה-agents למעלה כותבים את המסמך שמתחתם, והמסמך הזה הוא נקודת ההתחלה של השלב הבא. המסלול הכתום למטה הוא ה-quick flow: לתיקון באג או feature קטן מדלגים על שלושת השלבים הראשונים, וישר עוברים ל-spec קצר, story ו-review.
+
 המאמר מצטט מספר מסוים של תפקידים; לא הצלחנו לאמת אותו, אז אני לא חוזר עליו.
 
 לפי הקריאה שלי, BMAD מתאים לפרויקטים גדולים שצריכים תכנון רציני מראש. בפרויקט קטן, הצוות המלא מוגזם, וזה ה-TIP: קחו רק את התפקידים שבאמת חסרים לכם.
 
-Source: https://github.com/bmad-code-org/BMAD-METHOD
+Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
 
 ### 9. Spec Kit: ה-spec החי
 
@@ -156,7 +162,7 @@ Analogy: להוציא היתר בנייה. כל משרד מחתים טופס א�
 
 Spec Kit היא ערכת כלים בקוד פתוח של GitHub לפיתוח מבוסס spec. איפה ש-BMAD מארגן agents, Spec Kit מארגנת מסמכים. המסמכים הם המנוע: כל שלב קורא את המסמך הקודם וכותב את הבא, הכול כקבצי Markdown פשוטים בתוך הפרויקט.
 
-נעבור על הטבלה. ה-constitution תופסת כללים שמופרים בשקט. specify כותב את ה-spec, ו-clarify שואל אתכם את השאלות שנשארו פתוחות, כך שהדרישות מוגדרות ולא מנוחשות. plan ו-tasks הופכים את ה-spec לתכנון ולרשימת משימות ממוספרת, וזה תופס תכנון שגוי או צעדים חסרים. analyze בודק את כל המסמכים זה מול זה ומול ה-constitution; הוא תופס מסמכים שסותרים זה את זה. implement כותב את הקוד והבדיקות לפי רשימת המשימות, כך שהקוד נשאר קשור ל-spec.
+נעבור על שורת הפקודות. המקווקווים, clarify ו-analyze, אופציונליים אבל שווים את זה. ה-constitution, שמגדירים פעם אחת לפרויקט, תופסת כללים שמופרים בשקט. specify כותב את ה-spec, ו-clarify שואל אתכם את השאלות שנשארו פתוחות, כך שהדרישות מוגדרות ולא מנוחשות. plan ו-tasks הופכים את ה-spec לתכנון ולרשימת משימות ממוספרת, וזה תופס תכנון שגוי או צעדים חסרים. analyze בודק את כל המסמכים זה מול זה ומול ה-constitution; הוא תופס מסמכים שסותרים זה את זה. implement כותב את הקוד והבדיקות לפי רשימת המשימות, כך שהקוד נשאר קשור ל-spec. הכול נכנס לתיקייה אחת לכל feature, תחת specs/, והיא נוסעת יחד עם ה-branch.
 
 הרעיון לזכור: כל שלב תופס סוג אחר של טעות, וכל טעות זולה לתיקון בשלב הזה ויקרה אחר כך.
 
@@ -164,7 +170,7 @@ Spec Kit עובדת עם כמה עוזרי קוד, כולל Claude Code ו-Codex
 
 זה הכלי שהשתמשנו בו ב-case study, אז תראו את השלבים האלה באמת בעוד כמה דקות.
 
-Source: https://github.com/github/spec-kit
+Source: https://github.com/github/spec-kit · docs: https://github.github.io/spec-kit/
 
 ### 10. Superpowers: משמעת שה-AI לא יכול לדלג עליה
 
@@ -176,7 +182,7 @@ Analogy: checklist של טייס לפני המראה. לטייסים לא חסר
 
 Superpowers, שנוצר על ידי Jesse Vincent, יוצא מתובנה פשוטה: הבעיה של קוד עם AI היא לא אינטליגנציה, אלא משמעת. זו ספרייה של skills, נהלים כתובים, שה-agent חייב לפעול לפיהם.
 
-ה-README שלו מתאר workflow של שבעה שלבים, מ-brainstorming על העיצוב, דרך spec מאושר ו-plan, ועד בנייה, review ו-merge. החלק הכי קשוח הוא TDD, פיתוח מונחה בדיקות: קודם כותבים בדיקה שנכשלת, ואז רק מספיק קוד כדי שתעבור. Superpowers אוכף את זה מילולית: קוד שנכתב לפני הבדיקה שלו נמחק.
+ה-README שלו מתאר workflow של שבעה שלבים, וזו התמונה. brainstorming שואל אתכם שאלות לפני כל עיצוב. Git worktree נותן לעבודה branch מבודד משלה. ה-plan מפרק אותה למשימות קטנות. subagent חדש לוקח כל משימה. אחר כך TDD, code review, וסיום עם merge או PR. החלק הכי קשוח הוא TDD, פיתוח מונחה בדיקות: קודם כותבים בדיקה שנכשלת, ואז רק מספיק קוד כדי שתעבור. Superpowers אוכף את זה מילולית: קוד שנכתב לפני הבדיקה שלו נמחק.
 
 אחר כך העבודה עוברת שני reviews: קודם, האם היא תואמת ל-spec? ושנית, האם הקוד עצמו טוב?
 
@@ -448,6 +454,8 @@ Context rot: https://www.trychroma.com/research/context-rot
 
 Lost in the Middle: https://arxiv.org/abs/2307.03172
 
+Where to go next: the last backup slide has a learning path, and the repo README has the full reading list.
+
 ### 26. שאלות?
 
 `[3:00] [@45:00]`
@@ -535,5 +543,25 @@ backup, not timed. לקהל שרוצה לנסות בעצמו. רשימת ההר�
 `[backup, not timed]`
 
 backup, not timed. ה-tags מאפשרים לשחזר כל שלב בקלות: ב-03-spec-created עדיין יש שאלות פתוחות, ב-04-spec-clarified יש את התשובות, 07-analysis-complete מראה את הסתירה שנמצאה, ב-08-implemented עוברות 11/11 בדיקות, ו-09-hardware-verified הוא הריצה עם ה-DHT22 על הלוח.
+
+### 34. גיבוי: לאן ממשיכים מכאן
+
+`[backup, not timed]`
+
+> 💡 **Tip:** לומדים שכבה אחת בכל פעם: קודם spec, כלים רק כשמרגישים את הבעיה.
+
+backup, not timed. מסלול לימוד להמשך, לפי הסדר.
+
+1. ספר הלימוד ב-repo מסביר בהרחבה את כל מה שראינו היום: https://github.com/ronyronen/speckit-claude-presentation/blob/main/docs/textbook.md
+
+2. משחזרים את ה-case study: עוברים על ה-tags אחד אחד, מ-01-start ועד 09-hardware-verified, וקוראים מה השתנה בכל שלב.
+
+3. התיעוד של Spec Kit ו-quick start: https://github.github.io/spec-kit/ · ההקדמה של GitHub: https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/
+
+4. Superpowers: https://github.com/obra/superpowers · התקנת plugins ל-Claude Code: https://code.claude.com/docs/en/plugins
+
+5. יסודות: Anthropic, "Effective context engineering for AI agents": https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents · Liu et al., "Lost in the Middle": https://arxiv.org/abs/2307.03172 · Chroma, "Context Rot": https://www.trychroma.com/research/context-rot · האתר של Martin Fowler על כלי SDD: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html · Claude Code best practices: https://www.anthropic.com/engineering/claude-code-best-practices
+
+6. השכבות האחרות כשצריך אותן: BMAD https://docs.bmad-method.org/ · GSD https://github.com/open-gsd/gsd-core
 
 </div>

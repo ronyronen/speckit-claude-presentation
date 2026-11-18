@@ -26,8 +26,12 @@ place in the right-to-left sentence, and that nothing is clipped.
 ## 4. vibe-vs-sdd
 - [ ] vibe coding מול SDD
 - [ ] vibe coding: סקיצה על מפית
-- [ ] כותבים prompt, מאשרים, וחוזר חלילה עד שזה נראה עובד
+- [ ] ה-AI כותב קוד
+- [ ] ההחלטות נשארות בצ'אט. ב-session הבא ה-context נעלם.
 - [ ] SDD: שרטוט של אדריכל
+- [ ] ה-AI כותב קוד
+- [ ] בדיקה מול ה-spec
+- [ ] ההחלטות כתובות בקבצים. כל שינוי מוביל חזרה ל-spec.
 - [ ] TIP: לניסויים, vibe coding; כשהקוד צריך להחזיק לאורך זמן, עברו ל-spec.
 
 ## 5. sdd-core
@@ -51,19 +55,27 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 8. bmad
 - [ ] BMAD: צוות agile של AI
-- [ ] כל agent ממלא תפקיד: אנליסט, מנהל מוצר, ארכיטקט, מפתח
+- [ ] מעצב UX
+- [ ] מפתח · QA
+- [ ] brief לפרויקט
+- [ ] PRD + עיצוב UX
+- [ ] epics ו-stories
+- [ ] story אחרי story
+- [ ] Quick flow: עבודה קטנה מדלגת על שלבים 1-3
 - [ ] TIP: קחו רק את התפקידים שחסרים לכם; פרויקט קטן כמעט אף פעם לא צריך צוות שלם.
 
 ## 9. speckit
 - [ ] Spec Kit: ה-spec החי
-- [ ] קוד שסוטה מה-spec
+- [ ] תיקייה אחת לכל feature בתוך specs/
 
 ## 10. superpowers
 - [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
 - [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
-- [ ] workflow של 7 שלבים, מ-brainstorming ועד merge
-- [ ] TDD (פיתוח מונחה בדיקות): קוד שנכתב לפני הבדיקה שלו נמחק
-- [ ] שני reviews: האם זה תואם ל-spec? האם הקוד טוב?
+- [ ] branch מבודד
+- [ ] 3. כותבים plan
+- [ ] קודם spec, אז איכות
+- [ ] merge או PR
+- [ ] בכל שלב נכנס skill. ה-agent לא יכול לדלג עליו.
 - [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
 
 ## 11. two-layers
@@ -194,3 +206,11 @@ place in the right-to-left sentence, and that nothing is clipped.
 ## 33. a6-git-checkpoints
 - [ ] גיבוי: נקודות שמירה ב-Git לכל שלב
 - [ ] tag אחד לכל שלב, מ-01-start ועד 09-hardware-verified
+
+## 34. a8-next-steps
+- [ ] מתחילים מספר הלימוד ב-repo: docs/textbook.md
+- [ ] משחזרים את ה-case study: tags מ-01-start ועד 09-hardware-verified
+- [ ] מנסים Spec Kit על feature קטן משלכם
+- [ ] מוסיפים Superpowers ל-Claude Code ומתרגלים TDD
+- [ ] יסודות: context engineering, מחקר Lost in the Middle, השוואת כלי SDD
+- [ ] TIP: לומדים שכבה אחת בכל פעם: קודם spec, כלים רק כשמרגישים את הבעיה.

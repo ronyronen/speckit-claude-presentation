@@ -155,13 +155,20 @@ def test_decision_missing_labels_fall_back():
 
 
 # ---- P2 diagrams (Task 7 part A) ----
-P2 = ["sdlc-adlc", "sdd-pipeline", "context-rot", "team-roles", "fresh-context"]
+P2 = ["sdlc-adlc", "sdd-pipeline", "context-rot", "team-roles", "fresh-context",
+      "vibe-sdd", "bmad-phases", "speckit-flow", "superpowers-flow"]
 P2KEYS = ["sdlc_title", "adlc_title", "requirements", "design", "build", "test", "release",
           "intent", "agent_builds", "check", "correct",
           "constitution", "specify", "plan", "tasks", "implement", "clarify", "analyze",
           "feedback", "rail", "axis_quality", "axis_context", "rot_zone",
           "architect", "product_owner", "senior_dev", "human",
-          "main", "task1", "task2", "task3", "memory", "baton"]
+          "main", "task1", "task2", "task3", "memory", "baton",
+          "vibe_title", "prompt", "ai_code", "accept", "vibe_note", "sdd_title", "spec",
+          "generate", "review", "ship", "spec_md", "plan_md", "tasks_md", "code", "sdd_note",
+          "p1", "p2", "p3", "p4", "a1", "a2", "a3", "a4", "d1", "d2", "d3", "d4",
+          "quick", "q1", "q2", "q3", "optional", "folder"] + \
+         [f"{k}_out" for k in ("specify", "clarify", "plan", "tasks", "analyze", "implement")] + \
+         [f"s{i}" for i in range(1, 8)] + ["gate"]
 
 
 def _by(s, prefix):
@@ -265,3 +272,47 @@ def test_fresh_context_relay_chain_and_memory():
             "relay-memory"} <= names
     # main -> t1 -> t2 -> t3, plus one two-way link from each task to memory
     assert len(_connectors(s)) == 6
+
+
+def test_vibe_sdd_loop_vs_pipeline():
+    s = _build("vibe-sdd", keys=P2KEYS)
+    loop = {"vibe-prompt", "vibe-ai_code", "vibe-accept"}
+    edges = [c for c in _connectors(s) if set(c) <= loop]
+    assert len(edges) == 3 and {a for a, _ in edges} == loop  # closed cycle
+    steps = [f"sdd-{k}" for k in ("spec", "plan", "tasks", "generate", "review", "ship")]
+    got = _connectors(s)
+    for a, b in zip(steps, steps[1:]):
+        assert (a, b) in got
+    ys = [next(sh for sh in s.shapes if sh.name == n).top for n in steps]
+    assert ys == sorted(ys)
+    assert len(_by(s, "doc-")) == 4
+
+
+def test_bmad_docs_feed_next_phase_and_quick_flow():
+    s = _build("bmad-phases", keys=P2KEYS)
+    got = _connectors(s)
+    for i in "1234":
+        assert (f"agents-{i}", f"doc-{i}") in got
+    for a, b in zip("123", "234"):
+        assert (f"doc-{a}", f"agents-{b}") in got
+    assert ("quick-q1", "quick-q2") in got and ("quick-q2", "quick-q3") in got
+
+
+def test_speckit_flow_optional_steps_and_folder():
+    from pptx.enum.dml import MSO_LINE
+    s = _build("speckit-flow", keys=P2KEYS)
+    cmds = {sh.name: sh for sh in _by(s, "kit-") if sh.name.split("-", 1)[1] in
+            ("specify", "clarify", "plan", "tasks", "analyze", "implement")}
+    assert len(cmds) == 6
+    dashed = {n for n, sh in cmds.items() if sh.line.dash_style == MSO_LINE.DASH}
+    assert dashed == {"kit-clarify", "kit-analyze"}
+    into_folder = [a for a, b in _connectors(s) if b == "kit-folder"]
+    assert len(into_folder) == 6
+
+
+def test_superpowers_seven_steps_in_order():
+    s = _build("superpowers-flow", keys=P2KEYS)
+    got = _connectors(s)
+    steps = [f"sp-s{i}" for i in range(1, 8)]
+    assert [(a, b) for a, b in zip(steps, steps[1:])] == got
+    assert next(sh for sh in s.shapes if sh.name == "sp-s5").fill.fore_color.rgb == COLORS["accent"]

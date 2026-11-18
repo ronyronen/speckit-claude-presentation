@@ -64,7 +64,11 @@ The difference shows up a month later. With vibe coding, someone asks why the wa
 
 So this is not good versus bad. It is a choice, and one question decides it: will this code need to survive? If yes, it deserves a spec.
 
+Point at the picture. On the left, a loop with no exit: prompt, the AI writes code, you accept or reject, and round again. Nothing is written down outside the chat. On the right, a line that goes somewhere: spec, plan, tasks, code, a review against the spec, and only then ship. Every one of the first four steps leaves a file behind.
+
 That is the tip on the slide: explore with vibe coding, and switch to a spec the moment the code has to last.
+
+The diagram is redrawn from an idea in the article: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
 ### 5. SDD: the spec is the source of truth
 
@@ -140,11 +144,13 @@ BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organiz
 
 The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
 
+Walk the picture left to right: four phases, analysis, planning, solutioning and implementation. In each column, the agents on top write the document underneath, and that document is what the next phase starts from. The amber lane at the bottom is the quick flow: for a bug fix or a small feature you skip the first three phases and go straight to a short spec, a story and a review.
+
 The article quotes a specific number of roles; we could not verify it, so I am not repeating it.
 
 In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
 
-Source: https://github.com/bmad-code-org/BMAD-METHOD
+Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
 
 ### 9. Spec Kit: the living spec
 
@@ -154,7 +160,7 @@ Analogy: getting a building permit. Each office stamps a different form, and eac
 
 Spec Kit is GitHub's open-source toolkit for spec-driven development. Where BMAD organizes agents, Spec Kit organizes documents. The documents are the engine: each stage reads the previous document and writes the next one, all as plain Markdown files inside your project.
 
-Walk the table. The constitution catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests by following the task list, so the code stays tied to the spec.
+Walk the row of commands. The dashed ones, clarify and analyze, are optional but worth it. The constitution, set up once per project, catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests by following the task list, so the code stays tied to the spec. Everything lands in one folder per feature, specs/ and the feature name, which travels with the branch.
 
 The idea to remember: every stage catches a different kind of mistake, and each one is cheap to fix at that stage and expensive later.
 
@@ -162,7 +168,7 @@ Spec Kit works with several AI coding assistants, including Claude Code and Code
 
 This is the tool we used in the case study, so you will see these stages for real in a few minutes.
 
-Source: https://github.com/github/spec-kit
+Source: https://github.com/github/spec-kit · docs: https://github.github.io/spec-kit/
 
 ### 10. Superpowers: discipline the AI can't skip
 
@@ -174,7 +180,7 @@ Analogy: a pilot's pre-flight checklist. Pilots are not short on skill. They rea
 
 Superpowers, created by Jesse Vincent, starts from a simple insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
 
-Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building, review and merge. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
+Its README describes a seven-step workflow, and that is the picture. Brainstorming asks you questions before any design. A git worktree gives the work its own isolated branch. The plan splits it into small tasks. A fresh subagent takes each task. Then come TDD, code review, and finishing with a merge or a PR. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
 
 Then the work passes two reviews: first, does it match the spec? Second, is the code itself good?
 
@@ -446,6 +452,8 @@ Context rot: https://www.trychroma.com/research/context-rot
 
 Lost in the Middle: https://arxiv.org/abs/2307.03172
 
+Where to go next: the last backup slide has a learning path, and the repo README has the full reading list.
+
 ### 26. Questions?
 
 `[3:00] [@45:00]`
@@ -533,3 +541,23 @@ backup, not timed. For the hands-on crowd. The full extension list is in the rep
 `[backup, not timed]`
 
 backup, not timed. Tags make each stage easy to replay: 03-spec-created still has open questions, 04-spec-clarified has the answers, 07-analysis-complete shows the contradiction found, 08-implemented has 11/11 tests passing, and 09-hardware-verified is the DHT22 run on the board.
+
+### 34. Backup: where to go next
+
+`[backup, not timed]`
+
+> 💡 **Tip:** Learn one layer at a time: a spec first, tools only when you feel the pain.
+
+backup, not timed. A learning path for after the talk, in order.
+
+1. The textbook in this repo explains everything from today in long form: https://github.com/ronyronen/speckit-claude-presentation/blob/main/docs/textbook.md
+
+2. Replay the case study by checking out the tags one by one, from 01-start to 09-hardware-verified, and read what changed at each stage.
+
+3. Spec Kit docs and quick start: https://github.github.io/spec-kit/ · GitHub's introduction: https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/
+
+4. Superpowers: https://github.com/obra/superpowers · installing Claude Code plugins: https://code.claude.com/docs/en/plugins
+
+5. Fundamentals: Anthropic, "Effective context engineering for AI agents": https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents · Liu et al., "Lost in the Middle": https://arxiv.org/abs/2307.03172 · Chroma, "Context Rot": https://www.trychroma.com/research/context-rot · Martin Fowler's site on SDD tools: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html · Claude Code best practices: https://www.anthropic.com/engineering/claude-code-best-practices
+
+6. The other layers when you need them: BMAD https://docs.bmad-method.org/ · GSD https://github.com/open-gsd/gsd-core

@@ -41,10 +41,10 @@ def test_skeleton_validates():
 
 def test_build_both_langs(decks):
     ids = [s.id for s in load_deck(DECK).slides]
-    assert len(ids) == 33
+    assert len(ids) == 34
     for lang in ("en", "he"):
         prs = decks[lang]
-        assert len(prs.slides) == 33
+        assert len(prs.slides) == 34
         assert (prs.slide_width, prs.slide_height) == (SLIDE_W, SLIDE_H)
         got = [s.name for s in prs.slides]  # slide name == slide id
         assert got == ids
