@@ -11,7 +11,7 @@ from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
 
 from .text import write_paragraphs
-from .theme import COLORS, PILL_H, PILL_W
+from .theme import COLORS
 
 _TOP, _LEFT, _BOTTOM, _RIGHT = 0, 1, 2, 3  # connection sites
 
@@ -55,19 +55,6 @@ def _arrow(slide, a, site_a, b, site_b):
     ln = c.line._get_or_add_ln()
     etree.SubElement(ln, qn("a:tailEnd")).set("type", "triangle")
     return c
-
-
-def pill(slide, x, y, text, lang):
-    """Small rounded 'pill' badge (used for the TIP label)."""
-    sh = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, int(x), int(y),
-                                PILL_W, PILL_H)
-    sh.adjustments[0] = 0.5
-    sh.fill.solid()
-    sh.fill.fore_color.rgb = COLORS["tip"]
-    sh.line.fill.background()
-    sh.shadow.inherit = False
-    _text(sh, text, lang, [], 18, COLORS["bg"], bold=True)
-    return sh
 
 
 def layers(slide, area, diagram, lang, glossary):

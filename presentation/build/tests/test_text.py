@@ -61,7 +61,7 @@ def test_en_paragraph_ltr():
     write_paragraphs(tf, ["Hello"], "en", 18, [])
     x = _xml(tf)
     assert 'rtl="1"' not in x
-    assert "Plus Jakarta Sans" in x
+    assert "Arial" in x
 
 
 def test_bullets_not_numbered():

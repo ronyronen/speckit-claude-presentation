@@ -1,7 +1,8 @@
 """Slide layouts. Each layout: fn(slide, s: Slide, lang, glossary) -> None.
 
 Every layout draws the background, the title, its content inside
-content_box(has_tip) and, when the slide has a tip, the TIP band.
+content_box(has_tip) and, when the slide has a tip, the tip band (light-bulb
+icon + text, no label).
 In HE the geometry is mirrored horizontally (x -> SLIDE_W - x - w);
 diagrams stay left to right internally.
 
@@ -12,10 +13,10 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE, PP_ALIGN
 from pptx.util import Emu, Inches, Pt
 
-from .shapes import DIAGRAMS, pill
+from .shapes import DIAGRAMS
 from .text import write_paragraphs
-from .theme import (ASSETS, COLORS, FONTS, MARGIN, PILL_H, PILL_W, SLIDE_H,
-                    SLIDE_W, content_box, tip_box)
+from .theme import (ASSETS, BULLET_SPACE, COLORS, FONTS, FOOTER_PT, ICON,
+                    MARGIN, SLIDE_H, SLIDE_W, content_box, tip_box)
 
 TITLE_PT = 36
 BODY_PT = 24
@@ -68,16 +69,24 @@ def est_height(lines, size_pt):
     return int(lines * size_pt * LINE_EM * EMU_PT)
 
 
+def bullet_space(items, size_pt, space=BULLET_SPACE):
+    """Total space-before of the bullet paragraphs (text.write_paragraphs)."""
+    n = sum(len(str(t).split("\n")) for t in items)
+    return int(n * size_pt * space * EMU_PT)
+
+
 def fit_size(sid, field, items, w, h, size, bullet=False, bold=False,
-             char_em=CHAR_EM, min_pt=BODY_PT_MIN, max_lines=None):
+             char_em=CHAR_EM, min_pt=BODY_PT_MIN, max_lines=None,
+             space=BULLET_SPACE):
     """Largest font from size down to min_pt whose estimated text height fits
     a w x h text frame (and needs at most max_lines lines). Raises ValueError
     naming the slide and field when even min_pt does not fit."""
     tw = w - FRAME_INSET_H - (BULLET_INDENT if bullet else 0)
     for pt in range(size, min_pt - 1, -1):
         lines = sum(est_lines(t, tw, pt, bold, char_em) for t in items)
+        extra = bullet_space(items, pt, space) if bullet else 0
         if (max_lines is None or lines <= max_lines) and \
-                est_height(lines, pt) + FRAME_INSET_V <= h:
+                est_height(lines, pt) + extra + FRAME_INSET_V <= h:
             return pt
     raise ValueError(f"{sid}: {field} too long to fit at {min_pt}pt")
 
@@ -93,16 +102,16 @@ def _t(d, lang):
 
 def _textbox(slide, name, x, y, w, h, lang, items, glossary, size,
              bullet=False, color=None, bold=False, align=None, anchor=None,
-             fit=None, min_pt=BODY_PT_MIN, max_lines=None):
+             fit=None, min_pt=BODY_PT_MIN, max_lines=None, space=BULLET_SPACE):
     """fit=(slide id, field name) steps size down until the text fits."""
     if fit:
         size = fit_size(*fit, items, w, h, size, bullet=bullet, bold=bold,
-                        min_pt=min_pt, max_lines=max_lines)
+                        min_pt=min_pt, max_lines=max_lines, space=space)
     tb = slide.shapes.add_textbox(int(_mx(x, w, lang)), int(y), int(w), int(h))
     tb.name = name
     tf = tb.text_frame
     write_paragraphs(tf, items, lang, size, glossary, bullet=bullet,
-                     color=color, bold=bold)
+                     color=color, bold=bold, space=space)
     tf.auto_size = MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE
     if anchor is not None:
         tf.vertical_anchor = anchor
@@ -140,26 +149,53 @@ def _head_font(tb, lang):
 
 
 TITLE_GAP = Inches(0.1)  # between the title frame and the content
+BAR_W = Inches(0.08)     # accent bar on the reading-start side of the title
+BAR_GAP = Inches(0.15)
 
 
 def _title(slide, s, lang, glossary):
-    tb = _textbox(slide, "lay-title", MARGIN, MARGIN, SLIDE_W - 2 * MARGIN,
-                  content_box(False)[1] - MARGIN - TITLE_GAP, lang, [_t(s.title, lang)], glossary, TITLE_PT,
+    th = content_box(False)[1] - MARGIN - TITLE_GAP
+    bar_h = Inches(0.6)
+    _rect(slide, "lay-title-bar", MARGIN, MARGIN + (th - bar_h) // 2, BAR_W, bar_h,
+          lang, "accent", kind=MSO_SHAPE.RECTANGLE)
+    tx = MARGIN + BAR_W + BAR_GAP
+    tb = _textbox(slide, "lay-title", tx, MARGIN, SLIDE_W - MARGIN - tx,
+                  th, lang, [_t(s.title, lang)], glossary, TITLE_PT,
                   bold=True, anchor=MSO_ANCHOR.MIDDLE, fit=(s.id, "title"),
                   min_pt=TITLE_PT_MIN, max_lines=1)
     _head_font(tb, lang)
 
 
 def add_tip(slide, tip_text, lang, glossary=(), sid="tip"):
-    """Bottom TIP band: pill labelled "TIP" (left in EN, right in HE) + text."""
+    """Bottom tip band: amber stripe + light-bulb icon on the reading-start
+    side (left in EN, right in HE), then the tip text. No "TIP" label."""
     x, y, w, h = tip_box()
-    _rect(slide, "lay-tip-band", x, y, w, h, lang, "surface", line="tip")
-    pad = Inches(0.15)
-    p = pill(slide, _mx(x + pad, PILL_W, lang), y + (h - PILL_H) // 2, "TIP", lang)
-    p.name = "lay-tip-pill"
-    tx = x + pad + PILL_W + pad
+    _rect(slide, "lay-tip-band", x, y, w, h, lang, "surface")
+    stripe = Inches(0.07)
+    _rect(slide, "lay-tip-stripe", x, y, stripe, h, lang, "bulb",
+          kind=MSO_SHAPE.RECTANGLE)
+    pad = Inches(0.18)
+    ix = x + stripe + pad
+    icon = slide.shapes.add_picture(str(ASSETS / "tip-bulb.png"),
+                                    int(_mx(ix, ICON, lang)), int(y + (h - ICON) // 2),
+                                    ICON, ICON)
+    icon.name = "lay-tip-icon"
+    tx = ix + ICON + pad
     _textbox(slide, "lay-tip-text", tx, y, x + w - tx - pad, h, lang, [tip_text],
-             list(glossary), TIP_PT, anchor=MSO_ANCHOR.MIDDLE, fit=(sid, "tip"))
+             list(glossary), TIP_PT, color=COLORS["tip_text"],
+             anchor=MSO_ANCHOR.MIDDLE, fit=(sid, "tip"))
+
+
+def add_footer(slide, number, label, lang, glossary=()):
+    """Talk name on the reading-start side, slide number on the other, in the
+    bottom margin (below the tip band)."""
+    y, h = SLIDE_H - MARGIN + Inches(0.08), MARGIN - Inches(0.12)
+    w = (SLIDE_W - 2 * MARGIN) // 2
+    _textbox(slide, "lay-footer-label", MARGIN, y, w, h, lang, [label], list(glossary),
+             FOOTER_PT, color=COLORS["muted"], anchor=MSO_ANCHOR.MIDDLE)
+    _textbox(slide, "lay-footer-num", MARGIN + w, y, w, h, lang, [str(number)], [],
+             FOOTER_PT, color=COLORS["muted"], anchor=MSO_ANCHOR.MIDDLE,
+             align=PP_ALIGN.LEFT if lang == "he" else PP_ALIGN.RIGHT)
 
 
 def _frame(slide, s, lang, glossary, title=True):
@@ -178,12 +214,12 @@ def _bullets(s, lang):
     return [getattr(b, lang) for b in s.bullets]
 
 
-def _bullet_box(slide, box, s, lang, glossary, size=BODY_PT):
+def _bullet_box(slide, box, s, lang, glossary, size=BODY_PT, space=BULLET_SPACE):
     if not s.bullets:
         return
     x, y, w, h = box
     _textbox(slide, "lay-body", x, y, w, h, lang, _bullets(s, lang), glossary,
-             size, bullet=True, fit=(s.id, "bullets"))
+             size, bullet=True, fit=(s.id, "bullets"), space=space)
 
 
 # --- layouts ---------------------------------------------------------------
@@ -196,8 +232,11 @@ def _centered(slide, s, lang, glossary, title_pt, sub_color):
                   glossary, title_pt, bold=True, align=PP_ALIGN.CENTER,
                   anchor=MSO_ANCHOR.BOTTOM, fit=(s.id, "title"), min_pt=TITLE_PT_MIN)
     _head_font(tb, lang)
+    rule_w = Inches(1.6)
+    _rect(slide, "lay-title-rule", x + (w - rule_w) // 2, ty + title_h + Inches(0.1),
+          rule_w, Inches(0.06), lang, "accent", kind=MSO_SHAPE.RECTANGLE)
     if s.bullets:
-        sy = ty + title_h + Inches(0.2)
+        sy = ty + title_h + Inches(0.35)
         _textbox(slide, "lay-body", x, sy, w, y + h - sy, lang, _bullets(s, lang),
                  glossary, SMALL_PT, color=COLORS[sub_color], align=PP_ALIGN.CENTER,
                  fit=(s.id, "bullets"))
@@ -223,7 +262,8 @@ def bullets_diagram(slide, s, lang, glossary):
         tw = w - FRAME_INSET_H - BULLET_INDENT
         lines = sum(est_lines(t, tw, SMALL_PT) for t in _bullets(s, lang))
         strip = est_height(lines, SMALL_PT) + FRAME_INSET_V
-        _bullet_box(slide, (x, y, w, strip), s, lang, glossary, SMALL_PT)
+        # no bullet spacing here: the diagram needs the height
+        _bullet_box(slide, (x, y, w, strip), s, lang, glossary, SMALL_PT, space=0)
         y, h = y + strip + Inches(0.15), h - strip - Inches(0.15)
         if s.diagram and h < DIAGRAM_MIN_H:
             raise ValueError(f"{s.id}: bullets leave {h / 914400:.2f}in for the "

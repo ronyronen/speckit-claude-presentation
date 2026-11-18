@@ -5,7 +5,7 @@ from lxml import etree
 from pptx.oxml.ns import qn
 from pptx.util import Pt
 
-from .theme import COLORS, FONTS
+from .theme import BULLET_SPACE, COLORS, FONTS
 
 HEBREW_CHARS = "\u0590-\u05ff"  # the Hebrew block; single shared definition
 _HE = re.compile(f"[{HEBREW_CHARS}]")
@@ -124,11 +124,17 @@ def set_rtl(paragraph):
     pPr.set("algn", "r")
 
 
-def _bullet(paragraph, bullet):
+def _bullet(paragraph, bullet, _size_pt=24, space=BULLET_SPACE):
     pPr = paragraph._p.get_or_add_pPr()
     if bullet:
         pPr.set("marL", "285750")
         pPr.set("indent", "-285750")
+        if space:
+            spc = etree.SubElement(pPr, f"{{{_NS_A}}}spcBef")
+            etree.SubElement(spc, f"{{{_NS_A}}}spcPts").set(
+                "val", str(int(_size_pt * space * 100)))
+        clr = etree.SubElement(pPr, f"{{{_NS_A}}}buClr")
+        etree.SubElement(clr, f"{{{_NS_A}}}srgbClr").set("val", str(COLORS["accent"]))
         # Bullet dot, never buAutoNum (numbering breaks in RTL).
         etree.SubElement(pPr, f"{{{_NS_A}}}buFont").set("typeface", "Arial")
         etree.SubElement(pPr, f"{{{_NS_A}}}buChar").set("char", "•")
@@ -137,7 +143,7 @@ def _bullet(paragraph, bullet):
 
 
 def write_paragraphs(tf, items, lang, size_pt, glossary, bullet=True,
-                     color=None, bold=False):
+                     color=None, bold=False, space=BULLET_SPACE):
     """Replace tf contents with one paragraph per item ('\\n' splits too)."""
     lines = []
     for item in items:
@@ -150,7 +156,7 @@ def write_paragraphs(tf, items, lang, size_pt, glossary, bullet=True,
         p = tf.paragraphs[0] if n == 0 else tf.add_paragraph()
         if lang == "he":
             set_rtl(p)
-        _bullet(p, bullet)
+        _bullet(p, bullet, size_pt, space)
         segs = split_runs(line, glossary)
         texts = _he_text(segs) if lang == "he" else [s for s, _ in segs]
         for (_, seg_lang), text in zip(segs, texts):

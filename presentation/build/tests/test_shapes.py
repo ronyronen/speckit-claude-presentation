@@ -3,7 +3,7 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.util import Inches
 
-from presentation.build.shapes import DECISION_EDGES, DIAGRAMS, pill
+from presentation.build.shapes import DECISION_EDGES, DIAGRAMS
 from presentation.build.theme import COLORS, content_box
 
 KEYS = ["issue", "feature", "pr3", "dev", "prs", "main"]
@@ -86,13 +86,6 @@ def test_diagram_area_respected(name, lang):
         assert sh.left + sh.width <= l + w and sh.top + sh.height <= t + h, sh.name
 
 
-def test_pill():
-    s = _slide()
-    p = pill(s, Inches(1), Inches(1), "TIP", "he")
-    assert p.text_frame.text == "TIP"
-    assert p.fill.fore_color.rgb == COLORS["tip"]
-
-
 def _all_runs(s):
     return [r for sh in s.shapes if sh.has_text_frame
             for p in sh.text_frame.paragraphs for r in p.runs]
@@ -109,12 +102,6 @@ def test_min_font_18(name, lang):
     s = _build(name, lang=lang, keys=ALLKEYS)
     runs = _all_runs(s)
     assert runs and min(r.font.size.pt for r in runs) >= 18
-
-
-def test_pill_font_18():
-    s = _slide()
-    pill(s, 0, 0, "TIP", "en")
-    assert min(r.font.size.pt for r in _all_runs(s)) >= 18
 
 
 def _connectors(s):

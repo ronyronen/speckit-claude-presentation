@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import pytest
@@ -67,14 +68,34 @@ def _all_text(prs):
     return out
 
 
-def test_tip_pill_label_english_in_he(decks):
-    he = decks["he"]
-    pills = [_shape(s, "lay-tip-pill") for s in he.slides
-             if any(sh.name == "lay-tip-pill" for sh in s.shapes)]
-    assert len(pills) >= 10
-    assert all(p.text_frame.text == "TIP" for p in pills)
+def test_tip_is_bulb_icon_without_label(decks):
+    """A tip shows a light-bulb picture and its text; no "TIP" word anywhere."""
+    from pptx.enum.shapes import MSO_SHAPE_TYPE
+    for lang in ("en", "he"):
+        icons = [_shape(s, "lay-tip-icon") for s in decks[lang].slides
+                 if any(sh.name == "lay-tip-icon" for sh in s.shapes)]
+        assert len(icons) >= 10
+        assert all(i.shape_type == MSO_SHAPE_TYPE.PICTURE for i in icons)
+        assert not any(re.search(r"\bTIP\b", t) for t in _all_text(decks[lang]))
     tip_re = _he_term_re("טיפ")
-    assert not any(tip_re.search(t) for t in _all_text(he))
+    assert not any(tip_re.search(t) for t in _all_text(decks["he"]))
+
+
+def test_bulb_icon_asset_exists():
+    from PIL import Image
+    from presentation.build.theme import ASSETS
+    im = Image.open(ASSETS / "tip-bulb.png")
+    assert im.mode == "RGBA" and im.size[0] == im.size[1]
+
+
+def test_footer_numbers_every_slide_but_title(decks):
+    for lang in ("en", "he"):
+        for n, s in enumerate(decks[lang].slides, 1):
+            nums = [sh for sh in s.shapes if sh.name == "lay-footer-num"]
+            if n == 1:
+                assert not nums
+            else:
+                assert [x.text_frame.text.strip("\u200e\u200f") for x in nums] == [str(n)]
 
 
 def test_tip_term_matcher_word_boundaries():
@@ -89,7 +110,7 @@ def test_tip_band_mirrored(decks):
         n = 0
         for s in decks[lang].slides:
             for sh in s.shapes:
-                if sh.name == "lay-tip-pill":
+                if sh.name == "lay-tip-icon":
                     n += 1
                     assert (sh.left < SLIDE_W / 2) is left_half, (lang, s.name)
         assert n >= 10
@@ -101,7 +122,7 @@ def test_diagram_area_above_tip_band(decks):
     for lang in ("en", "he"):
         for s in decks[lang].slides:
             names = [sh.name for sh in s.shapes]
-            if "lay-tip-pill" not in names:
+            if "lay-tip-icon" not in names:
                 continue
             dg = [sh for sh in s.shapes if not sh.name.startswith(LAYOUT_SHAPE)]
             if not dg:
@@ -149,7 +170,7 @@ def test_layouts_fit_long_text(layout, lang):
     LAYOUTS[layout](s, _long_slide(layout), lang, [])
     frames = [sh for sh in s.shapes if sh.name.startswith(LAYOUT_SHAPE)
               and sh.has_text_frame and sh.text_frame.text.strip()
-              and sh.name != "lay-tip-pill"]
+              ]
     assert any(sh.name == "lay-tip-text" for sh in frames)
     for sh in frames:
         assert sh.text_frame.auto_size == MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE, sh.name
@@ -438,18 +459,17 @@ def test_est_lines_keeps_nbsp_words_together():
     assert est_lines("aa 27 °C bbb", w, 20) == 2
 
 
-def test_pill_size_defined_once_in_theme():
-    from presentation.build import layouts, shapes, theme
-    assert (layouts.PILL_W, layouts.PILL_H) == (theme.PILL_W, theme.PILL_H)
-    assert (shapes.PILL_W, shapes.PILL_H) == (theme.PILL_W, theme.PILL_H)
+def test_icon_size_defined_once_in_theme():
+    from presentation.build import layouts, theme
+    assert layouts.ICON == theme.ICON
 
 
 def test_heading_font_is_family_and_bold(decks):
     from presentation.build.theme import FONTS
-    assert FONTS["en"]["head"] == "Plus Jakarta Sans"
+    assert FONTS["en"]["head"] == "Arial"
     t = next(sh for sh in decks["en"].slides[1].shapes if sh.name == "lay-title")
     runs = [r for p in t.text_frame.paragraphs for r in p.runs]
-    assert runs and all(r.font.bold and r.font.name == "Plus Jakarta Sans" for r in runs)
+    assert runs and all(r.font.bold and r.font.name == "Arial" for r in runs)
 
 
 def test_manual_check_md_is_current():
@@ -463,3 +483,17 @@ def test_adlc_title_label_fits_and_is_expanded():
     assert lab["en"] == "ADLC: agentic dev life cycle"
     assert lab["he"] == "ADLC: מחזור פיתוח עם agents"
     assert len(lab["en"]) <= 30 and len(lab["he"]) <= 30
+
+
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_transcript_is_current_and_complete(lang):
+    from presentation.build.build_decks import TRANSCRIPT, transcript_md
+    deck = load_deck(DECK)
+    md = transcript_md(deck, lang)
+    assert md == TRANSCRIPT[lang].read_text(encoding="utf-8")
+    for n, s in enumerate(deck.slides, 1):
+        assert f"### {n}. {s.title[lang]}" in md
+        first = next(ln for ln in s.notes[lang].splitlines() if ln.strip())
+        assert first.strip() in md
+    assert md.count("💡") == sum(1 for s in deck.slides if s.tip)
+    assert ("<div dir=\"rtl\">" in md) == (lang == "he")

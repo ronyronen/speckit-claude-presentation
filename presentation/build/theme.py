@@ -20,16 +20,21 @@ COLORS = {
     "ok": RGBColor(0x34, 0xD3, 0x99),
     "warn": RGBColor(0xFB, 0xBF, 0x24),
     "tip": RGBColor(0xC4, 0xB5, 0xFD),
+    "bulb": RGBColor(0xFC, 0xD3, 0x4D),     # tip icon + tip stripe
+    "tip_text": RGBColor(0xFE, 0xF3, 0xC7),  # warm light text on the tip band
 }
 
 FONTS = {
-    "en": {"body": "Plus Jakarta Sans", "head": "Plus Jakarta Sans",
-           "mono": "JetBrains Mono"},
-    "he": {"body": "Arial", "head": "Arial", "mono": "JetBrains Mono"},
+    # Fonts every PowerPoint machine (Mac and Windows) already has, so the
+    # deck looks the same on the presenting laptop as in the render checks.
+    "en": {"body": "Arial", "head": "Arial", "mono": "Courier New"},
+    "he": {"body": "Arial", "head": "Arial", "mono": "Courier New"},
 }
 
-# TIP pill badge size (shapes.pill draws it, layouts positions it).
-PILL_W, PILL_H = Inches(0.9), Inches(0.4)
+# Tip light-bulb icon (assets/tip-bulb.png, drawn by icons.py): square side.
+ICON = Inches(0.5)
+FOOTER_PT = 14
+BULLET_SPACE = 0.4  # space before each bullet paragraph, in ems of the font size
 
 # Resolved relative to this file so it works from any cwd.
 ASSETS = Path(__file__).resolve().parents[1] / "assets"

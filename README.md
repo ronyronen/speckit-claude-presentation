@@ -52,7 +52,12 @@ failure handling. See [firmware/README.md](firmware/README.md).
 📊 Two decks, same content, timed speaker notes in each:
 
 - [presentation/speckit-workshop.pptx](presentation/speckit-workshop.pptx) (English)
+  · [transcript](presentation/transcript-en.md)
 - [presentation/speckit-workshop-he.pptx](presentation/speckit-workshop-he.pptx) (Hebrew)
+  · [transcript](presentation/transcript-he.md)
+
+Each transcript is the full talk script, slide by slide, with timings and tips.
+Tips appear on the slides as a light-bulb icon.
 
 ### Rebuilding the decks
 
@@ -67,6 +72,9 @@ failure handling. See [firmware/README.md](firmware/README.md).
   python3 -m presentation.build.build_decks --lang both
   ```
 
+  This also rewrites the two transcripts (`presentation/transcript-en.md`,
+  `presentation/transcript-he.md`).
+
 - Regenerate the Hebrew manual bidi checklist
   (`presentation/build/he_manual_check.md`):
 
@@ -80,9 +88,8 @@ failure handling. See [firmware/README.md](firmware/README.md).
   python3 -m pytest presentation/build/tests -q
   ```
 
-- **Fonts.** The EN deck uses Plus Jakarta Sans and JetBrains Mono (Google
-  Fonts, free); install them on the build and presenting machines. The HE
-  deck uses Arial.
+- **Fonts.** Both decks use Arial, with Courier New for code: fonts every
+  PowerPoint machine already has, so nothing needs installing.
 
 - The validator (10 validator checks plus the generator-enforced timing
   prefix) enforces the 45:00 timing and EN/HE sync (same slides, bullet keys
@@ -210,6 +217,7 @@ firmware implementation. Compare [examples/prompt-only](examples/prompt-only)
 ├── presentation/
 │   ├── speckit-workshop.pptx      # English deck (generated)
 │   ├── speckit-workshop-he.pptx   # Hebrew deck (generated)
+│   ├── transcript-en.md / -he.md  # talk scripts (generated)
 │   ├── content/deck.yaml          # single content source for both decks
 │   └── build/                     # generator, validator, tests
 ├── firmware/                      # PlatformIO project for Heltec WiFi Kit V3
@@ -249,7 +257,8 @@ see [docs/codex.md](docs/codex.md).)
 - Codex workflow: [docs/codex.md](docs/codex.md)
 - Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
 - Slide decks: [English](presentation/speckit-workshop.pptx) ·
-  [Hebrew](presentation/speckit-workshop-he.pptx)
+  [Hebrew](presentation/speckit-workshop-he.pptx) · transcripts:
+  [English](presentation/transcript-en.md) · [Hebrew](presentation/transcript-he.md)
 
 ## References
 

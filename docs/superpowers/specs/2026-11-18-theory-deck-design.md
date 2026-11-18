@@ -15,10 +15,12 @@ presentation/
     validate.py        # sync, timing, tone and fact checks (also run by build_decks.py)
     render_check.sh    # soffice -> pdf -> pdftoppm PNGs for visual review
     theme.py           # palette, fonts, geometry constants (incl. tip band), RTL helpers
-    shapes.py          # native diagram primitives (box, arrow, loop, rail, curve, pill)
+    shapes.py          # native diagram primitives (box, arrow, loop, rail, curve)
+    icons.py           # draws assets/tip-bulb.png
   assets/              # background PNG, photos, code cards extracted from current deck
   speckit-workshop.pptx      # EN output (path unchanged)
   speckit-workshop-he.pptx   # HE output (new)
+  transcript-en.md, transcript-he.md   # talk scripts, generated with the decks
 ```
 
 **Build pipeline:** `deck.yaml` → `validate.py` → `build_decks.py --lang en|he` → `.pptx` → `render_check.sh` → PNGs, which a person reviews.
@@ -46,11 +48,11 @@ slides:
 ## 3. Tip box (US-11)
 
 - **Placement:** a fixed band at the bottom of the slide, about 0.7 in tall, defined in `theme.py`.
-- **Marker:** a native pill shape labelled "TIP" in **both** decks (human decision 8), never an emoji. The pill sits on the left in EN and on the right in HE.
+- **Marker:** a light-bulb icon (`assets/tip-bulb.png`, drawn by `icons.py`) with no label, in both decks. It replaces the earlier "TIP" pill at the human's request on 2026-11-18. The icon and an amber stripe sit on the left in EN and on the right in HE.
 - **Text:** the Tip text is RTL in HE, and each Tip is at most 20 whitespace-separated words per language.
 - **Testing:** P1a renders every layout both with and without a Tip.
 
-## 4. Validation (11 checks, any failure fails the build)
+## 4. Validation (any failure fails the build)
 
 1. Both languages have the same slide IDs, in the same order. Every slide has a title in both languages.
 2. Bullet keys match between languages, as does the Tip key (or the absence of a Tip). No slide has more than 5 bullets.
@@ -67,7 +69,8 @@ slides:
 ## 5. Theme and RTL
 
 - **Visual baseline:** keep the current deck's dark navy background PNG, colour palette, OK/WARNING photos and code-card look, all extracted into `assets/`. The hand-placed PNG pieces are rebuilt as native shapes. The human has accepted that the result approximates the old look rather than copying it.
-- **EN fonts:** Plus Jakarta Sans and JetBrains Mono. Both must be installed locally so that render checks show the real fonts.
+- **Fonts (both decks):** Arial, with Courier New for code. These replace Plus Jakarta Sans and JetBrains Mono (2026-11-18), because every PowerPoint machine already has them and the render checks then show the real fonts.
+- **Theme details:** an accent bar beside each title, accent-coloured bullets with spacing, a rule under title and section headings, and a footer with the talk name and slide number (not on the title slide).
 - **HE font:** Arial, set in both `<a:latin>` and `<a:cs>`. Noto Sans Hebrew is the fallback.
 - **HE paragraph settings:**
   - Use `a:pPr rtl="1" algn="r"`, with `lang="he-IL"` on each run.
