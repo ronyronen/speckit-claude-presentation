@@ -64,7 +64,9 @@ def layers(slide, area, diagram, lang, glossary):
     label_h = Inches(0.6)
     box_h = (h - 2 * label_h - 3 * gap) // 2
     bw = (w - gap) // 2
-    bands = [("band_plan", ["bmad", "speckit"]), ("band_exec", ["gsd", "superpowers"])]
+    bands = [("band_plan", ["speckit", "bmad"]), ("band_exec", ["superpowers", "gsd"])]
+    if lang == "he":  # reading order starts on the right in Hebrew
+        bands = [(b, keys[::-1]) for b, keys in bands]
     cy = y
     for band, keys in bands:
         tb = slide.shapes.add_textbox(x, cy, w, label_h)
@@ -119,12 +121,16 @@ def _edge_label(slide, diagram, key, lang, glossary, cx, cy):
 
 
 def decision(slide, area, diagram, lang, glossary):
-    """Left track: GSD (Q1, Q2). Right track: Superpowers (Q3). Independent."""
+    """Left track: Superpowers (TDD question). Right track: GSD (long sessions,
+    human review). Independent."""
     x, y, w, h = area
     track_gap = Inches(0.5)
     lw = Inches(7.4)
     rw = w - lw - track_gap
-    rx = x + lw + track_gap
+    sx = x                      # Superpowers track first (left in EN)
+    gx = x + rw + track_gap     # GSD track second
+    if lang == "he":            # Hebrew reads right to left: Superpowers on the right
+        gx, sx = x, x + lw + track_gap
     lab_h = Inches(0.5)
     oh = Inches(1.0)
     # Diamonds shrink on short areas so the connectors (and their labels)
@@ -134,7 +140,7 @@ def decision(slide, area, diagram, lang, glossary):
     oy = y + h - oh
     dy = y + lab_h + Inches(0.1)
 
-    for key, tx, tw in (("track_context", x, lw), ("track_discipline", rx, rw)):
+    for key, tx, tw in (("track_discipline", sx, rw), ("track_context", gx, lw)):
         tb = slide.shapes.add_textbox(int(tx), int(y), int(tw), int(lab_h))
         tb.name = f"track-{key}"
         _text(tb, _label(diagram, key, lang), lang, glossary, 18,
@@ -153,13 +159,13 @@ def decision(slide, area, diagram, lang, glossary):
                     fill=fill, bold=True)
 
     shapes = {
-        "q_long": diamond("q_long", x),
-        "q_review": diamond("q_review", x + dw + Inches(0.7)),
-        "q_tdd": diamond("q_tdd", rx + (rw - dw) // 2),
-        "add_gsd": outcome("add_gsd", x + Inches(1.6), Inches(2.4), "accent"),
-        "skip_gsd": outcome("skip_gsd", x + lw - Inches(2.4), Inches(2.4), "surface"),
-        "add_superpowers": outcome("add_superpowers", rx, (rw - Inches(0.15)) // 2, "accent"),
-        "skip_superpowers": outcome("skip_superpowers", rx + (rw + Inches(0.15)) // 2,
+        "q_long": diamond("q_long", gx),
+        "q_review": diamond("q_review", gx + dw + Inches(0.7)),
+        "q_tdd": diamond("q_tdd", sx + (rw - dw) // 2),
+        "add_gsd": outcome("add_gsd", gx + Inches(1.6), Inches(2.4), "accent"),
+        "skip_gsd": outcome("skip_gsd", gx + lw - Inches(2.4), Inches(2.4), "surface"),
+        "add_superpowers": outcome("add_superpowers", sx, (rw - Inches(0.15)) // 2, "accent"),
+        "skip_superpowers": outcome("skip_superpowers", sx + (rw + Inches(0.15)) // 2,
                                     (rw - Inches(0.15)) // 2, "surface"),
     }
     for src, dst, lab in DECISION_EDGES:

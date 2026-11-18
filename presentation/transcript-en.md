@@ -84,7 +84,7 @@ SDD makes the spec the source of truth. Not the code, and not the chat. The code
 
 The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
 
-Spec Kit, GitHub's free toolkit that we will meet properly on slide 12, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
+Spec Kit, GitHub's free toolkit that we will meet properly on slide 11, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
 
 Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. Think of it as a feedback loop, with the constitution as a rail running underneath every stage.
 
@@ -144,33 +144,15 @@ https://arxiv.org/abs/2307.03172
 
 `[0:00] [@12:00]`
 
-Transition: BMAD, Spec Kit, GSD and Superpowers
+Transition: Spec Kit, Superpowers, BMAD and GSD
 
-### 11. BMAD: an AI agile team
+### 11. Spec Kit: the living spec
 
 `[1:30] [@13:30]`
 
-> 💡 **Tip:** Borrow only the roles you miss; a small project rarely needs the whole team.
-
-Analogy: a film crew. The director, the camera operator and the editor each have one clear job, and they pass the work along in a known order.
-
-BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organizing idea is the agile team. Instead of one general-purpose AI assistant, you get several specialized agent roles, such as an analyst, a product manager, an architect, a developer and a tester. Each has a narrow job and its own focused context.
-
-The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
-
-Walk the picture left to right: four phases, analysis, planning, solutioning and implementation. In each column, the agents on top write the document underneath, and that document is what the next phase starts from. The amber lane at the bottom is the quick flow: for a bug fix or a small feature you skip the first three phases and go straight to a short spec, a story and a review.
-
-In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
-
-Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
-
-### 12. Spec Kit: the living spec
-
-`[1:30] [@15:00]`
-
 Analogy: getting a building permit. Each office stamps a different form, and each stamp exists to catch a different kind of mistake before anyone pours concrete.
 
-Spec Kit is GitHub's open-source toolkit for spec-driven development. Where BMAD organizes agents, Spec Kit organizes documents. The documents are the engine: each stage reads the previous document and writes the next one, all as plain Markdown files inside your project.
+Spec Kit is GitHub's open-source toolkit for spec-driven development. Spec Kit organizes documents. The documents are the engine: each stage reads the previous document and writes the next one, all as plain Markdown files inside your project.
 
 Walk the row of commands. The dashed ones, clarify and analyze, are optional but worth it. The constitution, set up once per project, catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests by following the task list, so the code stays tied to the spec. Everything lands in one folder per feature, specs/ and the feature name, which travels with the branch.
 
@@ -182,9 +164,9 @@ This is the tool we used in the case study, so you will see these stages for rea
 
 Source: https://github.com/github/spec-kit · docs: https://github.github.io/spec-kit/
 
-### 13. Spec Kit in a nutshell: one cake order
+### 12. Spec Kit in a nutshell: one cake order
 
-`[1:30] [@16:30]`
+`[1:30] [@15:00]`
 
 > 💡 **Tip:** Read your spec like a stranger; every question they would ask belongs in clarify.
 
@@ -204,9 +186,9 @@ Implement bakes, ticking off each task against the order.
 
 Every step wrote something down. That is the whole idea of Spec Kit.
 
-### 14. Same seven steps, real project
+### 13. Same seven steps, real project
 
-`[1:30] [@18:00]`
+`[1:30] [@16:30]`
 
 > 💡 **Tip:** Learn the steps on a toy example before you use them on real code.
 
@@ -226,9 +208,9 @@ Remember the cake, and you remember Spec Kit.
 
 Source: https://github.com/ronyronen/speckit-claude-presentation/tree/main/specs/001-heltec-monitor
 
-### 15. Superpowers: discipline the AI can't skip
+### 14. Superpowers: discipline the AI can't skip
 
-`[1:30] [@19:30]`
+`[1:30] [@18:00]`
 
 > 💡 **Tip:** Ask for a failing test first, then only the code that makes it pass.
 
@@ -246,15 +228,33 @@ Tip: ask for a failing test first, then only the code that makes it pass.
 
 Source: https://github.com/obra/superpowers
 
+### 15. BMAD: an AI agile team
+
+`[1:30] [@19:30]`
+
+> 💡 **Tip:** Borrow only the roles you miss; a small project rarely needs the whole team.
+
+Analogy: a film crew. The director, the camera operator and the editor each have one clear job, and they pass the work along in a known order.
+
+Where Spec Kit organizes documents, BMAD organizes agents. BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organizing idea is the agile team. Instead of one general-purpose AI assistant, you get several specialized agent roles, such as an analyst, a product manager, an architect, a developer and a tester. Each has a narrow job and its own focused context.
+
+The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
+
+Walk the picture left to right: four phases, analysis, planning, solutioning and implementation. In each column, the agents on top write the document underneath, and that document is what the next phase starts from. The amber lane at the bottom is the quick flow: for a bug fix or a small feature you skip the first three phases and go straight to a short spec, a story and a review.
+
+In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
+
+Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
+
 ### 16. Four metaphors, two layers
 
 `[2:00] [@21:30]`
 
 Analogy: building a house needs an architect and a site foreman. The architect decides what to build; the foreman keeps the work on track every day. Neither replaces the other.
 
-Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks. Superpowers is discipline.
+Here are the four frameworks on one picture, each with its metaphor. Spec Kit is the living document. Superpowers is discipline. BMAD is the team. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks.
 
-They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is BMAD and Spec Kit. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is GSD and Superpowers.
+They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is Spec Kit and BMAD. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is Superpowers and GSD.
 
 This is the most useful idea here: these tools are not competitors. Planning tools do not solve context rot; a planning agent can drift in a long session like any other. And none of the planning tools enforce TDD at the moment the code is written.
 
@@ -274,11 +274,11 @@ Analogy: choosing a vehicle. You do not buy a truck for a short commute, and you
 
 Here is a practical decision rule, drawn as two simple tracks. Start with a planning tool, for example Spec Kit, then ask three questions.
 
-First track, the context layer, GSD. Question one: are your AI sessions long, hours of work on their own? If yes, add GSD, because you will hit context rot. If no, ask question two: does a human review the output after each phase? If nobody does, add GSD. If you review every phase, skip it; each review is a natural checkpoint.
+First track, the discipline layer, Superpowers. Question one: does your team have a strong TDD habit that survives deadline pressure? If no, add Superpowers and let the tool enforce it. If yes, skip it.
 
-Second track, the discipline layer, Superpowers. Question three: does your team have a strong TDD habit that survives deadline pressure? If no, add Superpowers and let the tool enforce it. If yes, skip it.
+Second track, the context layer, GSD. Question two: are your AI sessions long, hours of work on their own? If yes, add GSD, because you will hit context rot. If no, ask question three: does a human review the output after each phase? If nobody does, add GSD. If you review every phase, skip it; each review is a natural checkpoint.
 
-Let's try the rule on the project you are about to see, the Heltec temperature monitor. Question one: were the sessions long? No; each Spec Kit stage was a short, focused session. Question two: did a human review each phase? Yes; I read and approved every document before the next stage started. So the context track says: skip GSD. Question three: a strong TDD habit? Here the habit was written into the project's constitution: Principle II says every threshold and state change needs a test written before or alongside the code. So the discipline track says: skip Superpowers too. Spec Kit alone, plus a human, was the right size for that job.
+Let's try the rule on the project you are about to see, the Heltec temperature monitor. Question one: a strong TDD habit? Here the habit was written into the project's constitution: Principle II says every threshold and state change needs a test written before or alongside the code. So the discipline track says: skip Superpowers. Question two: were the sessions long? No; each Spec Kit stage was a short, focused session. Question three: did a human review each phase? Yes; I read and approved every document before the next stage started. So the context track says: skip GSD too. Spec Kit alone, plus a human, was the right size for that job.
 
 One more honest answer: sometimes you need none of this. Adapted from the companion textbook's chapter "When Not to Use Spec Kit" (docs/textbook.md, section 22): skip the spec for throwaway experiments you will delete, for trivial and unambiguous changes like renaming a variable, and when you do not yet know what is technically possible and need to explore first. That is research, not specification.
 

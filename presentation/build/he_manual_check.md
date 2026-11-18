@@ -63,9 +63,32 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] TIP: פתחו session חדש כשה-AI שוכח החלטות קודמות, ותנו לו את ה-spec.
 
 ## 10. part-3
-- [ ] BMAD, Spec Kit, GSD ו-Superpowers
+- [ ] Spec Kit, Superpowers, BMAD ו-GSD
 
-## 11. bmad
+## 11. speckit
+- [ ] Spec Kit: ה-spec החי
+- [ ] תיקייה אחת לכל feature בתוך specs/
+
+## 12. speckit-cake
+- [ ] Spec Kit בקצרה: הזמנת עוגה אחת
+- [ ] TIP: קראו את ה-spec כמו מישהו זר; כל שאלה שהוא היה שואל שייכת ל-clarify.
+
+## 13. speckit-cake-heltec
+- [ ] ה-firmware של Heltec
+- [ ] firmware בנוי, 11/11 בדיקות עוברות
+- [ ] TIP: למדו את השלבים על דוגמת צעצוע לפני שמשתמשים בהם על קוד אמיתי.
+
+## 14. superpowers
+- [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
+- [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
+- [ ] branch מבודד
+- [ ] 3. כותבים plan
+- [ ] קודם spec, אז איכות
+- [ ] merge או PR
+- [ ] בכל שלב נכנס skill. ה-agent לא יכול לדלג עליו.
+- [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
+
+## 15. bmad
 - [ ] BMAD: צוות agile של AI
 - [ ] מעצב UX
 - [ ] מפתח · QA
@@ -76,38 +99,15 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] Quick flow: עבודה קטנה מדלגת על שלבים 1-3
 - [ ] TIP: קחו רק את התפקידים שחסרים לכם; פרויקט קטן כמעט אף פעם לא צריך צוות שלם.
 
-## 12. speckit
-- [ ] Spec Kit: ה-spec החי
-- [ ] תיקייה אחת לכל feature בתוך specs/
-
-## 13. speckit-cake
-- [ ] Spec Kit בקצרה: הזמנת עוגה אחת
-- [ ] TIP: קראו את ה-spec כמו מישהו זר; כל שאלה שהוא היה שואל שייכת ל-clarify.
-
-## 14. speckit-cake-heltec
-- [ ] ה-firmware של Heltec
-- [ ] firmware בנוי, 11/11 בדיקות עוברות
-- [ ] TIP: למדו את השלבים על דוגמת צעצוע לפני שמשתמשים בהם על קוד אמיתי.
-
-## 15. superpowers
-- [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
-- [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
-- [ ] branch מבודד
-- [ ] 3. כותבים plan
-- [ ] קודם spec, אז איכות
-- [ ] merge או PR
-- [ ] בכל שלב נכנס skill. ה-agent לא יכול לדלג עליו.
-- [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
-
 ## 16. two-layers
-- [ ] BMAD: הצוות
 - [ ] Spec Kit: ה-spec החי
-- [ ] GSD: context נקי
 - [ ] Superpowers: משמעת
+- [ ] BMAD: הצוות
+- [ ] GSD: context נקי
 
 ## 17. decision-rule
-- [ ] שכבת context: GSD
 - [ ] שכבת משמעת: Superpowers
+- [ ] שכבת context: GSD
 - [ ] sessions ארוכים?
 - [ ] רגילים לעבוד עם TDD?
 - [ ] הוסיפו GSD
@@ -204,7 +204,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] הטעות שנתפסה בפרויקט Heltec
 
 ## 37. a2-overlap-gaps
-- [ ] גם BMAD וגם Spec Kit מתכננים לפני הקוד
+- [ ] גם Spec Kit וגם BMAD מתכננים לפני הקוד
 - [ ] ה-checklist של Spec Kit, הבודק של BMAD: בקרות קלות
 - [ ] כלי תכנון לא עוצרים context rot
 - [ ] כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד

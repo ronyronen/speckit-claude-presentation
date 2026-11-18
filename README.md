@@ -3,8 +3,8 @@
 A beginner-friendly, **theory-first 45-minute talk** on **Spec-Driven
 Development (SDD)**, given in **English or Hebrew** (two decks, identical
 content). The first ~24 minutes cover the theory: the intent gap, vibe
-coding vs SDD, context engineering and context rot, and how **BMAD**,
-**GitHub Spec Kit**, **GSD** and **Superpowers** work as different layers,
+coding vs SDD, context engineering and context rot, and how **GitHub Spec Kit**,
+**Superpowers**, **BMAD** and **GSD** work as different layers,
 plus a practical decision rule. Then comes an ~8-minute case study: a real
 **Heltec WiFi Kit V3** firmware built with Spec Kit, using **Claude Code**
 and **Codex** as coding agents. The talk closes with the GitHub team
@@ -53,7 +53,7 @@ failure handling. See [firmware/README.md](firmware/README.md).
 the end. A divider slide opens each of the six parts and the backup
 section (43 slides in all). Right after the Spec Kit slide, one
 birthday-cake order walks through all seven Spec Kit steps, then a table
-maps each step to the real Heltec project. The vibe coding vs SDD, BMAD, Spec Kit and Superpowers slides
+maps each step to the real Heltec project. The vibe coding vs SDD, Spec Kit, Superpowers and BMAD slides
 each carry a native diagram (drawn from `deck.yaml`, in both languages).
 One backup slide explains GSD as a relay diagram, and the last one is a
 learning path ([Where to go next](#where-to-go-next)).
@@ -62,7 +62,7 @@ learning path ([Where to go next](#where-to-go-next)).
 |---|---|
 | Opening, the intent gap, vibe coding vs SDD | 8:00 |
 | Context engineering and context rot | 4:00 |
-| BMAD, Spec Kit (with a cake-order walkthrough), GSD and Superpowers as layers, plus the decision rule | 12:00 |
+| Spec Kit (with a cake-order walkthrough), Superpowers, BMAD and GSD as layers, plus the decision rule | 12:00 |
 | Case study: Heltec firmware with Spec Kit | 8:00 |
 | GitHub team workflow | 5:00 |
 | What's next | 3:00 |
@@ -206,8 +206,8 @@ from their own repos:
 
 | Tool | Layer in the talk | Install |
 |---|---|---|
-| [Superpowers](https://github.com/obra/superpowers) | discipline (TDD, review, plans) | plugin, see above |
 | [GitHub Spec Kit](https://github.com/github/spec-kit) | the living spec | `specify` CLI, see step 4 |
+| [Superpowers](https://github.com/obra/superpowers) | discipline (TDD, review, plans) | plugin, see above |
 | [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) | AI agile team | `npx bmad-method install` (see its README) |
 | [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) | fresh context per task | see its README |
 
@@ -366,17 +366,16 @@ A learning path for after the talk, in order:
 ## References
 
 - Dwarampudi, V. (2026). [*Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers*](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a). Medium.
-- [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
-  [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) ·
-  [Superpowers](https://github.com/obra/superpowers)
+- [Spec Kit](https://github.com/github/spec-kit) ·
+  [Superpowers](https://github.com/obra/superpowers) ·
+  [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
+  [GSD (gsd-core)](https://github.com/open-gsd/gsd-core)
 - Chroma, [“Context Rot”](https://www.trychroma.com/research/context-rot) (2025)
 - Liu, N. F. et al. (2024). [*Lost in the Middle: How Language Models Use Long Contexts*](https://arxiv.org/abs/2307.03172). TACL.
 - Anthropic, [“Effective context engineering for AI agents”](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - Martin Fowler's site, [“Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl”](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
 - GitHub Blog, [“Spec-driven development with AI: get started with a new open source toolkit”](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)
-- [BMAD documentation](https://docs.bmad-method.org/) ·
-  [Claude Code plugins](https://code.claude.com/docs/en/plugins)
-- [Spec Kit](https://github.com/github/spec-kit)
+- [BMAD documentation](https://docs.bmad-method.org/)
 - [Spec Kit documentation](https://github.github.io/spec-kit/)
 - [Claude Code documentation](https://code.claude.com/docs) · [Claude Code plugins](https://code.claude.com/docs/en/plugins)
 - [Codex documentation](https://developers.openai.com/codex)
