@@ -14,3 +14,7 @@ cmake-build-*/
 .claude/settings.local.json
 .codex/auth.json
 ~$*.pptx
+
+# SDD workspace scratch
+.superpowers/
+.tmp/
