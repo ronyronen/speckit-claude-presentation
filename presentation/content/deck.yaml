@@ -1,0 +1,546 @@
+# Theory deck: single source of truth for the EN and HE decks.
+# SKELETON (Task 4, P1a): ids, parts, budgets, layouts and diagram refs are
+# final; slide copy is placeholder text of realistic length (Tasks 5 and 8).
+meta:
+  total_budget: "45:00"
+  qa_budget: "3:00"
+  min_tips: 10
+  article_credit:
+    author: "V. Dwarampudi"
+    title: "Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers"
+    venue: "Medium, Jun 2026"
+
+glossary_keep_en: [TIP, Spec Kit, BMAD, GSD, Superpowers, SDD, SDLC, ADLC, AI,
+  agent, prompt, context window, context rot, constitution, spec, plan, tasks,
+  TDD, Git, GitHub, main, dev, branch, issue, PR, pull request, merge, commit,
+  skill, CLI, OLED, DHT22, Heltec, repo, VS Code, vibe coding]
+glossary_forbidden_he: ["טיפ", "טיפים", "בקשת משיכה", "בקשות משיכה", "ענף",
+  "ענפים", "מאגר", "מאגרים", "חוקה"]
+
+slides:
+  # ---------------------------------------------------------------- Part 0
+  - id: title
+    part: "0"
+    budget: "0:30"
+    layout: title
+    title: { en: "Spec-Driven Development with AI", he: "פיתוח מבוסס spec עם AI" }
+    bullets:
+      - { key: subtitle, en: "From vibe coding to living specs: BMAD, Spec Kit, GSD and Superpowers", he: "מ-vibe coding ל-spec חי: BMAD, Spec Kit, GSD ו-Superpowers" }
+      - { key: credit, en: "Based on V. Dwarampudi, Spec-Driven AI (Medium, 2026)", he: "מבוסס על המאמר של V. Dwarampudi, Spec-Driven AI (Medium, 2026)" }
+    notes:
+      en: "Welcome everyone. Credit the article up front.\nhttps://medium.com/ (placeholder link)"
+      he: "ברוכים הבאים. מציינים את המאמר כבר בהתחלה.\nhttps://medium.com/ (קישור זמני)"
+
+  - id: hidden-questions
+    part: "0"
+    budget: "1:00"
+    layout: bullets
+    title: { en: "One prompt, many hidden questions", he: "prompt אחד, הרבה שאלות נסתרות" }
+    bullets:
+      - { key: prompt, en: "Build a temperature monitor with a warning light", he: "תבנה מוניטור טמפרטורה עם נורת אזהרה" }
+      - { key: threshold, en: "Which threshold? What happens right at the edge?", he: "איזה סף? מה קורה בדיוק על הגבול?" }
+      - { key: sensor, en: "Which sensor, which units, how often do we read it?", he: "איזה חיישן, באילו יחידות, וכל כמה זמן קוראים אותו?" }
+      - { key: guess, en: "The AI answers every question anyway, by guessing", he: "ה-AI עונה על כל השאלות בכל מקרה, בניחוש" }
+    tip: { key: ask-first, en: "Before prompting, list three questions the AI would have to guess about.", he: "לפני שכותבים prompt, רשמו שלוש שאלות שה-AI יצטרך לנחש לגביהן." }
+    notes:
+      en: "Analogy: ordering a cake by saying only 'make it nice'.\nWalk through each hidden question."
+      he: "Analogy: להזמין עוגה ולהגיד רק 'שתהיה יפה'.\nעוברים על כל שאלה נסתרת."
+
+  # ---------------------------------------------------------------- Part I
+  - id: intent-gap
+    part: I
+    budget: "2:30"
+    layout: bullets
+    title: { en: "The intent gap: SDLC vs ADLC", he: "פער הכוונה: SDLC מול ADLC" }
+    bullets:
+      - { key: sdlc, en: "SDLC: people write code, docs drift slowly out of date", he: "SDLC: אנשים כותבים קוד, והמסמכים מתיישנים לאט" }
+      - { key: adlc, en: "ADLC: an agent writes code in minutes, from whatever you said", he: "ADLC: agent כותב קוד בדקות, ממה שאמרתם, בדיוק כפי שאמרתם" }
+      - { key: gap, en: "The gap between what you meant and what you said grows fast", he: "הפער בין מה שהתכוונתם למה שאמרתם גדל מהר מאוד" }
+      - { key: fix, en: "Closing the gap means writing the intent down first", he: "סוגרים את הפער כשכותבים את הכוונה לפני הקוד" }
+    notes:
+      en: "Analogy: a translator who is fast but never asks what you meant.\nDiagram arrives in P2."
+      he: "Analogy: מתרגם מהיר שאף פעם לא שואל למה התכוונתם.\nהתרשים יגיע בשלב P2."
+
+  - id: vibe-vs-sdd
+    part: I
+    budget: "2:30"
+    layout: compare
+    title: { en: "Vibe coding vs SDD", he: "vibe coding מול SDD" }
+    columns:
+      - heading: { en: "Vibe coding", he: "vibe coding" }
+        items:
+          - { en: "Prompt, accept, repeat until it seems to work", he: "prompt, מאשרים, וחוזר חלילה עד שזה נראה עובד" }
+          - { en: "Decisions live in a chat history nobody rereads", he: "ההחלטות חיות בהיסטוריית צ'אט שאף אחד לא קורא שוב" }
+          - { en: "Great for a quick throwaway prototype", he: "מצוין לגרסת ניסיון מהירה שזורקים אחר כך" }
+      - heading: { en: "Spec-driven development", he: "פיתוח מבוסס spec" }
+        items:
+          - { en: "Write the spec, review it, then generate code", he: "כותבים spec, בודקים אותו, ורק אז מייצרים קוד" }
+          - { en: "Decisions live in files the whole team can read", he: "ההחלטות חיות בקבצים שכל הצוות יכול לקרוא" }
+          - { en: "Built for code you will maintain next month", he: "מתאים לקוד שתתחזקו גם בחודש הבא" }
+    tip: { key: pick-mode, en: "Vibe code to explore, switch to a spec once the code must survive.", he: "עושים vibe coding כדי לחקור, ועוברים ל-spec כשהקוד צריך לשרוד." }
+    notes:
+      en: "Analogy: sketching on a napkin versus drawing a blueprint.\nBoth have their place."
+      he: "Analogy: סקיצה על מפית מול שרטוט של אדריכל.\nלשניהם יש מקום."
+
+  - id: sdd-core
+    part: I
+    budget: "2:30"
+    layout: bullets
+    title: { en: "SDD core idea: the spec is the source of truth", he: "הרעיון המרכזי של SDD: ה-spec הוא מקור האמת" }
+    bullets:
+      - { key: truth, en: "The spec, not the code, says what the system should do", he: "ה-spec, ולא הקוד, קובע מה המערכת צריכה לעשות" }
+      - { key: stages, en: "Stages with gates: specify, plan, tasks, implement", he: "שלבים עם שערים: specify, plan, tasks, implement" }
+      - { key: loop, en: "A feedback loop: what you learn flows back into the spec", he: "לולאת משוב: מה שלומדים חוזר ומעדכן את ה-spec" }
+      - { key: constitution, en: "A constitution holds the rules every stage must respect", he: "ה-constitution מחזיקה את הכללים שכל שלב חייב לכבד" }
+    tip: { key: one-truth, en: "When code and spec disagree, fix the spec first, then regenerate.", he: "כשהקוד וה-spec לא מסכימים, מתקנים קודם את ה-spec ואז מייצרים מחדש." }
+    notes:
+      en: "Analogy: a recipe card that the whole kitchen cooks from.\nDiagram arrives in P2."
+      he: "Analogy: כרטיס מתכון שכל המטבח מבשל לפיו.\nהתרשים יגיע בשלב P2."
+
+  # ---------------------------------------------------------------- Part II
+  - id: context-engineering
+    part: II
+    budget: "2:00"
+    layout: bullets
+    title: { en: "Context engineering", he: "context engineering: מה ה-AI רואה" }
+    bullets:
+      - { key: window, en: "The context window is everything the AI sees right now", he: "ה-context window הוא כל מה שה-AI רואה ברגע זה" }
+      - { key: curate, en: "Choose what goes in: spec, plan, the files that matter", he: "בוחרים מה נכנס: spec, plan והקבצים שבאמת חשובים" }
+      - { key: less, en: "Less but relevant beats more but noisy", he: "מעט ורלוונטי עדיף על הרבה ורועש" }
+    tip: { key: point-files, en: "Point the agent at the exact files it needs instead of the whole project.", he: "הפנו את ה-agent לקבצים המדויקים שהוא צריך, ולא לכל הפרויקט." }
+    notes:
+      en: "Analogy: packing a small backpack for a day hike.\nOnly what you need."
+      he: "Analogy: לארוז תיק קטן לטיול של יום.\nרק מה שצריך."
+
+  - id: context-rot
+    part: II
+    budget: "2:00"
+    layout: bullets
+    title: { en: "Context rot", he: "context rot: כשה-AI שוכח" }
+    bullets:
+      - { key: long, en: "Long sessions fill the window with old, stale detail", he: "סשנים ארוכים ממלאים את החלון בפרטים ישנים ולא רלוונטיים" }
+      - { key: forget, en: "Early decisions get diluted and quietly forgotten", he: "החלטות מההתחלה מתדללות ונשכחות בשקט" }
+      - { key: quality, en: "Answer quality drops long before the window is full", he: "איכות התשובות יורדת הרבה לפני שהחלון מתמלא" }
+    notes:
+      en: "Analogy: a game of telephone that keeps getting longer.\nDiagram arrives in P2."
+      he: "Analogy: משחק טלפון שבור שרק הולך ומתארך.\nהתרשים יגיע בשלב P2."
+
+  # ---------------------------------------------------------------- Part III
+  - id: bmad
+    part: III
+    budget: "1:30"
+    layout: bullets
+    title: { en: "BMAD: the agile team", he: "BMAD: צוות אג'ילי שלם" }
+    bullets:
+      - { key: roles, en: "Agents play roles: analyst, product manager, architect, developer", he: "agents משחקים תפקידים: אנליסט, מנהל מוצר, ארכיטקט ומפתח" }
+      - { key: docs, en: "Each role hands a document to the next one", he: "כל תפקיד מעביר מסמך לתפקיד הבא" }
+      - { key: fit, en: "Fits larger projects that need planning up front", he: "מתאים לפרויקטים גדולים שצריכים תכנון מראש" }
+    tip: { key: roles-small, en: "On small projects, borrow only the roles you actually miss.", he: "בפרויקט קטן, קחו רק את התפקידים שבאמת חסרים לכם." }
+    notes:
+      en: "Analogy: a film crew where everyone has one clear job."
+      he: "Analogy: צוות צילום שבו לכל אחד יש תפקיד אחד ברור."
+
+  - id: speckit
+    part: III
+    budget: "2:00"
+    layout: table
+    title: { en: "Spec Kit: the living spec", he: "Spec Kit: ה-spec החי" }
+    table:
+      header:
+        - { en: "Stage", he: "שלב" }
+        - { en: "Produces", he: "תוצר" }
+        - { en: "Catches", he: "מה הוא תופס" }
+      rows:
+        - [ { en: "specify", he: "specify" }, { en: "spec.md", he: "spec.md" }, { en: "Unclear requirements", he: "דרישות לא ברורות" } ]
+        - [ { en: "plan", he: "plan" }, { en: "plan.md", he: "plan.md" }, { en: "Wrong architecture", he: "ארכיטקטורה שגויה" } ]
+        - [ { en: "tasks", he: "tasks" }, { en: "tasks.md", he: "tasks.md" }, { en: "Missing steps", he: "צעדים חסרים" } ]
+        - [ { en: "implement", he: "implement" }, { en: "Code and tests", he: "קוד ובדיקות" }, { en: "Drift from the spec", he: "סטייה מה-spec" } ]
+    tip: { key: commit-spec, en: "Commit the spec next to the code so reviews see both.", he: "עשו commit ל-spec ליד הקוד, כדי שבסקירה יראו את שניהם." }
+    notes:
+      en: "Analogy: a building permit process, each stamp catches a different mistake."
+      he: "Analogy: תהליך היתר בנייה, כל חותמת תופסת טעות אחרת."
+
+  - id: gsd
+    part: III
+    budget: "1:30"
+    layout: bullets
+    title: { en: "GSD: fresh context per task", he: "GSD: context נקי לכל משימה" }
+    bullets:
+      - { key: fresh, en: "Every task starts in a new, clean context", he: "כל משימה מתחילה ב-context חדש ונקי" }
+      - { key: state, en: "Project state lives in files, not in chat memory", he: "מצב הפרויקט נשמר בקבצים, לא בזיכרון של הצ'אט" }
+      - { key: rot, en: "A direct answer to context rot in long sessions", he: "תשובה ישירה ל-context rot בסשנים ארוכים" }
+    tip: { key: new-session, en: "Start a new session per task; long chats cost more than they save.", he: "פתחו סשן חדש לכל משימה; צ'אט ארוך עולה יותר ממה שהוא חוסך." }
+    notes:
+      en: "Analogy: a relay race where each runner starts fresh with the baton."
+      he: "Analogy: מרוץ שליחים שבו כל רץ מתחיל רענן עם המקל."
+
+  - id: superpowers
+    part: III
+    budget: "1:30"
+    layout: bullets
+    title: { en: "Superpowers: enforced discipline", he: "Superpowers: משמעת שנאכפת" }
+    bullets:
+      - { key: skills, en: "A library of skills the agent must follow", he: "ספרייה של skills שה-agent חייב לפעול לפיהם" }
+      - { key: tdd, en: "TDD first: a failing test before any code", he: "TDD קודם כול: בדיקה נכשלת לפני כל שורת קוד" }
+      - { key: verify, en: "No claim of done without fresh evidence", he: "אין הכרזה על סיום בלי הוכחה עדכנית" }
+    tip: { key: tdd-habit, en: "If your team skips tests under pressure, let the tooling enforce them.", he: "אם הצוות מדלג על בדיקות תחת לחץ, תנו לכלים לאכוף אותן." }
+    notes:
+      en: "Analogy: a pilot's checklist, read out loud every single flight."
+      he: "Analogy: רשימת תיוג של טייס, שמקריאים בקול בכל טיסה."
+
+  - id: two-layers
+    part: III
+    budget: "2:00"
+    layout: bullets-diagram
+    title: { en: "Four metaphors, two layers", he: "ארבע מטאפורות, שתי שכבות" }
+    bullets:
+      - { key: layers, en: "Planning tools and execution tools solve different problems", he: "כלי תכנון וכלי ביצוע פותרים בעיות שונות" }
+    diagram:
+      name: layers
+      labels:
+        band_plan: { en: "Planning and governance", he: "תכנון וממשל" }
+        band_exec: { en: "Execution discipline", he: "משמעת ביצוע" }
+        bmad: { en: "BMAD: the agile team", he: "BMAD: צוות אג'ילי" }
+        speckit: { en: "Spec Kit: the living spec", he: "Spec Kit: ה-spec החי" }
+        gsd: { en: "GSD: fresh context", he: "GSD: context נקי" }
+        superpowers: { en: "Superpowers: discipline", he: "Superpowers: משמעת" }
+    notes:
+      en: "Analogy: an architect and a site foreman, both needed, different jobs."
+      he: "Analogy: אדריכל ומנהל עבודה, שניהם נחוצים, תפקידים שונים."
+
+  - id: decision-rule
+    part: III
+    budget: "2:30"
+    layout: bullets-diagram
+    title: { en: "Decision rule: which layers do you need?", he: "כלל החלטה: אילו שכבות צריך?" }
+    diagram:
+      name: decision
+      labels:
+        track_context: { en: "Context layer: GSD", he: "שכבת context: GSD" }
+        track_discipline: { en: "Discipline layer: Superpowers", he: "שכבת משמעת: Superpowers" }
+        q_long: { en: "Long sessions?", he: "סשנים ארוכים?" }
+        q_review: { en: "Human reviews each phase?", he: "אדם בודק כל שלב?" }
+        q_tdd: { en: "Strong TDD habit?", he: "הרגלי TDD חזקים?" }
+        add_gsd: { en: "Add GSD", he: "הוסיפו GSD" }
+        skip_gsd: { en: "Skip GSD", he: "וותרו על GSD" }
+        add_superpowers: { en: "Add Superpowers", he: "הוסיפו Superpowers" }
+        skip_superpowers: { en: "Skip it", he: "וותרו" }
+        "yes": { en: "yes", he: "כן" }
+        "no": { en: "no", he: "לא" }
+    tip: { key: start-speckit, en: "Start with Spec Kit alone; add a layer only when you feel its pain.", he: "התחילו רק עם Spec Kit; הוסיפו שכבה רק כשאתם מרגישים את הכאב." }
+    notes:
+      en: "Analogy: choosing a vehicle, you do not buy a truck for a short commute."
+      he: "Analogy: בחירת רכב, לא קונים משאית לנסיעה קצרה לעבודה."
+
+  # ---------------------------------------------------------------- Part IV
+  - id: heltec-board
+    part: IV
+    budget: "1:30"
+    layout: compare
+    title: { en: "Board and requirement: Heltec + DHT22", he: "הלוח והדרישה: Heltec עם DHT22" }
+    columns:
+      - heading: { en: "Implicit", he: "מרומז" }
+        items:
+          - { en: "Show the temperature on the OLED", he: "להציג את הטמפרטורה על ה-OLED" }
+          - { en: "Warn when it gets too hot", he: "להזהיר כשחם מדי" }
+      - heading: { en: "Explicit", he: "מפורש" }
+        items:
+          - { en: "DHT22 read every 2 s, Celsius, one decimal", he: "קריאת DHT22 כל 2 שניות, צלזיוס, ספרה אחת אחרי הנקודה" }
+          - { en: "WARNING at 30.0 °C, back to OK at 29.0 °C", he: "WARNING ב-30.0 מעלות, חזרה ל-OK ב-29.0 מעלות" }
+    notes:
+      en: "Analogy: see slide 2"
+      he: "Analogy: see slide 2"
+
+  - id: specify-hysteresis
+    part: IV
+    budget: "1:30"
+    layout: code
+    title: { en: "Specify: hysteresis decided, not guessed", he: "specify: ה-hysteresis הוחלט, לא נוחש" }
+    bullets:
+      - { key: question, en: "The spec asked: what happens at exactly 30 °C?", he: "ה-spec שאל: מה קורה בדיוק ב-30 מעלות?" }
+      - { key: answer, en: "We decided a 1 °C band so the light stops flickering", he: "החלטנו על פס של מעלה אחת כדי שהנורה תפסיק להבהב" }
+    code: |
+      FR-004: The device MUST enter WARNING
+              when temperature >= 30.0 C.
+      FR-005: The device MUST return to OK
+              only when temperature <= 29.0 C.
+    tip: { key: edge-cases, en: "Ask the spec stage about edges: exactly at the threshold, sensor missing, first boot.", he: "שאלו בשלב ה-spec על מקרי קצה: בדיוק על הסף, חיישן חסר, הפעלה ראשונה." }
+    notes:
+      en: "Analogy: see slide 5"
+      he: "Analogy: see slide 5"
+
+  - id: plan-tested
+    part: IV
+    budget: "1:30"
+    layout: code
+    title: { en: "Plan + tested logic (11/11)", he: "plan ולוגיקה בדוקה (11/11)" }
+    bullets:
+      - { key: pure, en: "The plan split pure logic from hardware code", he: "ה-plan הפריד בין לוגיקה טהורה לקוד חומרה" }
+      - { key: tests, en: "Eleven host tests run without the board attached", he: "אחת עשרה בדיקות רצות על המחשב, בלי הלוח" }
+    code: |
+      test_ok_below_threshold      PASSED
+      test_warning_at_threshold    PASSED
+      test_hysteresis_holds        PASSED
+      ...
+      11 passed in 0.04s
+    notes:
+      en: "Analogy: see slide 11"
+      he: "Analogy: see slide 11"
+
+  - id: analyze-caught
+    part: IV
+    budget: "1:30"
+    layout: table
+    title: { en: "What /speckit-analyze caught", he: "מה /speckit-analyze תפס" }
+    table:
+      header:
+        - { en: "Finding", he: "ממצא" }
+        - { en: "Fix", he: "תיקון" }
+      rows:
+        - [ { en: "Task with no requirement behind it", he: "משימה בלי דרישה מאחוריה" }, { en: "Removed the task", he: "הסרנו את המשימה" } ]
+        - [ { en: "Requirement with no test", he: "דרישה בלי בדיקה" }, { en: "Added a host test", he: "הוספנו בדיקה" } ]
+        - [ { en: "Sensor named two ways", he: "החיישן נקרא בשני שמות" }, { en: "DHT22 everywhere", he: "DHT22 בכל מקום" } ]
+    notes:
+      en: "Analogy: see slide 9"
+      he: "Analogy: see slide 9"
+
+  - id: behavior-photos
+    part: IV
+    budget: "2:00"
+    layout: photos
+    title: { en: "Behavior: OK and WARNING on the board", he: "התנהגות: OK ו-WARNING על הלוח" }
+    images:
+      - { file: photo-ok.jpg, caption: { en: "OK: below 30 °C", he: "OK: מתחת ל-30 מעלות" } }
+      - { file: photo-warning.jpg, caption: { en: "WARNING: at or above 30 °C", he: "WARNING: 30 מעלות ומעלה" } }
+    tip: { key: photo-proof, en: "Photograph real hardware results; they convince reviewers faster than logs.", he: "צלמו תוצאות אמיתיות מהחומרה; הן משכנעות סוקרים מהר יותר מלוגים." }
+    notes:
+      en: "Analogy: see slide 2"
+      he: "Analogy: see slide 2"
+
+  # ---------------------------------------------------------------- Part V
+  - id: main-vs-dev
+    part: V
+    budget: "1:30"
+    layout: bullets-diagram
+    title: { en: "main vs dev", he: "main מול dev" }
+    bullets:
+      - { key: roles, en: "main is what ships; dev is where work lands first", he: "main הוא מה שמשוחרר; dev הוא המקום שבו העבודה נוחתת קודם" }
+    diagram:
+      name: branch-flow
+      highlight: [dev, main]
+      labels: &branch_labels
+        issue: { en: "issue #2", he: "issue #2" }
+        feature: { en: "feature branch", he: "feature branch" }
+        pr3: { en: "PR #3", he: "PR #3" }
+        dev: { en: "dev", he: "dev" }
+        prs: { en: "PRs #4-7", he: "PRs #4-7" }
+        main: { en: "main", he: "main" }
+    tip: { key: protect-main, en: "Protect main so nothing lands there without a reviewed pull request.", he: "הגנו על main כך ששום דבר לא נכנס אליו בלי pull request שנבדק." }
+    notes:
+      en: "Analogy: a kitchen pass, dishes wait there before going to the guests."
+      he: "Analogy: דלפק ההגשה במטבח, המנות מחכות שם לפני שהן יוצאות לסועדים."
+
+  - id: issues-prs
+    part: V
+    budget: "1:30"
+    layout: bullets-diagram
+    title: { en: "Issues and pull requests", he: "issues ו-pull requests" }
+    bullets:
+      - { key: issue, en: "An issue says why; a pull request shows how", he: "issue מסביר למה; pull request מראה איך" }
+      - { key: link, en: "Link each PR to its issue so history explains itself", he: "קשרו כל PR ל-issue שלו כדי שההיסטוריה תסביר את עצמה" }
+    diagram:
+      name: branch-flow
+      highlight: [issue, pr3, prs]
+      labels: *branch_labels
+    notes:
+      en: "Analogy: a work order and the signed delivery note."
+      he: "Analogy: הזמנת עבודה ותעודת המשלוח החתומה."
+
+  - id: shared-repo
+    part: V
+    budget: "2:00"
+    layout: bullets-diagram
+    title: { en: "Shared repo, shared specs/", he: "repo משותף, specs/ משותף" }
+    bullets:
+      - { key: specs, en: "The specs/ folder travels with the code in every branch", he: "תיקיית specs/ נוסעת עם הקוד בכל branch" }
+    diagram:
+      name: branch-flow
+      highlight: [feature, dev]
+      labels: *branch_labels
+    tip: { key: specs-in-pr, en: "Review the spec changes first in every pull request, then the code.", he: "בכל pull request, סקרו קודם את שינויי ה-spec ורק אחר כך את הקוד." }
+    notes:
+      en: "Analogy: a shared recipe book that every cook updates in place."
+      he: "Analogy: ספר מתכונים משותף שכל טבח מעדכן במקום."
+
+  # ---------------------------------------------------------------- Part VI
+  - id: skills
+    part: VI
+    budget: "1:00"
+    layout: bullets
+    title: { en: "Skills", he: "skills: יכולות שאפשר לשתף" }
+    bullets:
+      - { key: what, en: "A skill is a written procedure the agent loads on demand", he: "skill הוא נוהל כתוב שה-agent טוען רק כשצריך" }
+      - { key: share, en: "Write it once, share it across projects and teammates", he: "כותבים פעם אחת ומשתפים בין פרויקטים וחברי צוות" }
+    tip: { key: first-skill, en: "Turn the instruction you repeat most often into your first skill.", he: "הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם." }
+    notes:
+      en: "Analogy: a recipe card you hand to any new cook."
+      he: "Analogy: כרטיס מתכון שנותנים לכל טבח חדש."
+
+  - id: team-of-skills
+    part: VI
+    budget: "1:00"
+    layout: bullets
+    title: { en: "Teams of skills: the /team example", he: "צוותים של skills: הדוגמה של team" }
+    bullets:
+      - { key: roles, en: "Architect, product owner and developer, each a skill", he: "ארכיטקט, בעל מוצר ומפתח, כל אחד הוא skill" }
+      - { key: meta, en: "This very deck was built by such a team", he: "המצגת הזאת עצמה נבנתה על ידי צוות כזה" }
+    notes:
+      en: "Analogy: a small band where everyone knows their part."
+      he: "Analogy: להקה קטנה שבה כל אחד יודע את התפקיד שלו."
+
+  - id: shared-constitution
+    part: VI
+    budget: "1:00"
+    layout: bullets
+    title: { en: "Shared constitution across projects", he: "constitution משותפת לכמה פרויקטים" }
+    bullets:
+      - { key: rules, en: "One set of rules: testing, naming, security, review", he: "סט אחד של כללים: בדיקות, שמות, אבטחה וסקירה" }
+      - { key: reuse, en: "Every new project starts from the same agreed baseline", he: "כל פרויקט חדש מתחיל מאותו בסיס מוסכם" }
+    tip: { key: short-constitution, en: "Keep the constitution short; rules nobody reads are rules nobody follows.", he: "שמרו על constitution קצרה; כללים שאף אחד לא קורא, אף אחד לא מקיים." }
+    notes:
+      en: "Analogy: the house rules posted on the fridge."
+      he: "Analogy: חוקי הבית שתלויים על המקרר."
+
+  # ---------------------------------------------------------------- Close
+  - id: takeaways
+    part: close
+    budget: "1:30"
+    layout: bullets
+    title: { en: "Takeaways", he: "מה לוקחים הביתה" }
+    bullets:
+      - { key: intent, en: "Write the intent down before the AI writes the code", he: "כתבו את הכוונה לפני שה-AI כותב את הקוד" }
+      - { key: context, en: "Manage context on purpose; it rots if you do not", he: "נהלו את ה-context בכוונה; אחרת הוא נרקב" }
+      - { key: layers, en: "Pick layers by pain: planning, context, discipline", he: "בחרו שכבות לפי הכאב: תכנון, context, משמעת" }
+      - { key: heltec, en: "The Heltec run used Spec Kit alone, and it was enough", he: "בפרויקט ה-Heltec השתמשנו רק ב-Spec Kit, וזה הספיק" }
+    tip: { key: tomorrow, en: "Tomorrow, write a one-page spec before your next AI coding session.", he: "מחר, כתבו spec של עמוד אחד לפני הסשן הבא שלכם עם AI." }
+    notes:
+      en: "Analogy: measure twice, cut once."
+      he: "Analogy: מודדים פעמיים, חותכים פעם אחת."
+
+  - id: resources
+    part: close
+    budget: "0:30"
+    layout: bullets
+    title: { en: "Resources", he: "מקורות" }
+    bullets:
+      - { key: article, en: "V. Dwarampudi, Spec-Driven AI (Medium, 2026)", he: "V. Dwarampudi, Spec-Driven AI (Medium, 2026)" }
+      - { key: speckit, en: "Spec Kit: github.com/github/spec-kit", he: "Spec Kit: github.com/github/spec-kit" }
+      - { key: gsd, en: "GSD: github.com/open-gsd/gsd-core", he: "GSD: github.com/open-gsd/gsd-core" }
+      - { key: repo, en: "This talk's repo and both decks on GitHub", he: "ה-repo של ההרצאה ושתי המצגות ב-GitHub" }
+    notes:
+      en: "Leave this up while people photograph it."
+      he: "משאירים את השקף כדי שאנשים יספיקו לצלם."
+
+  - id: qa
+    part: close
+    budget: "3:00"
+    layout: section
+    title: { en: "Questions?", he: "שאלות?" }
+    bullets:
+      - { key: thanks, en: "Thank you", he: "תודה רבה" }
+    notes:
+      en: "Repeat each question before answering it."
+      he: "חוזרים על כל שאלה לפני שעונים עליה."
+
+  # ---------------------------------------------------------------- Appendix
+  - id: a1-stages-catch-mistakes
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: table
+    title: { en: "Backup: each stage catches a mistake", he: "גיבוי: כל שלב תופס טעות" }
+    table:
+      header:
+        - { en: "Stage", he: "שלב" }
+        - { en: "Example mistake caught", he: "דוגמה לטעות שנתפסה" }
+      rows:
+        - [ { en: "specify", he: "specify" }, { en: "No decision about the threshold edge", he: "אין החלטה לגבי קצה הסף" } ]
+        - [ { en: "plan", he: "plan" }, { en: "Logic tangled with hardware code", he: "לוגיקה מעורבבת עם קוד חומרה" } ]
+        - [ { en: "analyze", he: "analyze" }, { en: "Requirement with no test", he: "דרישה בלי בדיקה" } ]
+    notes:
+      en: "backup, not timed. Use only if asked about the stages."
+      he: "backup, not timed. משתמשים רק אם שואלים על השלבים."
+
+  - id: a2-overlap-gaps
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: compare
+    title: { en: "Backup: overlap and gaps", he: "גיבוי: חפיפות ופערים" }
+    columns:
+      - heading: { en: "Overlap", he: "חפיפה" }
+        items:
+          - { en: "BMAD and Spec Kit both plan before coding", he: "גם BMAD וגם Spec Kit מתכננים לפני הקוד" }
+          - { en: "GSD and Superpowers both shape execution", he: "גם GSD וגם Superpowers מעצבים את הביצוע" }
+      - heading: { en: "Gaps", he: "פערים" }
+        items:
+          - { en: "None of them replaces a human review", he: "אף אחד מהם לא מחליף סקירה אנושית" }
+          - { en: "Hardware testing is still on you", he: "בדיקות חומרה עדיין באחריותכם" }
+    notes:
+      en: "backup, not timed. For questions comparing the tools."
+      he: "backup, not timed. לשאלות שמשוות בין הכלים."
+
+  - id: a3-specify-init
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: code
+    title: { en: "Backup: starting a Spec Kit project", he: "גיבוי: איך מתחילים פרויקט Spec Kit" }
+    bullets:
+      - { key: init, en: "One command creates the folders and templates", he: "פקודה אחת יוצרת את התיקיות והתבניות" }
+    code: |
+      uvx --from git+https://github.com/github/spec-kit.git \
+          specify init heltec-monitor --ai claude
+      cd heltec-monitor
+    notes:
+      en: "backup, not timed. Show only if someone wants to try it tonight."
+      he: "backup, not timed. מראים רק אם מישהו רוצה לנסות כבר הערב."
+
+  - id: a4-tool-relationship
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: bullets
+    title: { en: "Backup: how the tools relate", he: "גיבוי: איך הכלים קשורים זה לזה" }
+    bullets:
+      - { key: complement, en: "Planning tools and execution tools complement each other", he: "כלי תכנון וכלי ביצוע משלימים זה את זה" }
+      - { key: combine, en: "You can combine Spec Kit with GSD or Superpowers", he: "אפשר לשלב את Spec Kit עם GSD או עם Superpowers" }
+    notes:
+      en: "backup, not timed. Use with slide 12."
+      he: "backup, not timed. משתמשים יחד עם שקף 12."
+
+  - id: a5-vscode-extensions
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: bullets
+    title: { en: "Backup: VS Code extensions", he: "גיבוי: הרחבות ל-VS Code" }
+    bullets:
+      - { key: platformio, en: "PlatformIO for building and flashing the board", he: "PlatformIO לבנייה ולצריבה של הלוח" }
+      - { key: markdown, en: "A Markdown preview for reading specs side by side", he: "תצוגה מקדימה של Markdown כדי לקרוא specs זה לצד זה" }
+    tip: { key: preview, en: "Keep the spec open in a preview pane while the agent works.", he: "השאירו את ה-spec פתוח בחלונית תצוגה בזמן שה-agent עובד." }
+    notes:
+      en: "backup, not timed. For the hands-on crowd."
+      he: "backup, not timed. לקהל שרוצה לנסות בעצמו."
+
+  - id: a6-git-checkpoints
+    part: close
+    appendix: true
+    budget: "0:00"
+    layout: section
+    title: { en: "Backup: git checkpoints per stage", he: "גיבוי: נקודות ביקורת ב-Git לכל שלב" }
+    bullets:
+      - { key: tags, en: "One tag per stage, from 01-start to 08-implemented", he: "tag אחד לכל שלב, מ-01-start ועד 08-implemented" }
+    notes:
+      en: "backup, not timed. Tags make each stage easy to replay."
+      he: "backup, not timed. ה-tags מאפשרים לשחזר כל שלב בקלות."

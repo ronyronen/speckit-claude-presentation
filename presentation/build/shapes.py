@@ -139,8 +139,11 @@ def decision(slide, area, diagram, lang, glossary):
     rw = w - lw - track_gap
     rx = x + lw + track_gap
     lab_h = Inches(0.5)
-    dw, dh = Inches(3.0), Inches(2.6)
     oh = Inches(1.0)
+    # Diamonds shrink on short areas so the connectors (and their labels)
+    # keep at least 0.9in of vertical room.
+    dw = Inches(3.0)
+    dh = min(Inches(2.6), h - lab_h - Inches(0.1) - oh - Inches(0.9))
     oy = y + h - oh
     dy = y + lab_h + Inches(0.1)
 
@@ -176,11 +179,11 @@ def decision(slide, area, diagram, lang, glossary):
         ss, ds = _EDGE_SITES[(src, dst)]
         _arrow(slide, shapes[src], ss, shapes[dst], ds)
         (x1, y1), (x2, y2) = _site_xy(shapes[src], ss), _site_xy(shapes[dst], ds)
-        mx, my = (x1 + x2) // 2, (y1 + y2) // 2
-        if y1 == y2:
-            my -= Inches(0.3)
-        else:
-            mx += Inches(0.4) if x2 >= x1 else -Inches(0.4)
+        if y1 == y2:  # horizontal: centred above the line
+            mx, my = (x1 + x2) // 2, y1 - Inches(0.3)
+        else:  # near the source end, beside the line on its travel side
+            mx = x1 + (x2 - x1) * 3 // 10 + (Inches(0.35) if x2 >= x1 else -Inches(0.35))
+            my = y1 + (y2 - y1) * 3 // 10
         _edge_label(slide, diagram, lab, lang, glossary, mx, my)
 
 

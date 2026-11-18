@@ -46,6 +46,16 @@ def split_runs(text, glossary):
             lab = prev or nxt or "en"
         labels[i:j] = [lab] * (j - i)
         i = j
+    # A slash glued to an English word belongs to it ("/speckit-x", "specs/").
+    changed = True
+    while changed:
+        changed = False
+        for i, ch in enumerate(text):
+            if ch == "/" and labels[i] != "en" and any(
+                    0 <= k < len(text) and labels[k] == "en" and not text[k].isspace()
+                    for k in (i - 1, i + 1)):
+                labels[i] = "en"
+                changed = True
     out = []
     for ch, lab in zip(text, labels):
         if out and out[-1][1] == lab:
@@ -53,6 +63,19 @@ def split_runs(text, glossary):
         else:
             out.append((ch, lab))
     return out
+
+
+LRM = "\u200e"
+
+
+def _isolate(seg):
+    """Wrap an English segment in LRM where its edge is not a letter, so a
+    leading slash/digit or trailing slash stays on the LTR side in HE."""
+    if seg[:1] and not (seg[0].isalpha() or seg[0].isspace()):
+        seg = LRM + seg
+    if seg[-1:] and not (seg[-1].isalnum() or seg[-1].isspace()):
+        seg = seg + LRM
+    return seg
 
 
 def set_rtl(paragraph):
@@ -91,7 +114,7 @@ def write_paragraphs(tf, items, lang, size_pt, glossary, bullet=True,
         _bullet(p, bullet)
         for seg, seg_lang in split_runs(line, glossary):
             r = p.add_run()
-            r.text = seg
+            r.text = _isolate(seg) if (lang == "he" and seg_lang == "en") else seg
             r.font.size = Pt(size_pt)
             r.font.bold = bold
             r.font.color.rgb = color

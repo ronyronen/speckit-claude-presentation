@@ -83,3 +83,35 @@ def test_set_rtl():
     p = tf.paragraphs[0]
     set_rtl(p)
     assert p._p.pPr.get("rtl") == "1" and p._p.pPr.get("algn") == "r"
+
+
+LRM = "‎"
+
+
+def test_split_runs_slash_glued_to_latin_is_english():
+    segs = split_runs("מה /speckit-analyze תפס", [])
+    assert ("/speckit-analyze", "en") in segs
+    segs = split_runs("תיקיית specs/ נוסעת", [])
+    assert ("specs/", "en") in segs
+    assert all(l == "he" for s, l in split_runs("קלט/פלט", []))
+
+
+def test_he_lrm_isolates_latin_edges():
+    """Leading slash/digit and trailing slash of an English run stay LTR in HE."""
+    tf = _tf()
+    write_paragraphs(tf, ["מה /speckit-analyze תפס", "תיקיית specs/ נוסעת",
+                          "מ-01-start ועד 08-implemented"], "he", 20, [])
+    runs = [r.text for p in tf.paragraphs for r in p.runs]
+    assert LRM + "/speckit-analyze" in runs
+    assert "specs/" + LRM in runs
+    assert LRM + "01-start" in runs and LRM + "08-implemented" in runs
+
+
+def test_lrm_only_where_needed():
+    tf = _tf()
+    write_paragraphs(tf, ["שלום Spec Kit עולם", "TIP"], "he", 20, ["Spec Kit"])
+    write_paragraphs(_tf(), ["/x 1"], "en", 20, [])
+    assert LRM not in "".join(r.text for p in tf.paragraphs for r in p.runs)
+    en = _tf()
+    write_paragraphs(en, ["/speckit-analyze"], "en", 20, [])
+    assert LRM not in en.text
