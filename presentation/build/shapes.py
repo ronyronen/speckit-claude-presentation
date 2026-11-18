@@ -362,13 +362,15 @@ def context_rot(slide, area, diagram, lang, glossary):
     pts = []
     for i in range(steps + 1):
         t = i / steps
-        pts.append((ox + Inches(0.3) + t * pw, top + Inches(0.3) + ph * (0.92 * t ** 1.5)))
+        pts.append((ox + Inches(0.3) + t * pw, top + Inches(0.3) + ph * (0.95 * t ** 1.1)))
     split = int(steps * 0.6)
     _polyline(slide, "curve", pts[:split + 1], "ok", 5)
     _polyline(slide, "curve-rot", pts[split:], "warn", 5)
-    rx0, ry0 = pts[split + 3]
-    _caption(slide, "rot-zone", rx0 - Inches(4.2), ry0 - Inches(0.9), Inches(3.8),
-             lab_h, _label(diagram, "rot_zone", lang), lang, glossary, "warn")
+    # caption above and to the right of the amber segment, clear of the line
+    cap_w = Inches(3.0)
+    _, ly = pts[int(steps * 0.8)]
+    _caption(slide, "rot-zone", right - cap_w, ly - Inches(0.9), cap_w, lab_h,
+             _label(diagram, "rot_zone", lang), lang, glossary, "warn")
 
 
 def team_roles(slide, area, diagram, lang, glossary):

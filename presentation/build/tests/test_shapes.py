@@ -221,7 +221,14 @@ def test_sdd_pipeline_five_stages_two_gates_rail():
     rail = _by(s, "rail")
     assert len(rail) == 1 and rail[0].width >= 0.9 * AREA[2]
     assert len(_by(s, "feedback")) == 1
-    assert _by(s, "feedback")[0].top >= st["stage-implement"].top
+    fb = _by(s, "feedback")[0]
+    assert fb.top >= st["stage-implement"].top
+    pts = fb._element.xpath(".//a:path//a:pt")
+    first, last = pts[0], pts[-1]
+    sx, ex = fb.left + int(first.get("x")), fb.left + int(last.get("x"))
+    centre = lambda b: b.left + b.width // 2
+    assert abs(sx - centre(st["stage-implement"])) <= Inches(0.3)
+    assert abs(ex - centre(st["stage-specify"])) <= Inches(0.3)
 
 
 def test_context_rot_no_numbers():
