@@ -293,7 +293,8 @@ def title(slide, s, lang, glossary):
                       glossary, 18, bold=True, color=COLORS["accent2"],
                       align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE,
                       fit=(s.id, "eyebrow"), max_lines=1)
-        _tracking(eb, 300)
+        if lang == "en":  # letter-spacing suits Latin caps, not Hebrew
+            _tracking(eb, 300)
     y += Inches(0.6)
     tb = _textbox(slide, "lay-title", x, y, w, line_h, lang, [head], glossary, HERO_PT,
                   bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE,
@@ -471,6 +472,7 @@ def code(slide, s, lang, glossary):
 
 LAYOUTS = {
     "title": title,
+    "divider": title,  # part dividers share the keynote cover
     "section": section,
     "bullets": bullets,
     "bullets-diagram": bullets_diagram,

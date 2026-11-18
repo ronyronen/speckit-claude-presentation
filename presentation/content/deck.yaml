@@ -67,6 +67,21 @@ slides:
         ה-AI לא יעצור לשאול. הוא יענה על כל אחת מהן בכל מקרה, בשקט, בניחוש. ההרצאה הזאת עוסקת בדרך לחשוף את הניחושים האלה.
 
   # ---------------------------------------------------------------- Part I
+  - id: part-1
+    part: "I"
+    budget: "0:00"
+    layout: divider
+    title: { en: "From prompt to spec", he: "מ-prompt ל-spec" }
+    eyebrow: { en: "Part 1 of 6", he: "חלק 1 מתוך 6" }
+    accent: { en: "to spec", he: "ל-spec" }
+    bullets:
+      - { key: subtitle, en: "Why a fast, literal AI needs written intent", he: "למה AI מהיר ומילולי צריך כוונה כתובה" }
+    notes:
+      en: |
+        Transition: Why a fast, literal AI needs written intent
+      he: |
+        מעבר: למה AI מהיר ומילולי צריך כוונה כתובה
+
   - id: intent-gap
     part: I
     budget: "2:30"
@@ -184,7 +199,7 @@ slides:
         Analogy: a restaurant kitchen cooking from one recipe card. If the dish comes out wrong, you do not just fix the plate; you fix the recipe, so tomorrow's dish is right too.
         SDD makes the spec the source of truth. Not the code, and not the chat. The code is something the AI generates from the spec, and can generate again.
         The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
-        Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
+        Spec Kit, GitHub's free toolkit that we will meet properly on slide 12, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
         Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. Think of it as a feedback loop, with the constitution as a rail running underneath every stage.
         The constitution is not paperwork. Every later stage is checked against it, so you write the rules once and the AI respects them everywhere.
         The tip is the habit that makes all of this work: when the code and the spec disagree, fix the spec first.
@@ -193,13 +208,28 @@ slides:
         Analogy: מטבח של מסעדה שמבשל מכרטיס מתכון אחד. אם המנה יוצאת לא טוב, לא מתקנים רק את הצלחת; מתקנים את המתכון, כדי שגם המנה של מחר תצא נכון.
         SDD הופך את ה-spec למקור האמת. לא הקוד ולא הצ'אט. הקוד הוא משהו שה-AI מייצר מה-spec, ויכול לייצר שוב.
         העבודה עוברת בשלבים. קודם ה-constitution: חוקי הבית של הפרויקט, שנכתבים פעם אחת. בפרויקט החומרה שלנו, אחד הכללים הוא שלוגיקת ההחלטות חייבת להיות ניתנת לבדיקה בלי הלוח. אחר כך specify: מה המערכת צריכה לעשות, בשביל מי, ואיך נדע שהיא עובדת? אחר כך plan: איך נבנה את זה? אחר כך tasks: רשימת משימות ממוספרת. ואז implement: ה-AI כותב את הקוד.
-        Spec Kit, ערכת הכלים החינמית של GitHub שנכיר כמו שצריך בשקף 9, מוסיפה שתי נקודות ביקורת חשובות, שמסומנות בתרשים כשערים. clarify שואל אתכם את השאלות שה-spec השאיר פתוחות, אחת אחת, ורושם את התשובות. analyze בודק את המסמכים זה מול זה, עוד לפני שיש קוד.
+        Spec Kit, ערכת הכלים החינמית של GitHub שנכיר כמו שצריך בשקף 12, מוסיפה שתי נקודות ביקורת חשובות, שמסומנות בתרשים כשערים. clarify שואל אתכם את השאלות שה-spec השאיר פתוחות, אחת אחת, ורושם את התשובות. analyze בודק את המסמכים זה מול זה, עוד לפני שיש קוד.
         ואז הלולאה. כשלומדים משהו תוך כדי בנייה, דרישה משתנה או בדיקה חושפת פער, לא מתקנים את הקוד בשקט. מעדכנים את ה-spec, ומייצרים מחדש משם. זו לולאת משוב, עם ה-constitution כמסילה שעוברת מתחת לכל שלב.
         ה-constitution היא לא ניירת. כל שלב בהמשך נבדק מולה, אז כותבים את הכללים פעם אחת וה-AI מקפיד עליהם בכל מקום.
         ה-TIP הוא ההרגל שגורם לכל זה לעבוד: כשהקוד וה-spec סותרים, תקנו קודם את ה-spec.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   # ---------------------------------------------------------------- Part II
+  - id: part-2
+    part: "II"
+    budget: "0:00"
+    layout: divider
+    title: { en: "Context is everything", he: "ה-context הוא הכול" }
+    eyebrow: { en: "Part 2 of 6", he: "חלק 2 מתוך 6" }
+    accent: { en: "everything", he: "הכול" }
+    bullets:
+      - { key: subtitle, en: "What the AI sees, and what it forgets", he: "מה ה-AI רואה, ומה הוא שוכח" }
+    notes:
+      en: |
+        Transition: What the AI sees, and what it forgets
+      he: |
+        מעבר: מה ה-AI רואה, ומה הוא שוכח
+
   - id: context-engineering
     part: II
     budget: "2:00"
@@ -249,7 +279,7 @@ slides:
         That is what happens in a long AI session. The context window keeps filling with old messages, failed attempts and files you no longer need. The early decisions are still technically there, but they get buried and quietly ignored.
         This has a name: context rot. And it is not just a feeling. In July 2025, researchers at Chroma, Kelly Hong, Anton Troynikov and Jeff Huber, tested 18 AI models and found that performance becomes less reliable as the input gets longer, even on simple tasks. An earlier paper by Nelson Liu and colleagues, "Lost in the Middle", showed that models use information at the start and the end of a long input much better than information in the middle.
         So quality drops long before the window is full, and a bigger window does not make the problem go away.
-        What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 11.
+        What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 14.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
@@ -258,12 +288,27 @@ slides:
         זה מה שקורה ב-session ארוך עם AI. ה-context window מתמלא בהודעות ישנות, בניסיונות שנכשלו ובקבצים שכבר לא צריך. ההחלטות מההתחלה עדיין שם, טכנית, אבל הן נקברות ונשכחות בשקט.
         לזה יש שם: context rot. וזו לא רק תחושה. ביולי 2025, חוקרים ב-Chroma, Kelly Hong, Anton Troynikov ו-Jeff Huber, בדקו 18 מודלי AI ומצאו שהביצועים נעשים פחות אמינים ככל שהקלט מתארך, גם במשימות פשוטות. מאמר קודם של Nelson Liu ועמיתיו, “Lost in the Middle”, הראה שמודלים משתמשים במידע שבתחילת קלט ארוך ובסופו הרבה יותר טוב מאשר במידע שבאמצע.
         אז האיכות יורדת הרבה לפני שהחלון מתמלא, וחלון גדול יותר לא פותר את הבעיה.
-        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec. כלי בשם GSD עושה את זה אוטומטית לכל משימה; נפגוש אותו בשקף 11.
+        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec. כלי בשם GSD עושה את זה אוטומטית לכל משימה; נפגוש אותו בשקף 14.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
 
   # ---------------------------------------------------------------- Part III
+  - id: part-3
+    part: "III"
+    budget: "0:00"
+    layout: divider
+    title: { en: "Four tools, two layers", he: "ארבעה כלים, שתי שכבות" }
+    eyebrow: { en: "Part 3 of 6", he: "חלק 3 מתוך 6" }
+    accent: { en: "two layers", he: "שתי שכבות" }
+    bullets:
+      - { key: subtitle, en: "BMAD, Spec Kit, GSD and Superpowers", he: "BMAD, Spec Kit, GSD ו-Superpowers" }
+    notes:
+      en: |
+        Transition: BMAD, Spec Kit, GSD and Superpowers
+      he: |
+        מעבר: BMAD, Spec Kit, GSD ו-Superpowers
+
   - id: bmad
     part: III
     budget: "1:30"
@@ -463,6 +508,21 @@ slides:
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   # ---------------------------------------------------------------- Part IV
+  - id: part-4
+    part: "IV"
+    budget: "0:00"
+    layout: divider
+    title: { en: "A real case study", he: "case study אמיתי" }
+    eyebrow: { en: "Part 4 of 6", he: "חלק 4 מתוך 6" }
+    accent: { en: "case study", he: "אמיתי" }
+    bullets:
+      - { key: subtitle, en: "Heltec WiFi Kit V3 firmware, built with Spec Kit", he: "firmware ל-Heltec WiFi Kit V3, שנבנה עם Spec Kit" }
+    notes:
+      en: |
+        Transition: Heltec WiFi Kit V3 firmware, built with Spec Kit
+      he: |
+        מעבר: firmware ל-Heltec WiFi Kit V3, שנבנה עם Spec Kit
+
   - id: heltec-board
     part: IV
     budget: "1:30"
@@ -592,7 +652,7 @@ slides:
     tip: { key: photo-proof, en: "Photograph real hardware results; reviewers trust a photo faster than a log.", he: "צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log." }
     notes:
       en: |
-        Analogy: see slide 14, the thermostat. These photos show it working.
+        Analogy: see slide 18, the thermostat. These photos show it working.
         Pause about 10 seconds on each photo so people can read the screen.
         This is the real board with the DHT22 wired up. On the left, normal room temperature: the screen shows OK and 24.0 degrees.
         On the right, I warmed the sensor with my hand. Look closely at the number: 26.6 degrees, and the screen still says WARNING. A beginner might call that a bug, because 26.6 is below the 27-degree threshold. It is not a bug; it is the spec. The reading went above 27, the warning switched on, and it stays on until the temperature drops below 25. That is the hysteresis band from three slides ago, visible on real hardware.
@@ -600,7 +660,7 @@ slides:
         And what did we not need? GSD or Superpowers. The sessions were short and a human reviewed every stage, so the decision rule says skip GSD. And the constitution already required tests first (Principle II), so the Superpowers question also says skip.
         Tip: photograph real hardware results; reviewers trust a photo faster than a log.
       he: |
-        Analogy: ראו שקף 14, התרמוסטט. התמונות האלה מראות אותו עובד.
+        Analogy: ראו שקף 18, התרמוסטט. התמונות האלה מראות אותו עובד.
         עצרו בערך 10 שניות על כל תמונה, כדי שאנשים יספיקו לקרוא את המסך.
         זה הלוח האמיתי, עם ה-DHT22 מחובר. בתמונת ה-OK, טמפרטורת חדר רגילה: המסך מציג OK ו-24.0 מעלות.
         בתמונת ה-WARNING, חיממתי את החיישן ביד. תסתכלו טוב על המספר: 26.6 מעלות, והמסך עדיין אומר WARNING. מי שרק מתחיל היה קורא לזה באג, כי 26.6 מתחת לסף של 27. זה לא באג; זה ה-spec. הקריאה עלתה מעל 27, האזהרה נדלקה, והיא נשארת דלוקה עד שהטמפרטורה יורדת מתחת ל-25. זה פס ה-hysteresis משלושה שקפים קודם, גלוי על חומרה אמיתית.
@@ -609,6 +669,21 @@ slides:
         TIP: צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log.
 
   # ---------------------------------------------------------------- Part V
+  - id: part-5
+    part: "V"
+    budget: "0:00"
+    layout: divider
+    title: { en: "Working as a team", he: "עובדים כצוות" }
+    eyebrow: { en: "Part 5 of 6", he: "חלק 5 מתוך 6" }
+    accent: { en: "as a team", he: "כצוות" }
+    bullets:
+      - { key: subtitle, en: "Branches, pull requests and shared specs on GitHub", he: "branches, pull requests ו-specs משותפים ב-GitHub" }
+    notes:
+      en: |
+        Transition: Branches, pull requests and shared specs on GitHub
+      he: |
+        מעבר: branches, pull requests ו-specs משותפים ב-GitHub
+
   - id: main-vs-dev
     part: V
     budget: "1:30"
@@ -703,6 +778,21 @@ slides:
         TIP: בכל pull request, עברו קודם על שינויי ה-spec, ורק אחר כך על הקוד.
 
   # ---------------------------------------------------------------- Part VI
+  - id: part-6
+    part: "VI"
+    budget: "0:00"
+    layout: divider
+    title: { en: "What's next", he: "מה הלאה" }
+    eyebrow: { en: "Part 6 of 6", he: "חלק 6 מתוך 6" }
+    accent: { en: "next", he: "הלאה" }
+    bullets:
+      - { key: subtitle, en: "Skills, teams of skills, one constitution", he: "skills, צוותים של skills ו-constitution אחד" }
+    notes:
+      en: |
+        Transition: Skills, teams of skills, one constitution
+      he: |
+        מעבר: skills, צוותים של skills ו-constitution אחד
+
   - id: skills
     part: VI
     budget: "1:00"
@@ -869,6 +959,22 @@ slides:
         אם נגמר הזמן, הפנו לשקף המקורות ול-repo.
 
   # ---------------------------------------------------------------- Appendix
+  - id: appendix
+    part: "close"
+    appendix: true
+    budget: "0:00"
+    layout: divider
+    title: { en: "Backup slides", he: "שקפי גיבוי" }
+    eyebrow: { en: "Appendix", he: "נספח" }
+    accent: { en: "slides", he: "גיבוי" }
+    bullets:
+      - { key: subtitle, en: "Details for the questions", he: "פרטים לשאלות מהקהל" }
+    notes:
+      en: |
+        backup, not timed. Transition: Details for the questions
+      he: |
+        backup, not timed. מעבר: פרטים לשאלות מהקהל
+
   - id: a1-stages-catch-mistakes
     part: close
     appendix: true
@@ -936,9 +1042,9 @@ slides:
     sources: [F4, F5, F6]
     notes:
       en: |
-        backup, not timed. Use if someone asks about long sessions or GSD (slides 11 and 12 mention it).
+        backup, not timed. Use if someone asks about long sessions or GSD (slides 14 and 15 mention it).
         Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
-        GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
+        GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 9): quality drops as the window fills, so never let it fill.
         Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
         The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
         One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The original project was published under the name TÂCHES.
@@ -946,9 +1052,9 @@ slides:
         https://github.com/open-gsd/gsd-core
         https://github.com/gsd-build/get-shit-done
       he: |
-        backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 11 ו-12 מזכירים אותו).
+        backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 14 ו-15 מזכירים אותו).
         Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
-        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, וביסודו הוא כלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 7): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
+        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, וביסודו הוא כלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 9): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
         כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
         הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד, וזה מה שמאפשר לכל רץ חדש לקחת את המקל.
         הערה מעשית: ה-repository המקורי, gsd-build/get-shit-done, עבר לארכיון, וה-README שלו מפנה ל-open-gsd/gsd-core. הפרויקט המקורי פורסם תחת השם TÂCHES.
@@ -985,9 +1091,9 @@ slides:
       - { key: combine, en: "Same specs/ work with Claude Code, Codex and others", he: "אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים" }
     notes:
       en: |
-        backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+        backup, not timed. Use with slide 14. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
       he: |
-        backup, not timed. משתמשים יחד עם שקף 11. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
+        backup, not timed. משתמשים יחד עם שקף 14. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
 
   - id: a5-vscode-extensions
     part: close

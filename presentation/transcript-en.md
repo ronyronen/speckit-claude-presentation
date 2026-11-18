@@ -24,7 +24,13 @@ Now count the hidden questions. What does "too hot" mean? At the number, or just
 
 The AI will not stop and ask. It answers every one of them anyway, silently, by guessing. This talk is about making those guesses visible.
 
-### 3. The intent gap: SDLC vs ADLC
+### 3. From prompt to spec
+
+`[0:00] [@1:30]`
+
+Transition: Why a fast, literal AI needs written intent
+
+### 4. The intent gap: SDLC vs ADLC
 
 `[2:30] [@4:00]`
 
@@ -42,7 +48,7 @@ The fix sounds almost boring: write the intent down first, in a form both people
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 4. Vibe coding vs SDD
+### 5. Vibe coding vs SDD
 
 `[2:30] [@6:30]`
 
@@ -66,7 +72,7 @@ That is the tip on the slide: explore with vibe coding, and switch to a spec the
 
 Source (diagram adapted from): https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 5. SDD: the spec is the source of truth
+### 6. SDD: the spec is the source of truth
 
 `[2:30] [@9:00]`
 
@@ -78,7 +84,7 @@ SDD makes the spec the source of truth. Not the code, and not the chat. The code
 
 The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
 
-Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
+Spec Kit, GitHub's free toolkit that we will meet properly on slide 12, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
 
 Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. Think of it as a feedback loop, with the constitution as a rail running underneath every stage.
 
@@ -88,7 +94,13 @@ The tip is the habit that makes all of this work: when the code and the spec dis
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 6. Context engineering: what the AI sees
+### 7. Context is everything
+
+`[0:00] [@9:00]`
+
+Transition: What the AI sees, and what it forgets
+
+### 8. Context engineering: what the AI sees
 
 `[2:00] [@11:00]`
 
@@ -106,7 +118,7 @@ This is also why SDD helps. A short spec and plan are the perfect things to put 
 
 Rule of thumb: less but relevant beats more but noisy. And the tip: point the agent at the exact files it needs, instead of saying "look at the whole project".
 
-### 7. Context rot: when the AI forgets
+### 9. Context rot: when the AI forgets
 
 `[2:30] [@13:30]`
 
@@ -120,7 +132,7 @@ This has a name: context rot. And it is not just a feeling. In July 2025, resear
 
 So quality drops long before the window is full, and a bigger window does not make the problem go away.
 
-What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 11.
+What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 14.
 
 Sources:
 
@@ -128,7 +140,13 @@ https://www.trychroma.com/research/context-rot
 
 https://arxiv.org/abs/2307.03172
 
-### 8. BMAD: an AI agile team
+### 10. Four tools, two layers
+
+`[0:00] [@13:30]`
+
+Transition: BMAD, Spec Kit, GSD and Superpowers
+
+### 11. BMAD: an AI agile team
 
 `[1:30] [@15:00]`
 
@@ -146,7 +164,7 @@ In my reading, BMAD fits bigger projects that need serious planning up front. On
 
 Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
 
-### 9. Spec Kit: the living spec
+### 12. Spec Kit: the living spec
 
 `[2:00] [@17:00]`
 
@@ -164,7 +182,7 @@ This is the tool we used in the case study, so you will see these stages for rea
 
 Source: https://github.com/github/spec-kit · docs: https://github.github.io/spec-kit/
 
-### 10. Superpowers: discipline the AI can't skip
+### 13. Superpowers: discipline the AI can't skip
 
 `[1:30] [@18:30]`
 
@@ -184,7 +202,7 @@ Tip: ask for a failing test first, then only the code that makes it pass.
 
 Source: https://github.com/obra/superpowers
 
-### 11. Four metaphors, two layers
+### 14. Four metaphors, two layers
 
 `[2:30] [@21:00]`
 
@@ -202,7 +220,7 @@ Some practitioners go further and argue that mature teams are converging on all 
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 12. Decision rule: which layers do you need?
+### 15. Decision rule: which layers do you need?
 
 `[3:00] [@24:00]`
 
@@ -226,7 +244,13 @@ Tip: start with one planning tool, and add a layer only when you feel its pain.
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 13. Heltec board + DHT22: implicit vs explicit
+### 16. A real case study
+
+`[0:00] [@24:00]`
+
+Transition: Heltec WiFi Kit V3 firmware, built with Spec Kit
+
+### 17. Heltec board + DHT22: implicit vs explicit
 
 `[1:30] [@25:30]`
 
@@ -240,7 +264,7 @@ On the right is what the spec says after the Spec Kit stages: read the DHT22 eve
 
 The firmware also supports a BME280 sensor, chosen at build time, but everything you will see today ran on the DHT22.
 
-### 14. Specify: hysteresis decided, not guessed
+### 18. Specify: hysteresis decided, not guessed
 
 `[1:30] [@27:00]`
 
@@ -258,7 +282,7 @@ The first band was 30 and 28 °C. During hardware bring-up we lowered it so a cu
 
 Tip: ask about the edges, exactly at the threshold, sensor missing, first boot.
 
-### 15. Plan + tested logic (11/11)
+### 19. Plan + tested logic (11/11)
 
 `[1:30] [@28:30]`
 
@@ -272,7 +296,7 @@ The command on the slide, pio, is PlatformIO's command-line tool; "native" means
 
 Without the plan stage, the easy path is to call the sensor library straight from the logic, and then nothing can be tested without hardware on the desk.
 
-### 16. What /speckit-analyze caught
+### 20. What /speckit-analyze caught
 
 `[1:30] [@30:00]`
 
@@ -286,13 +310,13 @@ We fixed the wording to "within three readings" before any code was written. Ana
 
 None of these is a coding bug. They are disagreements in our own requirements, caught while fixing them cost one sentence.
 
-### 17. Behavior: OK and WARNING on the board
+### 21. Behavior: OK and WARNING on the board
 
 `[2:00] [@32:00]`
 
 > 💡 **Tip:** Photograph real hardware results; reviewers trust a photo faster than a log.
 
-Analogy: see slide 14, the thermostat. These photos show it working.
+Analogy: see slide 18, the thermostat. These photos show it working.
 
 Pause about 10 seconds on each photo so people can read the screen.
 
@@ -306,7 +330,13 @@ And what did we not need? GSD or Superpowers. The sessions were short and a huma
 
 Tip: photograph real hardware results; reviewers trust a photo faster than a log.
 
-### 18. main vs dev: published vs draft
+### 22. Working as a team
+
+`[0:00] [@32:00]`
+
+Transition: Branches, pull requests and shared specs on GitHub
+
+### 23. main vs dev: published vs draft
 
 `[1:30] [@33:30]`
 
@@ -324,7 +354,7 @@ The diagram is this repo's real history, as an illustration: issue #2 is a to-do
 
 Tip: keep main always working, and merge into it only after the tests pass.
 
-### 19. Issues and pull requests
+### 24. Issues and pull requests
 
 `[1:30] [@35:00]`
 
@@ -340,7 +370,7 @@ Here is a small surprise: issue 2 is still open. GitHub only closes an issue aut
 
 Tip: write "Fixes #2" in the PR that goes into main, and GitHub then closes the issue on merge.
 
-### 20. Shared repo, shared specs/
+### 25. Shared repo, shared specs/
 
 `[2:00] [@37:00]`
 
@@ -360,7 +390,13 @@ Each Spec Kit stage of this repo is also tagged in Git and on GitHub, from 01-st
 
 Tip: in every pull request, review the spec changes first, then the code.
 
-### 21. Skills: recipe cards for the AI
+### 26. What's next
+
+`[0:00] [@37:00]`
+
+Transition: Skills, teams of skills, one constitution
+
+### 27. Skills: recipe cards for the AI
 
 `[1:00] [@38:00]`
 
@@ -378,7 +414,7 @@ Write a skill once and you can share it across projects and teammates, so everyo
 
 Tip: turn the instruction you repeat most often into your first skill.
 
-### 22. Teams of skills: the /team example
+### 28. Teams of skills: the /team example
 
 `[1:00] [@39:00]`
 
@@ -390,7 +426,7 @@ That team caught real problems: an inflated star count in a source, an archived 
 
 This was a custom setup on my machine, not a product you can download, but the pattern is reusable.
 
-### 23. One constitution for many projects
+### 29. One constitution for many projects
 
 `[1:00] [@40:00]`
 
@@ -404,7 +440,7 @@ The next step is one constitution shared across projects and teams: testing rule
 
 Tip: keep the constitution short; rules nobody reads are rules nobody follows.
 
-### 24. Takeaways
+### 30. Takeaways
 
 `[1:30] [@41:30]`
 
@@ -424,7 +460,7 @@ Five: make it a team sport, with issues, branches, pull requests and a shared sp
 
 And one thing to do tomorrow, the tip: before your next AI coding session, write a one-page spec. Who is it for, what should it do, and how will you know it works?
 
-### 25. References
+### 31. References
 
 `[0:30] [@42:00]`
 
@@ -448,7 +484,7 @@ Lost in the Middle: https://arxiv.org/abs/2307.03172
 
 Where to go next: the last backup slide has a learning path, and the repo README has the full reading list.
 
-### 26. Questions?
+### 32. Questions?
 
 `[3:00] [@45:00]`
 
@@ -470,7 +506,13 @@ If time runs out, point to the references slide and the repo.
 
 ## Backup slides (not timed)
 
-### 27. Backup: each stage catches a mistake
+### 33. Backup slides
+
+`[backup, not timed]`
+
+backup, not timed. Transition: Details for the questions
+
+### 34. Backup: each stage catches a mistake
 
 `[backup, not timed]`
 
@@ -478,7 +520,7 @@ backup, not timed. Use only if someone asks how each stage pays for itself.
 
 Clarify settled the exact edges of the hysteresis band (strictly above, strictly below). Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
 
-### 28. Backup: overlap and gaps
+### 35. Backup: overlap and gaps
 
 `[backup, not timed]`
 
@@ -486,17 +528,17 @@ backup, not timed. For questions comparing the tools.
 
 The argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
 
-### 29. Backup: GSD, a fresh start for every task
+### 36. Backup: GSD, a fresh start for every task
 
 `[backup, not timed]`
 
 > 💡 **Tip:** Write decisions into files, not the chat, so a fresh session can pick them up.
 
-backup, not timed. Use if someone asks about long sessions or GSD (slides 11 and 12 mention it).
+backup, not timed. Use if someone asks about long sessions or GSD (slides 14 and 15 mention it).
 
 Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
 
-GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
+GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 9): quality drops as the window fills, so never let it fill.
 
 Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
 
@@ -510,19 +552,19 @@ https://github.com/open-gsd/gsd-core
 
 https://github.com/gsd-build/get-shit-done
 
-### 30. Backup: starting a Spec Kit project
+### 37. Backup: starting a Spec Kit project
 
 `[backup, not timed]`
 
 backup, not timed. Show only if someone wants to try it tonight. The full setup steps are in the repo README and in docs/textbook.md, chapter 5.
 
-### 31. Backup: how the tools relate
+### 38. Backup: how the tools relate
 
 `[backup, not timed]`
 
-backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+backup, not timed. Use with slide 14. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
 
-### 32. Backup: VS Code extensions
+### 39. Backup: VS Code extensions
 
 `[backup, not timed]`
 
@@ -530,13 +572,13 @@ backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up t
 
 backup, not timed. For the hands-on crowd. The full extension list is in the repo README, section 5.
 
-### 33. Backup: git checkpoints per stage
+### 40. Backup: git checkpoints per stage
 
 `[backup, not timed]`
 
 backup, not timed. Tags make each stage easy to replay: 03-spec-created still has open questions, 04-spec-clarified has the answers, 07-analysis-complete shows the contradiction found, 08-implemented has 11/11 tests passing, and 09-hardware-verified is the DHT22 run on the board.
 
-### 34. Backup: where to go next
+### 41. Backup: where to go next
 
 `[backup, not timed]`
 

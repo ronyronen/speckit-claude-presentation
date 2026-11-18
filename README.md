@@ -50,7 +50,8 @@ failure handling. See [firmware/README.md](firmware/README.md).
 
 📊 Two decks, same content, timed speaker notes in each. Each deck has
 26 timed slides (45:00, including 3:00 of Q&A) and 8 backup slides at
-the end. The vibe coding vs SDD, BMAD, Spec Kit and Superpowers slides
+the end. A divider slide opens each of the six parts and the backup
+section (41 slides in all). The vibe coding vs SDD, BMAD, Spec Kit and Superpowers slides
 each carry a native diagram (drawn from `deck.yaml`, in both languages).
 One backup slide explains GSD as a relay diagram, and the last one is a
 learning path ([Where to go next](#where-to-go-next)).

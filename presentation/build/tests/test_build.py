@@ -41,10 +41,10 @@ def test_skeleton_validates():
 
 def test_build_both_langs(decks):
     ids = [s.id for s in load_deck(DECK).slides]
-    assert len(ids) == 34
+    assert len(ids) == 41
     for lang in ("en", "he"):
         prs = decks[lang]
-        assert len(prs.slides) == 34
+        assert len(prs.slides) == 41
         assert (prs.slide_width, prs.slide_height) == (SLIDE_W, SLIDE_H)
         got = [s.name for s in prs.slides]  # slide name == slide id
         assert got == ids
@@ -52,9 +52,9 @@ def test_build_both_langs(decks):
 
 def test_notes_prefix_and_end(decks):
     for lang in ("en", "he"):
-        sl = decks[lang].slides
-        assert _notes(sl[25]).startswith("[3:00] [@45:00]")
-        assert _notes(sl[26]).startswith("[backup, not timed]")
+        sl = {s.name: s for s in decks[lang].slides}
+        assert _notes(sl["qa"]).startswith("[3:00] [@45:00]")
+        assert _notes(sl["appendix"]).startswith("[backup, not timed]")
 
 
 def _all_text(prs):
@@ -516,3 +516,18 @@ def test_opening_slide_is_keynote_style(decks):
             "{http://schemas.openxmlformats.org/drawingml/2006/main}gradFill") is not None
             for r in runs)
         assert min(r.font.size.pt for r in runs) >= 40
+
+
+def test_part_dividers_open_each_part(decks):
+    deck = load_deck(DECK)
+    divs = [s for s in deck.slides if s.layout == "divider"]
+    assert [s.id for s in divs] == [f"part-{i}" for i in range(1, 7)] + ["appendix"]
+    order = [s.id for s in deck.slides]
+    for d in divs[:-1]:  # each divider sits right before the first slide of its part
+        nxt = deck.slides[order.index(d.id) + 1]
+        assert nxt.part == d.part and nxt.layout != "divider"
+        assert d.budget_s == 0
+    for lang in ("en", "he"):
+        sl = {s.name: s for s in decks[lang].slides}["part-3"]
+        names = {sh.name for sh in sl.shapes}
+        assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-footer-num"} <= names
