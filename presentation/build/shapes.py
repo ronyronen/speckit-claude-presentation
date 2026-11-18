@@ -211,4 +211,188 @@ def branch_flow(slide, area, diagram, lang, glossary):
             _arrow(slide, nodes[i], _TOP, nodes[i + 1], _BOTTOM)
 
 
-DIAGRAMS = {"layers": layers, "decision": decision, "branch-flow": branch_flow}
+def _arrow2(slide, a, site_a, b, site_b):
+    """Double-headed connector (relay in both directions)."""
+    c = _arrow(slide, a, site_a, b, site_b)
+    ln = c.line._get_or_add_ln()
+    he = etree.Element(qn("a:headEnd"))
+    he.set("type", "triangle")
+    ln.insert(list(ln).index(ln.find(qn("a:tailEnd"))), he)
+    return c
+
+
+def _caption(slide, name, x, y, w, h, text, lang, glossary, color="muted", size=20):
+    tb = slide.shapes.add_textbox(int(x), int(y), int(w), int(h))
+    tb.name = name
+    _text(tb, text, lang, glossary, size, COLORS[color], bold=True)
+    return tb
+
+
+def _polyline(slide, name, pts, color, width_pt, arrow=False):
+    """Open freeform path (no fill) through pts, given in EMU."""
+    fb = slide.shapes.build_freeform(int(pts[0][0]), int(pts[0][1]))
+    fb.add_line_segments([(int(px), int(py)) for px, py in pts[1:]], close=False)
+    sh = fb.convert_to_shape()
+    sh.name = name
+    sh.fill.background()
+    sh.line.color.rgb = COLORS[color]
+    sh.line.width = Pt(width_pt)
+    sh.shadow.inherit = False
+    if arrow:
+        etree.SubElement(sh.line._get_or_add_ln(), qn("a:tailEnd")).set("type", "triangle")
+    return sh
+
+
+_SDLC = ["requirements", "design", "build", "test", "release"]
+_ADLC = ["intent", "agent_builds", "check", "correct"]
+
+
+def sdlc_adlc(slide, area, diagram, lang, glossary):
+    """Left: SDLC as a staircase chevron chain. Right: ADLC as a 4-step loop."""
+    x, y, w, h = area
+    title_h = Inches(0.5)
+    gap = Inches(0.5)
+    lw = w * 11 // 20
+    rw = w - lw - gap
+    rx = x + lw + gap
+    top = y + title_h + Inches(0.1)
+    body_h = h - title_h - Inches(0.1)
+
+    _caption(slide, "sdlc-title", x, y, lw, title_h,
+             _label(diagram, "sdlc_title", lang), lang, glossary, "accent2")
+    _caption(slide, "adlc-title", rx, y, rw, title_h,
+             _label(diagram, "adlc_title", lang), lang, glossary, "accent2")
+
+    n = len(_SDLC)
+    cw = Inches(3.2)
+    dx = (lw - cw) // (n - 1)
+    ch = min(Inches(0.85), (body_h - (n - 1) * Inches(0.1)) // n)
+    dy = (body_h - ch) // (n - 1)
+    for i, k in enumerate(_SDLC):
+        _box(slide, MSO_SHAPE.CHEVRON, x + i * dx, top + i * dy, cw, ch,
+             f"sdlc-step-{k}", _label(diagram, k, lang), lang, glossary, 20,
+             fill="accent" if i == 0 else "surface", bold=True)
+
+    bw, bh = Inches(2.3), Inches(0.9)
+    cx = rx + (rw - bw) // 2
+    my = top + (body_h - bh) // 2
+    pos = {"intent": (cx, top), "agent_builds": (rx + rw - bw, my),
+           "check": (cx, top + body_h - bh), "correct": (rx, my)}
+    box = {k: _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, px, py, bw, bh,
+                   f"adlc-step-{k}", _label(diagram, k, lang), lang, glossary, 20,
+                   bold=True)
+           for k, (px, py) in pos.items()}
+    for (a, sa), (b, sb) in (
+            (("intent", _RIGHT), ("agent_builds", _TOP)),
+            (("agent_builds", _BOTTOM), ("check", _RIGHT)),
+            (("check", _LEFT), ("correct", _BOTTOM)),
+            (("correct", _TOP), ("intent", _LEFT))):
+        _arrow(slide, box[a], sa, box[b], sb)
+
+
+_SDD = ["constitution", "specify", "plan", "tasks", "implement"]
+
+
+def sdd_pipeline(slide, area, diagram, lang, glossary):
+    """Five stages, two gate pills, feedback loop back to specify, rail below."""
+    x, y, w, h = area
+    n = len(_SDD)
+    sw = Inches(1.9)
+    gap = (w - n * sw) // (n - 1)
+    gate_h, gate_w = Inches(0.5), Inches(1.4)
+    sh_ = Inches(1.2)
+    rail_h = Inches(0.7)
+    fb_drop = Inches(0.55)
+    sy = y + gate_h + Inches(0.3)
+    stages = {}
+    for i, k in enumerate(_SDD):
+        stages[k] = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + i * (sw + gap), sy,
+                         sw, sh_, f"stage-{k}", _label(diagram, k, lang), lang,
+                         glossary, 20, fill="accent" if k == "implement" else "surface",
+                         bold=True)
+    for a, b in zip(_SDD, _SDD[1:]):
+        _arrow(slide, stages[a], _RIGHT, stages[b], _LEFT)
+    for k, after in (("clarify", "specify"), ("analyze", "tasks")):
+        cx = stages[after].left + stages[after].width + gap // 2
+        g = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, int(cx - gate_w // 2),
+                                   int(y), int(gate_w), int(gate_h))
+        g.name = f"gate-{k}"
+        g.adjustments[0] = 0.5
+        g.fill.solid()
+        g.fill.fore_color.rgb = COLORS["tip"]
+        g.line.fill.background()
+        g.shadow.inherit = False
+        _text(g, _label(diagram, k, lang), lang, glossary, 18, COLORS["bg"], bold=True)
+    # feedback: down from implement, left under the stages, up into specify
+    by = sy + sh_
+    fy = by + fb_drop
+    ix = stages["implement"].left + stages["implement"].width // 2
+    spx = stages["specify"].left + stages["specify"].width // 2
+    _polyline(slide, "feedback", [(ix, by), (ix, fy), (spx, fy), (spx, by)],
+              "warn", 2.5, arrow=True)
+    _caption(slide, "caption-feedback", spx, fy + Inches(0.05), ix - spx, Inches(0.5),
+             _label(diagram, "feedback", lang), lang, glossary, "warn")
+    rail = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x, y + h - rail_h, w, rail_h,
+                "rail", _label(diagram, "rail", lang), lang, glossary, 20,
+                fill="accent", bold=True)
+    return rail
+
+
+def context_rot(slide, area, diagram, lang, glossary):
+    """Qualitative curve: quality falls as the context fills. Words only."""
+    x, y, w, h = area
+    lab_h = Inches(0.5)
+    pad = Inches(0.2)
+    ox, oy = x + pad, y + h - lab_h - pad       # axis origin
+    top, right = y + lab_h + pad, x + w - pad
+    _caption(slide, "axis-y-label", x, y, Inches(4.5), lab_h,
+             _label(diagram, "axis_quality", lang), lang, glossary)
+    _caption(slide, "axis-x-label", right - Inches(5.5), y + h - lab_h, Inches(5.5),
+             lab_h, _label(diagram, "axis_context", lang), lang, glossary)
+    for nm, (x1, y1, x2, y2) in (("axis-y", (ox, oy, ox, top)),
+                                 ("axis-x", (ox, oy, right, oy))):
+        c = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, int(x1), int(y1),
+                                       int(x2), int(y2))
+        c.name = nm
+        c.line.color.rgb = COLORS["muted"]
+        c.line.width = Pt(2.5)
+        etree.SubElement(c.line._get_or_add_ln(), qn("a:tailEnd")).set("type", "triangle")
+    steps = 30
+    pw, ph = (right - Inches(0.3)) - (ox + Inches(0.3)), (oy - Inches(0.3)) - (top + Inches(0.3))
+    pts = []
+    for i in range(steps + 1):
+        t = i / steps
+        pts.append((ox + Inches(0.3) + t * pw, top + Inches(0.3) + ph * (0.9 * t ** 2.2)))
+    split = int(steps * 0.6)
+    _polyline(slide, "curve", pts[:split + 1], "ok", 5)
+    _polyline(slide, "curve-rot", pts[split:], "warn", 5)
+    rx0, ry0 = pts[split + 3]
+    _caption(slide, "rot-zone", rx0 - Inches(4.2), ry0 - Inches(0.9), Inches(3.8),
+             lab_h, _label(diagram, "rot_zone", lang), lang, glossary, "warn")
+
+
+def team_roles(slide, area, diagram, lang, glossary):
+    """Human above architect; PO and dev either side; every link via architect."""
+    x, y, w, h = area
+    bw, bh = Inches(3.0), Inches(1.3)
+    gap = (w - 3 * bw) // 2
+    hy = y + Inches(0.2)
+    ry = y + h - bh - Inches(0.6)
+
+    def role(k, bx, by, key, fill="surface"):
+        return _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, bx, by, bw, bh,
+                    f"role-{k}", _label(diagram, key, lang), lang, glossary, 24,
+                    fill=fill, bold=True)
+
+    human = role("human", x + bw + gap, hy, "human")
+    arch = role("architect", x + bw + gap, ry, "architect", "accent")
+    po = role("po", x, ry, "product_owner")
+    dev = role("dev", x + 2 * (bw + gap), ry, "senior_dev")
+    _arrow2(slide, human, _BOTTOM, arch, _TOP)
+    _arrow2(slide, arch, _LEFT, po, _RIGHT)
+    _arrow2(slide, arch, _RIGHT, dev, _LEFT)
+
+
+DIAGRAMS = {"layers": layers, "decision": decision, "branch-flow": branch_flow,
+            "sdlc-adlc": sdlc_adlc, "sdd-pipeline": sdd_pipeline,
+            "context-rot": context_rot, "team-roles": team_roles}

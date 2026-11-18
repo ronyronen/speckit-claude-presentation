@@ -165,3 +165,99 @@ def test_decision_missing_labels_fall_back():
     s = _slide()
     DIAGRAMS["decision"](s, AREA, {"name": "decision"}, "he", [])
     assert any(sh.text_frame.text == "skip_gsd" for sh in s.shapes if sh.has_text_frame)
+
+
+# ---- P2 diagrams (Task 7 part A) ----
+P2 = ["sdlc-adlc", "sdd-pipeline", "context-rot", "team-roles"]
+P2KEYS = ["sdlc_title", "adlc_title", "requirements", "design", "build", "test", "release",
+          "intent", "agent_builds", "check", "correct",
+          "constitution", "specify", "plan", "tasks", "implement", "clarify", "analyze",
+          "feedback", "rail", "axis_quality", "axis_context", "rot_zone",
+          "architect", "product_owner", "senior_dev", "human"]
+
+
+def _by(s, prefix):
+    return [sh for sh in s.shapes if sh.name.startswith(prefix)]
+
+
+def test_registry_has_p2_keys():
+    assert set(P2) <= set(DIAGRAMS)
+
+
+def test_sdlc_adlc_has_linear_and_loop():
+    s = _build("sdlc-adlc", keys=P2KEYS)
+    chev = _by(s, "sdlc-step-")
+    assert len(chev) == 5
+    assert all(c.auto_shape_type == MSO_SHAPE.CHEVRON for c in chev)
+    xs = [c.left for c in chev]
+    assert xs == sorted(xs)
+    steps = {sh.name for sh in _by(s, "adlc-step-")}
+    assert len(steps) == 4
+    edges = [(a, b) for a, b in _connectors(s) if a in steps and b in steps]
+    assert len(edges) == 4
+    nxt = dict(edges)
+    assert set(nxt) == steps and set(nxt.values()) == steps
+    cur, seen = next(iter(steps)), set()
+    while cur not in seen:  # one single cycle through all four steps
+        seen.add(cur)
+        cur = nxt[cur]
+    assert seen == steps
+
+
+def test_sdd_pipeline_five_stages_two_gates_rail():
+    s = _build("sdd-pipeline", keys=P2KEYS)
+    stages = _by(s, "stage-")
+    assert [x.name for x in stages] == [f"stage-{k}" for k in
+            ["constitution", "specify", "plan", "tasks", "implement"]]
+    xs = [x.left for x in stages]
+    assert xs == sorted(xs)
+    gates = _by(s, "gate-")
+    assert {g.name for g in gates} == {"gate-clarify", "gate-analyze"}
+    st = {x.name: x for x in stages}
+    g = {x.name: x for x in gates}
+    # clarify sits between specify and plan; analyze between tasks and implement
+    assert st["stage-specify"].left < g["gate-clarify"].left + g["gate-clarify"].width // 2 < st["stage-plan"].left + st["stage-plan"].width
+    assert st["stage-tasks"].left < g["gate-analyze"].left + g["gate-analyze"].width // 2 < st["stage-implement"].left + st["stage-implement"].width
+    rail = _by(s, "rail")
+    assert len(rail) == 1 and rail[0].width >= 0.9 * AREA[2]
+    assert len(_by(s, "feedback")) == 1
+    assert _by(s, "feedback")[0].top >= st["stage-implement"].top
+
+
+def test_context_rot_no_numbers():
+    s = _build("context-rot", keys=P2KEYS)
+    runs = _all_runs(s)
+    assert runs
+    assert not any(ch.isdigit() for r in runs for ch in r.text)
+    assert _by(s, "curve")
+
+
+def test_team_roles_relay_via_architect():
+    s = _build("team-roles", keys=P2KEYS)
+    boxes = _by(s, "role-")
+    assert len(boxes) in (3, 4)
+    conns = _connectors(s)
+    assert conns
+    assert all("role-architect" in c for c in conns)
+    assert not any({"role-po", "role-dev"} == set(c) for c in conns)
+    assert {n for c in conns for n in c} >= {"role-architect", "role-po", "role-dev"}
+    human = [c for c in conns if "role-human" in c]
+    assert len(human) == 1  # human connects to the architect only
+    arch = next(b for b in boxes if b.name == "role-architect")
+    po = next(b for b in boxes if b.name == "role-po")
+    dev = next(b for b in boxes if b.name == "role-dev")
+    assert po.left < arch.left < dev.left
+
+
+@pytest.mark.parametrize("name", P2)
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_p2_area_font_and_fallback(name, lang):
+    s = _build(name, lang=lang, keys=P2KEYS)
+    l, t, w, h = AREA
+    for sh in s.shapes:
+        assert sh.left >= l and sh.top >= t, sh.name
+        assert sh.left + sh.width <= l + w and sh.top + sh.height <= t + h, sh.name
+    assert min(r.font.size.pt for r in _all_runs(s)) >= 18
+    s2 = _slide()  # no labels at all: falls back to keys, never raises
+    DIAGRAMS[name](s2, AREA, {"name": name}, lang, [])
+    assert len(s2.shapes) > 0
