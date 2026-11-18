@@ -382,6 +382,43 @@ def team_roles(slide, area, diagram, lang, glossary):
     _arrow2(slide, arch, _RIGHT, dev, _LEFT)
 
 
+_TASKS = ("task1", "task2", "task3")
+
+
+def fresh_context(slide, area, diagram, lang, glossary):
+    """GSD as a relay: a small main session hands each task to a fresh agent
+    (clean context); every task reads and writes the shared project files."""
+    x, y, w, h = area
+    gap = Inches(0.45)
+    mw = Inches(2.4)
+    tw = (w - mw - 3 * gap) // 3
+    bh = Inches(1.3)
+    rail_h = Inches(0.75)
+    by = y + Inches(0.1)
+    main = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x, by, mw, bh, "relay-main",
+                _label(diagram, "main", lang), lang, glossary, 20, bold=True)
+    prev = main
+    tasks = []
+    for i, k in enumerate(_TASKS):
+        tx = x + mw + gap + i * (tw + gap)
+        t_ = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, tx, by, tw, bh, f"relay-{k}",
+                  _label(diagram, k, lang), lang, glossary, 20, fill="accent",
+                  bold=True)
+        _arrow(slide, prev, _RIGHT, t_, _LEFT)
+        prev = t_
+        tasks.append(t_)
+    rail = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + mw + gap, y + h - rail_h,
+                w - mw - gap, rail_h, "relay-memory", _label(diagram, "memory", lang),
+                lang, glossary, 20, bold=True)
+    rail.line.color.rgb = COLORS["ok"]
+    for t_ in tasks:
+        _arrow2(slide, t_, _BOTTOM, rail, _TOP)
+    _caption(slide, "relay-caption", x, by + bh + Inches(0.15), mw, h - bh - Inches(0.25),
+             _label(diagram, "baton", lang), lang, glossary, "muted", 18)
+    return rail
+
+
 DIAGRAMS = {"layers": layers, "decision": decision, "branch-flow": branch_flow,
             "sdlc-adlc": sdlc_adlc, "sdd-pipeline": sdd_pipeline,
-            "context-rot": context_rot, "team-roles": team_roles}
+            "context-rot": context_rot, "team-roles": team_roles,
+            "fresh-context": fresh_context}

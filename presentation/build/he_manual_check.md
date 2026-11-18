@@ -58,13 +58,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] Spec Kit: ה-spec החי
 - [ ] קוד שסוטה מה-spec
 
-## 10. gsd
-- [ ] GSD: התחלה נקייה לכל משימה
-- [ ] כמו מרוץ שליחים: כל משימה מקבלת רץ חדש ו-context נקי
-- [ ] נועד למנוע context rot בפרויקטים ארוכים
-- [ ] TIP: כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה.
-
-## 11. superpowers
+## 10. superpowers
 - [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
 - [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
 - [ ] workflow של 7 שלבים, מ-brainstorming ועד merge
@@ -72,13 +66,13 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] שני reviews: האם זה תואם ל-spec? האם הקוד טוב?
 - [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
 
-## 12. two-layers
+## 11. two-layers
 - [ ] BMAD: הצוות
 - [ ] Spec Kit: ה-spec החי
 - [ ] GSD: context נקי
 - [ ] Superpowers: משמעת
 
-## 13. decision-rule
+## 12. decision-rule
 - [ ] שכבת context: GSD
 - [ ] שכבת משמעת: Superpowers
 - [ ] sessions ארוכים?
@@ -89,7 +83,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] ותרו על Superpowers
 - [ ] TIP: התחילו עם כלי תכנון אחד; הוסיפו שכבה רק כשאתם נתקלים בבעיה שהיא פותרת.
 
-## 14. heltec-board
+## 13. heltec-board
 - [ ] לוח Heltec עם DHT22: מרומז מול מפורש
 - [ ] מרומז: ה-prompt
 - [ ] מפורש: ה-spec
@@ -97,82 +91,92 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C
 - [ ] 3 קריאות כושלות ברצף: SENSOR ERROR
 
-## 15. specify-hysteresis
+## 14. specify-hysteresis
 - [ ] specify: ה-hysteresis הוגדר, לא נוחש
 - [ ] specify הגדיר טווח הדלקה וכיבוי; clarify שאל: ומה קורה בדיוק על הגבול?
 - [ ] הוחלט: נדלק רק מעל 27 °C, כבה רק מתחת ל-25 °C
 - [ ] TIP: שאלו על מקרי הקצה: בדיוק על הסף, חיישן חסר, הפעלה ראשונה.
 
-## 16. plan-tested
+## 15. plan-tested
 - [ ] plan ולוגיקה בדוקה (11/11)
 - [ ] plan: להפריד את ההחלטות מקוד החומרה
 
-## 17. analyze-caught
+## 16. analyze-caught
 - [ ] מה /speckit-analyze תפס
 - [ ] HIGH: שגיאה מוצגת אחרי קריאה 1, או 3?
 - [ ] ה-spec נוסח מחדש: תוך 3 קריאות
 - [ ] MEDIUM: לכלל “לא לקרוס” לא הייתה בדיקה
 - [ ] MEDIUM: הכלל “בלי חומרה” לא נבדק
 
-## 18. behavior-photos
+## 17. behavior-photos
 - [ ] התנהגות: OK ו-WARNING על הלוח
 - [ ] OK ב-24.0 °C
 - [ ] WARNING ב-26.6 °C: נשאר בגלל ה-hysteresis
 - [ ] TIP: צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log.
 
-## 19. main-vs-dev
+## 18. main-vs-dev
 - [ ] main מול dev: מהדורה מול טיוטה
 - [ ] main = המהדורה המודפסת; dev = שולחן הטיוטות
 - [ ] כלל צוות: merge ל-main רק אחרי שהבדיקות עוברות
 - [ ] TIP: שמרו על main תמיד עובד: עשו merge אליו רק אחרי שהבדיקות עוברות.
 
-## 20. issues-prs
+## 19. issues-prs
 - [ ] issues ו-pull requests
 - [ ] issue = כרטיס משימה: מה שבור או חסר, ולמה
 - [ ] PR (pull request) = בקשת שינוי שמישהו עושה לה review
 - [ ] TIP: כתבו 'Fixes #2' ב-PR שנכנס ל-main, וה-issue ייסגר אוטומטית ב-merge.
 
-## 21. shared-repo
+## 20. shared-repo
 - [ ] repo משותף, specs/ משותף
 - [ ] specs/ = מחברת הצוות: מה כל אחד בונה, ולמה
 - [ ] ה-specs נכנסים באותו PR יחד עם הקוד שהם מתארים
 - [ ] TIP: עברו קודם על שינויי ה-spec בכל pull request, ורק אחר כך על הקוד.
 
-## 22. skills
+## 21. skills
 - [ ] skills: כרטיסי מתכון ל-AI
 - [ ] כרטיס מתכון ל-AI: צעדים כתובים שהוא טוען כשצריך
 - [ ] הכרטיס הזה הוא skill: כותבים פעם אחת, משתמשים בכל מקום
 - [ ] TIP: הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם.
 
-## 23. team-of-skills
+## 22. team-of-skills
 - [ ] צוותים של skills: הדוגמה של /team
 - [ ] שלושה תפקידי AI: ארכיטקט, product owner, מפתח בכיר
 
-## 24. shared-constitution
+## 23. shared-constitution
 - [ ] constitution אחת לכמה פרויקטים
 - [ ] חוקי הבית על המקרר: בדיקות, שמות, אבטחה, review
 - [ ] TIP: שמרו על constitution קצרה; כללים שאף אחד לא קורא, אף אחד לא מקיים.
 
-## 25. takeaways
+## 24. takeaways
 - [ ] כתבו את הכוונה לפני שה-AI כותב את הקוד
 - [ ] שמרו על השולחן של ה-AI מסודר: ב-sessions ארוכים יש context rot
 - [ ] בפרויקט Heltec: Spec Kit עם review אנושי הספיק
 - [ ] branches, PRs ו-specs/ משותף הופכים את זה לעבודת צוות
 - [ ] TIP: כתבו spec של עמוד אחד לפני ה-session הבא שלכם עם AI, כבר מחר.
 
-## 26. resources
+## 25. resources
 - [ ] מאמר: V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)
 - [ ] מחקר: Chroma, “Context Rot” (2025)
 - [ ] ההרצאה: github.com/ronyronen/speckit-claude-presentation
 
-## 28. a1-stages-catch-mistakes
+## 27. a1-stages-catch-mistakes
 - [ ] הטעות שנתפסה בפרויקט Heltec
 
-## 29. a2-overlap-gaps
+## 28. a2-overlap-gaps
 - [ ] גם BMAD וגם Spec Kit מתכננים לפני הקוד
 - [ ] ה-checklist של Spec Kit, הבודק של BMAD: בקרות קלות
 - [ ] כלי תכנון לא עוצרים context rot
 - [ ] כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד
+
+## 29. a7-gsd
+- [ ] גיבוי: GSD, התחלה נקייה לכל משימה
+- [ ] כל משימה מקבלת agent חדש עם context נקי
+- [ ] session ראשי
+- [ ] context נקי
+- [ ] context נקי
+- [ ] context נקי
+- [ ] קבצי הפרויקט: spec, plan, state
+- [ ] TIP: כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה.
 
 ## 30. a3-specify-init
 - [ ] גיבוי: איך מתחילים פרויקט Spec Kit

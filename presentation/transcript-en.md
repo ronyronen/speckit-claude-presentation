@@ -108,7 +108,7 @@ Rule of thumb: less but relevant beats more but noisy. And the tip: point the ag
 
 ### 7. Context rot: when the AI forgets
 
-`[2:00] [@13:00]`
+`[2:30] [@13:30]`
 
 > 💡 **Tip:** Start a fresh session when the AI forgets earlier decisions, and hand it the spec.
 
@@ -120,7 +120,7 @@ This has a name: context rot. And it is not just a feeling. In July 2025, resear
 
 So quality drops long before the window is full, and a bigger window does not make the problem go away.
 
-What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec.
+What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 11.
 
 Sources:
 
@@ -130,7 +130,7 @@ https://arxiv.org/abs/2307.03172
 
 ### 8. BMAD: an AI agile team
 
-`[1:30] [@14:30]`
+`[1:30] [@15:00]`
 
 > 💡 **Tip:** Borrow only the roles you miss; a small project rarely needs the whole team.
 
@@ -148,7 +148,7 @@ Source: https://github.com/bmad-code-org/BMAD-METHOD
 
 ### 9. Spec Kit: the living spec
 
-`[2:00] [@16:30]`
+`[2:00] [@17:00]`
 
 Analogy: getting a building permit. Each office stamps a different form, and each stamp exists to catch a different kind of mistake before anyone pours concrete.
 
@@ -164,37 +164,15 @@ This is the tool we used in the case study, so you will see these stages for rea
 
 Source: https://github.com/github/spec-kit
 
-### 10. GSD: a fresh start for every task
+### 10. Superpowers: discipline the AI can't skip
 
-`[1:30] [@18:00]`
-
-> 💡 **Tip:** Write decisions into files, not the chat, so a fresh session can pick them up.
-
-Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
-
-GSD is short for a blunt phrase, "Get Sh*t Done", and the article calls it fundamentally a context engineering tool. Its insight is the one from the last slide: quality drops as the window fills, so never let it fill.
-
-Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
-
-The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
-
-One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The article still links the old one. The original project was published under the name TÂCHES.
-
-Sources:
-
-https://github.com/open-gsd/gsd-core
-
-https://github.com/gsd-build/get-shit-done
-
-### 11. Superpowers: discipline the AI can't skip
-
-`[1:30] [@19:30]`
+`[1:30] [@18:30]`
 
 > 💡 **Tip:** Ask for a failing test first, then only the code that makes it pass.
 
 Analogy: a pilot's pre-flight checklist. Pilots are not short on skill. They read the checklist out loud on every flight because skipped steps are how accidents happen.
 
-Superpowers, created by Jesse Vincent, starts from a similar insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
+Superpowers, created by Jesse Vincent, starts from a simple insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
 
 Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building, review and merge. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
 
@@ -206,13 +184,13 @@ Tip: ask for a failing test first, then only the code that makes it pass.
 
 Source: https://github.com/obra/superpowers
 
-### 12. Four metaphors, two layers
+### 11. Four metaphors, two layers
 
-`[2:00] [@21:30]`
+`[2:30] [@21:00]`
 
 Analogy: building a house needs an architect and a site foreman. The architect decides what to build; the foreman keeps the work on track every day. Neither replaces the other.
 
-Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD is fresh context. Superpowers is discipline.
+Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks. Superpowers is discipline.
 
 They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is BMAD and Spec Kit. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is GSD and Superpowers.
 
@@ -224,9 +202,9 @@ The author goes further: he writes that mature teams are converging on all four.
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 13. Decision rule: which layers do you need?
+### 12. Decision rule: which layers do you need?
 
-`[2:30] [@24:00]`
+`[3:00] [@24:00]`
 
 > 💡 **Tip:** Start with one planning tool; add a layer only when you feel its pain.
 
@@ -248,7 +226,7 @@ Tip: start with one planning tool, and add a layer only when you feel its pain.
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 14. Heltec board + DHT22: implicit vs explicit
+### 13. Heltec board + DHT22: implicit vs explicit
 
 `[1:30] [@25:30]`
 
@@ -262,7 +240,7 @@ On the right is what the spec says after the Spec Kit stages: read the DHT22 eve
 
 The firmware also supports a BME280 sensor, chosen at build time, but everything you will see today ran on the DHT22.
 
-### 15. Specify: hysteresis decided, not guessed
+### 14. Specify: hysteresis decided, not guessed
 
 `[1:30] [@27:00]`
 
@@ -280,7 +258,7 @@ The first band was 30 and 28 °C. During hardware bring-up we lowered it so a cu
 
 Tip: ask about the edges, exactly at the threshold, sensor missing, first boot.
 
-### 16. Plan + tested logic (11/11)
+### 15. Plan + tested logic (11/11)
 
 `[1:30] [@28:30]`
 
@@ -294,7 +272,7 @@ The command on the slide, pio, is PlatformIO's command-line tool; "native" means
 
 Without the plan stage, the easy path is to call the sensor library straight from the logic, and then nothing can be tested without hardware on the desk.
 
-### 17. What /speckit-analyze caught
+### 16. What /speckit-analyze caught
 
 `[1:30] [@30:00]`
 
@@ -308,13 +286,13 @@ We fixed the wording to "within three readings" before any code was written. Ana
 
 None of these is a coding bug. They are disagreements in our own requirements, caught while fixing them cost one sentence.
 
-### 18. Behavior: OK and WARNING on the board
+### 17. Behavior: OK and WARNING on the board
 
 `[2:00] [@32:00]`
 
 > 💡 **Tip:** Photograph real hardware results; reviewers trust a photo faster than a log.
 
-Analogy: see slide 15, the thermostat. These photos show it working.
+Analogy: see slide 14, the thermostat. These photos show it working.
 
 Pause about 10 seconds on each photo so people can read the screen.
 
@@ -328,7 +306,7 @@ And what did we not need? GSD or Superpowers. The sessions were short and a huma
 
 Tip: photograph real hardware results; reviewers trust a photo faster than a log.
 
-### 19. main vs dev: published vs draft
+### 18. main vs dev: published vs draft
 
 `[1:30] [@33:30]`
 
@@ -346,7 +324,7 @@ The diagram is this repo's real history, as an illustration: issue #2 is a to-do
 
 Tip: keep main always working, and merge into it only after the tests pass.
 
-### 20. Issues and pull requests
+### 19. Issues and pull requests
 
 `[1:30] [@35:00]`
 
@@ -362,7 +340,7 @@ Here is a small surprise: issue 2 is still open. GitHub only closes an issue aut
 
 Tip: write "Fixes #2" in the PR that goes into main, and GitHub then closes the issue on merge.
 
-### 21. Shared repo, shared specs/
+### 20. Shared repo, shared specs/
 
 `[2:00] [@37:00]`
 
@@ -382,7 +360,7 @@ Each Spec Kit stage of this repo is also tagged in Git and on GitHub, from 01-st
 
 Tip: in every pull request, review the spec changes first, then the code.
 
-### 22. Skills: recipe cards for the AI
+### 21. Skills: recipe cards for the AI
 
 `[1:00] [@38:00]`
 
@@ -400,7 +378,7 @@ Write a skill once and you can share it across projects and teammates, so everyo
 
 Tip: turn the instruction you repeat most often into your first skill.
 
-### 23. Teams of skills: the /team example
+### 22. Teams of skills: the /team example
 
 `[1:00] [@39:00]`
 
@@ -412,7 +390,7 @@ That team caught real problems: an inflated star count in the article, an archiv
 
 This was a custom setup on my machine, not a product you can download, but the pattern is reusable.
 
-### 24. One constitution for many projects
+### 23. One constitution for many projects
 
 `[1:00] [@40:00]`
 
@@ -426,7 +404,7 @@ The next step is one constitution shared across projects and teams: testing rule
 
 Tip: keep the constitution short; rules nobody reads are rules nobody follows.
 
-### 25. Takeaways
+### 24. Takeaways
 
 `[1:30] [@41:30]`
 
@@ -446,7 +424,7 @@ Five: make it a team sport, with issues, branches, pull requests and a shared sp
 
 And one thing to do tomorrow, the tip: before your next AI coding session, write a one-page spec. Who is it for, what should it do, and how will you know it works?
 
-### 26. Resources
+### 25. Resources
 
 `[0:30] [@42:00]`
 
@@ -468,7 +446,7 @@ Context rot: https://www.trychroma.com/research/context-rot
 
 Lost in the Middle: https://arxiv.org/abs/2307.03172
 
-### 27. Questions?
+### 26. Questions?
 
 `[3:00] [@45:00]`
 
@@ -490,7 +468,7 @@ If time runs out, point to the resources slide and the repo.
 
 ## Backup slides (not timed)
 
-### 28. Backup: each stage catches a mistake
+### 27. Backup: each stage catches a mistake
 
 `[backup, not timed]`
 
@@ -498,13 +476,37 @@ backup, not timed. Use only if someone asks how each stage pays for itself.
 
 Clarify settled the exact edges of the hysteresis band (strictly above, strictly below). Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
 
-### 29. Backup: overlap and gaps
+### 28. Backup: overlap and gaps
 
 `[backup, not timed]`
 
 backup, not timed. For questions comparing the tools.
 
 The article's argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
+
+### 29. Backup: GSD, a fresh start for every task
+
+`[backup, not timed]`
+
+> 💡 **Tip:** Write decisions into files, not the chat, so a fresh session can pick them up.
+
+backup, not timed. Use if someone asks about long sessions or GSD (slides 11 and 12 mention it).
+
+Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
+
+GSD is short for a blunt phrase, "Get Sh*t Done", and the article calls it fundamentally a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
+
+Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
+
+The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
+
+One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The article still links the old one. The original project was published under the name TÂCHES.
+
+Sources:
+
+https://github.com/open-gsd/gsd-core
+
+https://github.com/gsd-build/get-shit-done
 
 ### 30. Backup: starting a Spec Kit project
 
@@ -516,7 +518,7 @@ backup, not timed. Show only if someone wants to try it tonight. The full setup 
 
 `[backup, not timed]`
 
-backup, not timed. Use with slide 12. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
 
 ### 32. Backup: VS Code extensions
 
