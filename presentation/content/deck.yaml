@@ -32,12 +32,12 @@ slides:
     layout: title
     title: { en: "Spec-Driven Development with AI", he: "פיתוח מבוסס spec עם AI" }
     bullets:
-      - { key: subtitle, en: "Spec-Driven Development (SDD): from vibe coding to living specs", he: "מ-vibe coding ל-spec חי: BMAD, Spec Kit, GSD ו-Superpowers" }
+      - { key: subtitle, en: "Spec-Driven Development (SDD) with artificial intelligence (AI)", he: "מ-vibe coding ל-spec חי: BMAD, Spec Kit, GSD ו-Superpowers" }
       - { key: credit, en: "Based on V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "מבוסס על המאמר של V. Dwarampudi, Spec-Driven AI (Medium, 2026)" }
     sources: [article]
     notes:
       en: |
-        Welcome. Today is about one idea: when you build software with an AI coding assistant, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec, short for specification, is simply a written description of what the software should do.
+        Welcome. Today is about one idea: when you build software with an AI coding assistant, AI meaning artificial intelligence, tools like Claude Code or Codex that write code for you, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec, short for specification, is simply a written description of what the software should do.
         The theory part follows Vimal Dwarampudi's Medium article "Spec-Driven AI". Where something is his opinion, I will say so.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: "ברוכים הבאים. מציינים את המאמר כבר בהתחלה.\nhttps://medium.com/ (קישור זמני)"
@@ -56,7 +56,7 @@ slides:
     notes:
       en: |
         Analogy: ordering a birthday cake by saying only "make it nice". You will get a cake, but every decision you skipped, the baker made for you.
-        Here is a real one-line request I gave an AI coding assistant. AI means artificial intelligence; here, tools like Claude Code or Codex that write code for you. "Build a temperature monitor that warns when it's too hot." It sounds complete. Now count the questions hiding inside it.
+        Here is, in short, the request I gave an AI coding assistant. The real prompt, word for word, was: "Build an application for a Heltec WiFi Kit V3 that reads a sensor, shows the value on the display, and shows a warning when the value is too high." Nothing else. It sounds complete. Now count the questions hiding inside it.
         What does "too hot" mean, exactly? Does the warning switch on at the number, or just above it? If the temperature hovers right at the edge, does the warning flicker on and off? Which sensor are we reading, and what happens when it stops answering?
         The AI will not stop and ask. It answers every one of these questions anyway, silently, by guessing. The rest of this talk is about making those guesses visible, and then deciding them on purpose.
       he: "Analogy: להזמין עוגה ולהגיד רק 'שתהיה יפה'.\nעוברים על כל שאלה נסתרת."
@@ -68,8 +68,8 @@ slides:
     layout: bullets
     title: { en: "The intent gap: SDLC vs ADLC", he: "פער הכוונה: SDLC מול ADLC" }
     bullets:
-      - { key: sdlc, en: "Old way (software life cycle, SDLC): slow coding, stale docs", he: "SDLC: אנשים כותבים קוד, והמסמכים מתיישנים לאט" }
-      - { key: adlc, en: "New way (agentic life cycle, ADLC): an AI agent codes in minutes", he: "ADLC: agent כותב קוד בדקות, ממה שאמרתם, בדיוק כפי שאמרתם" }
+      - { key: sdlc, en: "Old: software development life cycle (SDLC), slow and stale docs", he: "SDLC: אנשים כותבים קוד, והמסמכים מתיישנים לאט" }
+      - { key: adlc, en: "New: ADLC (the article’s term): an AI agent codes in minutes", he: "ADLC: agent כותב קוד בדקות, ממה שאמרתם, בדיוק כפי שאמרתם" }
       - { key: gap, en: "What you meant and what you typed are not the same thing", he: "הפער בין מה שהתכוונתם למה שאמרתם גדל מהר מאוד" }
       - { key: fix, en: "The faster the builder, the faster that gap grows", he: "סוגרים את הפער כשכותבים את הכוונה לפני הקוד" }
     sources: [article, F8]
@@ -77,7 +77,7 @@ slides:
       en: |
         Analogy: a very fast translator who never asks what you meant. Every word you say is translated perfectly, including the words you got wrong.
         Start with the old way. For decades software followed the SDLC, the software development life cycle: requirements, design, code, test, release. People did every step, and slowly. The documents written at the start drifted out of date, but the slowness hid the problem, because a confused developer could walk over and ask.
-        The article calls the new way the ADLC, an agentic development life cycle. That is the author's framing, not an industry-standard term yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. In the article's words, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
+        The article calls the new way the ADLC, roughly "agentic development life cycle". That is the author's framing, not an industry-standard term yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. In the article's words, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
         Both share one unsolved problem: does what got built match what was intended? In the old world, requirement documents went stale before the ink dried. In early AI coding, the answer was "prompt harder". Neither worked reliably.
         So now there are two things: what you meant, and what you typed. Humans used to fill the gap between them with conversation. The agent fills it with guesses, at high speed. The faster the builder, the faster the gap grows.
         The fix sounds almost boring: write the intent down first, in a form both people and the AI can read, and keep it up to date. Everything else today builds on that.
@@ -104,7 +104,7 @@ slides:
     notes:
       en: |
         Analogy: a napkin sketch versus an architect's blueprint. Both are drawings. You would never build a house from the napkin, and you would never draw a blueprint just to try out an idea.
-        Vibe coding is the napkin. The term became popular in early 2025 for a way of working where you describe what you want, accept whatever the AI produces, run it, and keep prompting until it seems to work. You never really read the code. Your decisions live in a chat history that nobody, including you, will ever reread.
+        Vibe coding is the napkin. The term describes a way of working where you describe what you want, accept whatever the AI produces, run it, and keep prompting until it seems to work. You never really read the code. Your decisions live in a chat history that nobody, including you, will ever reread.
         And honestly, that is fine for a lot of things: a throwaway prototype, a script you will run once, checking whether an idea is even possible.
         Spec-driven development is the blueprint. You write the intent down first, you review it, and only then do you let the AI generate the code. The decisions live in plain files inside the project, next to the code, where the whole team can read them, review them, and change them.
         The difference shows up a month later. With vibe coding, someone asks why the warning triggers at 27 degrees, and the honest answer is: the AI picked it. With a spec, you open a file and the decision is there, with the reason next to it.
@@ -118,10 +118,10 @@ slides:
     layout: bullets
     title: { en: "SDD: the spec is the source of truth", he: "הרעיון המרכזי של SDD: ה-spec הוא מקור האמת" }
     bullets:
+      - { key: constitution, en: "The constitution: house rules every stage must obey", he: "ה-constitution מחזיקה את הכללים שכל שלב חייב לכבד" }
       - { key: stages, en: "Stages: constitution → specify → plan → tasks → implement", he: "שלבים עם שערים: specify, plan, tasks, implement" }
       - { key: gates, en: "Two checkpoints: clarify (ask) and analyze (cross-check)", he: "Two checkpoints: clarify (ask) and analyze (cross-check)" }
       - { key: loop, en: "Learned something? Update the spec, then regenerate", he: "לולאת משוב: מה שלומדים חוזר ומעדכן את ה-spec" }
-      - { key: constitution, en: "The constitution: house rules every stage must obey", he: "ה-constitution מחזיקה את הכללים שכל שלב חייב לכבד" }
     tip: { key: one-truth, en: "Fix the spec first when code and spec disagree, then regenerate the code.", he: "כשהקוד וה-spec לא מסכימים, מתקנים קודם את ה-spec ואז מייצרים מחדש." }
     sources: [article, F10]
     notes:
@@ -129,7 +129,7 @@ slides:
         Analogy: a restaurant kitchen cooking from one recipe card. If the dish comes out wrong, you do not just fix the plate; you fix the recipe, so tomorrow's dish is right too.
         SDD makes the spec the source of truth. Not the code, and not the chat. The code is something the AI generates from the spec, and can generate again.
         The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
-        Spec Kit adds two checkpoints that matter a lot. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
+        Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
         Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. The article describes this feedback loop, with the constitution as a rail running underneath every stage.
         The constitution is not paperwork. Every later stage is checked against it, so you write the rules once and the AI respects them everywhere.
         The tip is the habit that makes all of this work: when the code and the spec disagree, fix the spec first.
@@ -174,7 +174,7 @@ slides:
       en: |
         Analogy: a whiteboard in a long meeting. By hour two it is full, the decision from minute five is squeezed into a corner under three other diagrams, and people start contradicting it without noticing.
         That is what happens in a long AI session. The context window keeps filling with old messages, failed attempts and files you no longer need. The early decisions are still technically there, but they get buried, and the AI starts quietly ignoring them.
-        This has a name: context rot. And it is not just a feeling. In July 2025, researchers at Chroma, Kelly Hong, Anton Troynikov and Jeff Huber, tested 18 language models and found that performance becomes less reliable as the input gets longer, even on simple tasks. An earlier paper by Nelson Liu and colleagues, "Lost in the Middle", showed that models use information at the start and the end of a long input much better than information in the middle.
+        This has a name: context rot. And it is not just a feeling. In July 2025, researchers at Chroma, Kelly Hong, Anton Troynikov and Jeff Huber, tested 18 AI models and found that performance becomes less reliable as the input gets longer, even on simple tasks. An earlier paper by Nelson Liu and colleagues, "Lost in the Middle", showed that models use information at the start and the end of a long input much better than information in the middle.
         So quality drops long before the window is full, and a bigger window does not make the problem go away.
         What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec.
         Sources:
@@ -199,8 +199,8 @@ slides:
         Analogy: a film crew. The director, the camera operator and the editor each have one clear job, and they pass the work along in a known order.
         BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organizing idea is the agile team. Instead of one general-purpose AI assistant, you get several specialized agent roles, such as an analyst, a product manager, an architect, a developer and a tester. Each has a narrow job and its own focused context.
         The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
-        The article quotes a specific number of roles; we could not verify it, so I am not repeating it. The project itself is active.
-        BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
+        The article quotes a specific number of roles; we could not verify it, so I am not repeating it.
+        In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
         Source: https://github.com/bmad-code-org/BMAD-METHOD
       he: "Analogy: צוות צילום שבו לכל אחד יש תפקיד אחד ברור.\nhttps://github.com/bmad-code-org/BMAD-METHOD"
 
@@ -219,13 +219,13 @@ slides:
         - [ { en: "specify + clarify", he: "specify" }, { en: "spec.md", he: "spec.md" }, { en: "Guessed requirements", he: "דרישות לא ברורות" } ]
         - [ { en: "plan + tasks", he: "plan" }, { en: "plan.md, tasks.md", he: "plan.md" }, { en: "Wrong design, missing steps", he: "ארכיטקטורה שגויה" } ]
         - [ { en: "analyze", he: "tasks" }, { en: "A report", he: "tasks.md" }, { en: "Documents that disagree", he: "צעדים חסרים" } ]
-        - [ { en: "implement", he: "implement" }, { en: "Code and tests", he: "קוד ובדיקות" }, { en: "Drift from the spec", he: "סטייה מה-spec" } ]
+        - [ { en: "implement", he: "implement" }, { en: "Code and tests", he: "קוד ובדיקות" }, { en: "Code drifting from the spec", he: "סטייה מה-spec" } ]
     sources: [speckit]
     notes:
       en: |
         Analogy: getting a building permit. Each office stamps a different form, and each stamp exists to catch a different kind of mistake before anyone pours concrete.
         Spec Kit is GitHub's open-source toolkit for spec-driven development. Where BMAD organizes agents, Spec Kit organizes documents. The documents are the engine: each stage reads the previous document and writes the next one, all as plain Markdown files inside your project.
-        Walk the table. The constitution catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests, checked against the spec so it does not drift.
+        Walk the table. The constitution catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests by following the task list, so the code stays tied to the spec.
         The idea to remember: every stage catches a different kind of mistake, and each one is cheap to fix at that stage and expensive later.
         Spec Kit works with several AI coding assistants, including Claude Code and Codex, and its files do not depend on any one of them. Switch assistants mid-project and the spec stays.
         This is the tool we used in the case study, so you will see these stages for real in a few minutes.
@@ -262,8 +262,8 @@ slides:
     title: { en: "Superpowers: discipline the AI can't skip", he: "Superpowers: משמעת שנאכפת" }
     bullets:
       - { key: skills, en: "A pilot’s checklist for the agent: skills it must follow", he: "ספרייה של skills שה-agent חייב לפעול לפיהם" }
-      - { key: flow, en: "A 7-step workflow, from brainstorming to review", he: "A 7-step workflow, from brainstorming to review" }
-      - { key: tdd, en: "TDD (test-driven development): code written before its test is deleted", he: "TDD קודם כול: בדיקה נכשלת לפני כל שורת קוד" }
+      - { key: flow, en: "A 7-step workflow, from brainstorming to merge", he: "A 7-step workflow, from brainstorming to merge" }
+      - { key: tdd, en: "TDD (test-driven development): code before its test is deleted", he: "TDD קודם כול: בדיקה נכשלת לפני כל שורת קוד" }
       - { key: verify, en: "Two reviews: does it match the spec? Is the code good?", he: "אין הכרזה על סיום בלי הוכחה עדכנית" }
     tip: { key: tdd-habit, en: "Ask for a failing test first, then only the code that makes it pass.", he: "אם הצוות מדלג על בדיקות תחת לחץ, תנו לכלים לאכוף אותן." }
     sources: [F2, F3, F5]
@@ -271,7 +271,7 @@ slides:
       en: |
         Analogy: a pilot's pre-flight checklist. Pilots are not short on skill. They read the checklist out loud on every flight because skipped steps are how accidents happen.
         Superpowers, created by Jesse Vincent, starts from a similar insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
-        Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building and review. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
+        Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building, review and merge. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
         Then the work passes two reviews: first, does it match the spec? Second, is the code itself good?
         On adoption: as of November 2026 the repository has over 300,000 GitHub stars. The article's "170k in three months" figure does not match the record, so I am not repeating it.
         Tip: ask for a failing test first, then only the code that makes it pass.
@@ -326,16 +326,19 @@ slides:
         "yes": { en: "yes", he: "כן" }
         "no": { en: "no", he: "לא" }
     tip: { key: start-speckit, en: "Start with one planning tool; add a layer only when you feel its pain.", he: "התחילו רק עם Spec Kit; הוסיפו שכבה רק כשאתם מרגישים את הכאב." }
+    sources: [article]
     notes:
       en: |
         Analogy: choosing a vehicle. You do not buy a truck for a short commute, and you do not move house on a bicycle. The trip decides the vehicle.
         This is the article's practical decision rule, drawn as two simple tracks. Start with a planning tool, for example Spec Kit, then ask three questions.
         First track, the context layer, GSD. Question one: are your AI sessions long, hours of work on their own? If yes, add GSD, because you will hit context rot. If no, ask question two: does a human review the output after each phase? If nobody does, add GSD. If you review every phase, skip it; each review is a natural checkpoint.
         Second track, the discipline layer, Superpowers. Question three: does your team have a strong TDD habit that survives deadline pressure? If no, add Superpowers and let the tool enforce it. If yes, skip it.
-        One more honest answer: sometimes you need none of this. Adapted from the companion textbook's chapter "When Not to Use Spec Kit": skip the spec for throwaway experiments you will delete, for trivial and unambiguous changes like renaming a variable, and when you do not yet know what is technically possible and need to explore first. That is research, not specification.
+        Let's try the rule on the project you are about to see, the Heltec temperature monitor. Question one: were the sessions long? No; each Spec Kit stage was a short, focused session. Question two: did a human review each phase? Yes; I read and approved every document before the next stage started. So the context track says: skip GSD. Question three: a strong TDD habit? Here the habit was written into the project's constitution: Principle II says every threshold and state change needs a test written before or alongside the code. So the discipline track says: skip Superpowers too. Spec Kit alone, plus a human, was the right size for that job.
+        One more honest answer: sometimes you need none of this. Adapted from the companion textbook's chapter "When Not to Use Spec Kit" (docs/textbook.md, section 22): skip the spec for throwaway experiments you will delete, for trivial and unambiguous changes like renaming a variable, and when you do not yet know what is technically possible and need to explore first. That is research, not specification.
         Spec-driven development earns its cost when getting the requirement wrong is expensive.
         Tip: start with one planning tool, and add a layer only when you feel its pain.
-      he: "Analogy: בחירת רכב, לא קונים משאית לנסיעה קצרה לעבודה."
+        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
+      he: "Analogy: בחירת רכב, לא קונים משאית לנסיעה קצרה לעבודה.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
 
   # ---------------------------------------------------------------- Part IV
   - id: heltec-board
@@ -352,14 +355,14 @@ slides:
       - heading: { en: "Explicit: the spec", he: "מפורש" }
         items:
           - { en: "Read the DHT22 every 2 s, temperature only", he: "קריאת DHT22 כל 2 שניות, צלזיוס, ספרה אחת אחרי הנקודה" }
-          - { en: "WARNING above 27 °C, back to OK below 25 °C", he: "WARNING ב-30.0 מעלות, חזרה ל-OK ב-29.0 מעלות" }
+          - { en: "WARNING above 27 °C, back to OK below 25 °C", he: "WARNING ב-30.0 מעלות, חזרה ל-OK ב-29.0 מעלות" }
           - { en: "3 failed reads in a row → SENSOR ERROR", he: "3 failed reads in a row → SENSOR ERROR" }
     notes:
       en: |
         Analogy: see slide 2, the cake order. Same request, now with the real answers written down.
-        Let's watch the theory work on something real. The board is a Heltec WiFi Kit V3: a small ESP32-S3 microcontroller board with a tiny built-in 0.96-inch OLED screen, an organic LED display. It has no temperature sensor of its own, which is the first thing the vague prompt silently assumed. We wired a DHT22, a cheap temperature and humidity sensor, to pin GPIO4.
+        Let's watch the theory work on something real. The board is a Heltec WiFi Kit V3: a small ESP32-S3 microcontroller board with a tiny built-in 0.96-inch OLED screen, an organic LED display. It has no temperature sensor of its own, which is the first thing the vague prompt left open. We wired a DHT22, a cheap temperature and humidity sensor, to pin 4, a general-purpose input/output pin.
         On the left is everything the one-line prompt said: show the temperature, warn when it is too hot. And nothing at all about failures.
-        On the right is what the spec says after the Spec Kit stages: read the DHT22 every two seconds, temperature only. Enter WARNING above 27 degrees, return to OK only below 25. After three failed reads in a row, show SENSOR ERROR instead of a frozen number.
+        On the right is what the spec says after the Spec Kit stages: read the DHT22 every two seconds, temperature only. Enter WARNING above 27 °C, return to OK only below 25 °C. After three failed reads in a row, show SENSOR ERROR instead of a frozen number.
         The firmware also supports a BME280 sensor, chosen at build time, but everything you will see today ran on the DHT22.
       he: "Analogy: see slide 2"
 
@@ -369,8 +372,8 @@ slides:
     layout: code
     title: { en: "Specify: hysteresis decided, not guessed", he: "specify: ה-hysteresis הוחלט, לא נוחש" }
     bullets:
-      - { key: question, en: "Clarify asked: when does the warning switch off again?", he: "ה-spec שאל: מה קורה בדיוק ב-30 מעלות?" }
-      - { key: answer, en: "Decided: on above 27 °C, off below 25 °C, so no flicker", he: "החלטנו על פס של מעלה אחת כדי שהנורה תפסיק להבהב" }
+      - { key: question, en: "Specify wrote an on/off band; clarify asked: exactly at the edge?", he: "ה-spec שאל: מה קורה בדיוק ב-30 מעלות?" }
+      - { key: answer, en: "Decided: on above 27 °C, off below 25 °C, strictly", he: "החלטנו על פס של מעלה אחת כדי שהנורה תפסיק להבהב" }
     code: |
       FR-003: Enter WARNING when temperature
               is strictly above 27.0 °C.
@@ -381,10 +384,10 @@ slides:
     notes:
       en: |
         Analogy: a home thermostat. The heating turns on at 19 degrees and off at 21, not both at 20, otherwise it would click on and off all day.
-        This is the clearest example in the project. Writing the code for a warning is trivial; deciding it is the hard part. With a single threshold, a reading hovering at 27 would flip the warning on and off every two seconds.
-        During clarify, Spec Kit asked exactly that question, and we decided a two-degree band. WARNING turns on only strictly above 27.0, and turns off only strictly below 25.0. In between, it stays as it was. That gap is called hysteresis.
-        Notice the word "strictly": exactly 27.0 does not trigger. That is a product decision, and it is written down.
-        One more detail. The first version used 30 and 28 degrees. During hardware bring-up we lowered both, so you can trigger the warning by cupping a hand around the sensor. That change was recorded as a new clarification in the spec, not quietly edited in the code.
+        This is the clearest example in the project. Writing the code for a warning is trivial; deciding it is the hard part. With a single threshold, a reading hovering at the limit would flip the warning on and off every two seconds.
+        The specify stage turned "too hot" into an explicit band with two numbers: one to switch the warning on, a lower one to switch it off. In between, the state stays as it was. That gap is called hysteresis. On the slide you see them as FR-003 and FR-004. FR means functional requirement; they are numbered so that tests and tasks can point to them.
+        Then clarify asked the question nobody had thought about: what happens at exactly the threshold value? The answer we recorded: strictly. Exactly 27.0 does not trigger, exactly 25.0 does not clear. That is a product decision, and it is written down.
+        One more detail. The first version of the band was 30 and 28 °C. During hardware bring-up we lowered both, so you can trigger the warning by cupping a hand around the sensor. That change was recorded as a new clarification in the spec, not quietly edited in the code.
         Tip: ask about the edges, exactly at the threshold, sensor missing, first boot.
       he: "Analogy: see slide 5"
 
@@ -407,9 +410,9 @@ slides:
     notes:
       en: |
         Analogy: a flight simulator. Pilots practise their decisions without a real plane; we test our decision logic without the real board.
-        The plan's most important choice came straight from the constitution: keep the decision logic, the state machine that picks OK, WARNING or SENSOR ERROR, separate from all hardware code. The sensor, the screen and the serial output are thin adapters around it.
+        The plan's most important choice came straight from the constitution: keep the decision logic, the state machine that picks OK, WARNING or SENSOR ERROR, separate from all hardware code. The sensor, the screen and the serial output are thin adapters around it: small pieces of code whose only job is to talk to the hardware and pass plain numbers in and out, with no decisions of their own.
         That separation pays off immediately. The logic has eleven unit tests that run on a laptop with no board attached. They check every rule we just decided: warning strictly above 27, exactly 27 does nothing, clears strictly below 25, no toggling anywhere inside the band, three failures to enter SENSOR ERROR, and recovery afterwards.
-        Result: 11 out of 11 pass. The output on the slide is shortened; the full run lists all eleven.
+        The command on the slide, pio, is PlatformIO's command-line tool; "native" means run the tests on this computer instead of the board. Result: 11 out of 11 pass. The output on the slide is shortened; the full run lists all eleven.
         Without the plan stage, the easy path is to call the sensor library straight from the logic, and then nothing can be tested without hardware on the desk.
       he: "Analogy: see slide 11"
 
@@ -441,16 +444,17 @@ slides:
     layout: photos
     title: { en: "Behavior: OK and WARNING on the board", he: "התנהגות: OK ו-WARNING על הלוח" }
     images:
-      - { file: photo-ok.jpg, caption: { en: "OK at 24.0 °C", he: "OK: מתחת ל-30 מעלות" } }
-      - { file: photo-warning.jpg, caption: { en: "WARNING at 26.6 °C: held by hysteresis", he: "WARNING: 30 מעלות ומעלה" } }
+      - { file: photo-ok.jpg, caption: { en: "OK at 24.0 °C", he: "OK: מתחת ל-30 מעלות" } }
+      - { file: photo-warning.jpg, caption: { en: "WARNING at 26.6 °C: held by hysteresis", he: "WARNING: 30 מעלות ומעלה" } }
     tip: { key: photo-proof, en: "Photograph real hardware results; reviewers trust a photo faster than a log.", he: "צלמו תוצאות אמיתיות מהחומרה; הן משכנעות סוקרים מהר יותר מלוגים." }
     notes:
       en: |
         Analogy: see slide 15, the thermostat. These photos show it working.
+        Pause about 10 seconds on each photo so people can read the screen.
         This is the real board with the DHT22 wired up. On the left, normal room temperature: the screen shows OK and 24.0 degrees.
         On the right, I warmed the sensor with my hand. Look closely at the number: 26.6 degrees, and the screen still says WARNING. A beginner might call that a bug, because 26.6 is below the 27-degree threshold. It is not a bug; it is the spec. The reading went above 27, the warning switched on, and it stays on until the temperature drops below 25. That is the hysteresis band from three slides ago, visible on real hardware.
         This is why the photos matter. The unit tests proved the logic on a laptop; the photos prove the same behavior on the physical device, with the real sensor. We use photos instead of a live demo on purpose: they never fail on stage.
-        And what did we not need? GSD or Superpowers. The sessions were short and a human reviewed every stage, exactly the case where the decision rule says to skip them.
+        And what did we not need? GSD or Superpowers. The sessions were short and a human reviewed every stage, so the decision rule says skip GSD. And the constitution already required tests first (Principle II), so the Superpowers question also says skip.
         Tip: photograph real hardware results; reviewers trust a photo faster than a log.
       he: "Analogy: see slide 2"
 
@@ -471,7 +475,7 @@ slides:
         feature: { en: "feature branch (DHT22)", he: "feature branch" }
         pr3: { en: "PR #3", he: "PR #3" }
         dev: { en: "dev", he: "dev" }
-        prs: { en: "PRs #1, #4–#7", he: "PRs #4-7" }
+        prs: { en: "PR #4", he: "PR #4" }
         main: { en: "main", he: "main" }
     tip: { key: keep-main-working, en: "Keep main always working: merge into it only after the tests pass.", he: "Keep main always working: merge into it only after the tests pass." }
     notes:
@@ -480,7 +484,7 @@ slides:
         Some vocabulary first. Git is the tool that tracks every version of your files. GitHub is the website where a team shares a Git repository, or repo: the project folder with its full history. A branch is a parallel copy of the project where you can work without disturbing anyone else.
         Two branches matter here. main is the published edition: always working, always safe to hand to someone. dev is the draft desk: work lands there first, gets combined, and gets checked.
         The team rule: merge into main only after the tests pass and the work is verified. To merge simply means to bring the changes from one branch into another.
-        The diagram is this repository's real history, used as an illustration. To be clear, this was a one-person project, there is no automated test server, and main is not technically locked. A real team would add those. The flow is the same.
+        The diagram is this repository's real history, used as an illustration: issue #2 is a to-do card asking for DHT22 support, and PR #3 is the reviewed change that delivered it; I will define both properly on the next slide. To be clear, this was a one-person project, early work here went straight to main, there is no automated test server, and main is not technically locked. A real team would add those. The flow is the same.
         Tip: keep main always working, and merge into it only after the tests pass.
       he: "Analogy: דלפק ההגשה במטבח, המנות מחכות שם לפני שהן יוצאות לסועדים."
 
@@ -496,14 +500,14 @@ slides:
       name: branch-flow
       highlight: [issue, pr3, prs]
       labels: *branch_labels
-    tip: { key: fixes-keyword, en: "Write 'Fixes #2' in a PR; GitHub closes the issue when it merges into main.", he: "Write 'Fixes #2' in a PR; GitHub closes the issue when it merges into main." }
+    tip: { key: fixes-keyword, en: "Write 'Fixes #2' in the PR into main; GitHub then closes the issue on merge.", he: "Write 'Fixes #2' in the PR into main; GitHub then closes the issue on merge." }
     notes:
       en: |
         Analogy: a work order and a signed delivery note. The work order says what is needed and why; the delivery note shows exactly what was done, and someone signs it before it is accepted.
         An issue is the work order: a card on GitHub describing a bug or an enhancement, and why it matters. A pull request, or PR, is the delivery note: a set of changes you propose, which someone reviews before it is merged. Changes land through PRs, never by pushing straight into main.
-        Follow the real chain on the diagram. Issue number 2 asked for DHT22 support, because the original sensor was not available. The work happened on a feature branch called 001-heltec-monitor-dht22-sensor. PR number 3 merged it into dev. Then PRs number 1 and 4 through 7 carried dev into main.
-        Here is a small surprise: issue 2 is still open. GitHub only closes an issue automatically when a PR that says "Fixes #2" merges into the default branch, here main. PR 3 went into dev, so nothing closed it.
-        Tip: write "Fixes #2" in a PR, and GitHub closes the issue when it merges into main.
+        Follow the real chain on the diagram. Issue number 2 asked for DHT22 support, because the original sensor was not available. The work happened on a feature branch called 001-heltec-monitor-dht22-sensor. PR number 3 merged it into dev. Then PR number 4 carried it from dev into main. PRs 1 and 5 through 7 are other dev-to-main merges.
+        Here is a small surprise: issue 2 is still open. GitHub only closes an issue automatically when a PR or commit that says "Fixes #2" lands on the default branch, here main. Nobody wrote "Fixes #2". And even if PR 3 had said it, GitHub would have ignored it, because PR 3 targeted dev, not the default branch.
+        Tip: write "Fixes #2" in the PR that goes into main, and GitHub then closes the issue on merge.
       he: "Analogy: הזמנת עבודה ותעודת המשלוח החתומה."
 
   - id: shared-repo
@@ -526,7 +530,7 @@ slides:
         The specs folder is the answer. Every feature gets its own folder, like specs/001-heltec-monitor in this repo. Inside are the spec, the clarifications with their answers, the plan, the task list and the analysis report. Before you start work, you read the folder. Before you change a decision, you see why it was made.
         And the specs travel in the same pull request as the code they describe. The reviewer sees the change in intent and the change in code together, and can ask: does this code do what the spec now says?
         Imagine a second developer joining tomorrow. They would open specs/002 for their own feature, on their own branch, and everyone could read it in the PR before a line of code merged.
-        This repo also tags each Spec Kit stage in Git, from 01-start to 09-hardware-verified, so you can replay how the spec grew.
+        Each Spec Kit stage of this repo is also tagged in Git and on GitHub, from 01-start to 09-hardware-verified, so you can replay how the spec grew.
         Tip: in every pull request, review the spec changes first, then the code.
       he: "Analogy: ספר מתכונים משותף שכל טבח מעדכן במקום."
 
@@ -601,7 +605,7 @@ slides:
         Five things to take home. One: write the intent down before the AI writes the code. The spec, not the chat, is the source of truth.
         Two: keep the AI's desk tidy. Context rots in long sessions, so keep sessions short and keep decisions in files.
         Three: pick your layers by pain. Start with planning; add context isolation or enforced discipline only when you actually feel those problems.
-        Four, from the case study: on the Heltec project, Spec Kit plus a human reviewing each stage was enough. Clarify settled the hysteresis, analyze caught a contradiction before any code existed, and eleven tests plus two photos proved the behavior.
+        Four, from the case study: on the Heltec project, Spec Kit plus a human reviewing each stage was enough. Specify and clarify pinned down the hysteresis band, analyze caught a contradiction before any code existed, and eleven tests plus two photos proved the behavior.
         Five: make it a team sport, with issues, branches, pull requests and a shared specs folder, so everyone can see what everyone else is building and why.
         And one thing to do tomorrow, the tip: before your next AI coding session, write a one-page spec. Who is it for, what should it do, and how will you know it works?
       he: "Analogy: מודדים פעמיים, חותכים פעם אחת."
@@ -616,11 +620,12 @@ slides:
       - { key: speckit, en: "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD", he: "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD" }
       - { key: gsd, en: "GitHub: open-gsd/gsd-core · obra/superpowers", he: "GitHub: open-gsd/gsd-core · obra/superpowers" }
       - { key: research, en: "Research: Chroma, “Context Rot” (2025)", he: "Research: Chroma, “Context Rot” (2025)" }
-      - { key: repo, en: "This talk’s repo: firmware, specs/ and both decks", he: "ה-repo של ההרצאה ושתי המצגות ב-GitHub" }
+      - { key: repo, en: "This talk: github.com/ronyronen/speckit-claude-presentation", he: "This talk: github.com/ronyronen/speckit-claude-presentation" }
     sources: [article, F4, F7]
     notes:
       en: |
         Everything from today is in this talk's repository: the firmware, the full specs folder and both decks, English and Hebrew. Leave this slide up while people photograph it.
+        This talk: https://github.com/ronyronen/speckit-claude-presentation
         Article: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
         Spec Kit: https://github.com/github/spec-kit
         BMAD: https://github.com/bmad-code-org/BMAD-METHOD
@@ -642,9 +647,9 @@ slides:
         Repeat each question before answering it, so the whole room hears it.
         Likely questions:
         "Isn't this just waterfall again?" No. Waterfall freezes the document; here the spec is living, and the feedback loop updates it whenever you learn something.
-        "Which tool should I start with?" One planning tool; Spec Kit is the lightest to try. Then use the decision rule for the rest.
+        "Which tool should I start with?" One planning tool; Spec Kit is the one I used here. Then use the decision rule for the rest.
         "Does it work with my assistant?" Spec Kit supports several assistants, and its files do not depend on any one of them.
-        "How long did the Heltec spec take?" Point to the Git tags in the repo; every stage is preserved.
+        "How long did the Heltec spec take?" Specify through implement all ran on one day, 2026-09-10, per the tags and commit dates in the repo.
         If time runs out, point to the resources slide and the repo.
       he: "חוזרים על כל שאלה לפני שעונים עליה."
 
@@ -660,13 +665,13 @@ slides:
         - { en: "Stage", he: "שלב" }
         - { en: "Mistake caught in the Heltec run", he: "דוגמה לטעות שנתפסה" }
       rows:
-        - [ { en: "clarify", he: "specify" }, { en: "Warning edge undecided (now 27/25 °C)", he: "אין החלטה לגבי קצה הסף" } ]
+        - [ { en: "clarify", he: "specify" }, { en: "Exact threshold value undecided", he: "אין החלטה לגבי קצה הסף" } ]
         - [ { en: "plan", he: "plan" }, { en: "Logic tangled with hardware code", he: "לוגיקה מעורבבת עם קוד חומרה" } ]
         - [ { en: "analyze", he: "analyze" }, { en: "Two requirements disagreed (1 vs 3 reads)", he: "דרישה בלי בדיקה" } ]
     notes:
       en: |
         backup, not timed. Use only if someone asks how each stage pays for itself.
-        Clarify forced the hysteresis decision. Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
+        Clarify settled the exact edges of the hysteresis band (strictly above, strictly below). Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
       he: "backup, not timed. משתמשים רק אם שואלים על השלבים."
 
   - id: a2-overlap-gaps
@@ -679,7 +684,7 @@ slides:
       - heading: { en: "Overlap", he: "חפיפה" }
         items:
           - { en: "BMAD and Spec Kit both plan before coding", he: "גם BMAD וגם Spec Kit מתכננים לפני הקוד" }
-          - { en: "Spec Kit’s checklist and BMAD’s tester are light quality gates", he: "גם GSD וגם Superpowers מעצבים את הביצוע" }
+          - { en: "Spec Kit’s checklist, BMAD’s tester: light gates", he: "גם GSD וגם Superpowers מעצבים את הביצוע" }
       - heading: { en: "Gaps", he: "פערים" }
         items:
           - { en: "Planning tools don’t stop context rot", he: "אף אחד מהם לא מחליף סקירה אנושית" }
