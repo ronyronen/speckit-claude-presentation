@@ -110,7 +110,7 @@ def validate(deck: Deck, diagram_names: set[str]) -> list[str]:
 
     # 5. analogy
     for s in timed:
-        if s.id in EXEMPT:
+        if s.id in EXEMPT or s.layout == "divider":
             continue
         for l in LANGS:
             n = s.notes.get(l, "")

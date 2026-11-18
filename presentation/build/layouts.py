@@ -137,8 +137,8 @@ def _rect(slide, name, x, y, w, h, lang, fill, line=None, kind=MSO_SHAPE.ROUNDED
     return sh
 
 
-def _background(slide):
-    pic = slide.shapes.add_picture(str(ASSETS / "bg.png"), 0, 0, SLIDE_W, SLIDE_H)
+def _background(slide, name="bg.png"):
+    pic = slide.shapes.add_picture(str(ASSETS / name), 0, 0, SLIDE_W, SLIDE_H)
     pic.name = "lay-bg"
 
 
@@ -170,7 +170,7 @@ def add_tip(slide, tip_text, lang, glossary=(), sid="tip"):
     """Bottom tip band: amber stripe + light-bulb icon on the reading-start
     side (left in EN, right in HE), then the tip text. No "TIP" label."""
     x, y, w, h = tip_box()
-    _rect(slide, "lay-tip-band", x, y, w, h, lang, "surface")
+    _rect(slide, "lay-tip-band", x, y, w, h, lang, "tip_band")
     stripe = Inches(0.07)
     _rect(slide, "lay-tip-stripe", x, y, stripe, h, lang, "bulb",
           kind=MSO_SHAPE.RECTANGLE)
@@ -198,9 +198,9 @@ def add_footer(slide, number, label, lang, glossary=()):
              align=PP_ALIGN.LEFT if lang == "he" else PP_ALIGN.RIGHT)
 
 
-def _frame(slide, s, lang, glossary, title=True):
+def _frame(slide, s, lang, glossary, title=True, bg="bg.png"):
     """Background, title, tip band. Returns the (unmirrored) content box."""
-    _background(slide)
+    _background(slide, bg)
     if title:
         _title(slide, s, lang, glossary)
     x, y, w, h = content_box(s.tip is not None)
@@ -225,9 +225,9 @@ def _bullet_box(slide, box, s, lang, glossary, size=BODY_PT, space=BULLET_SPACE)
 # --- layouts ---------------------------------------------------------------
 
 def _centered(slide, s, lang, glossary, title_pt, sub_color):
-    x, y, w, h = _frame(slide, s, lang, glossary, title=False)
+    x, y, w, h = _frame(slide, s, lang, glossary, title=False, bg=TITLE_BG)
     title_h = Inches(1.6)
-    ty = y + (h - title_h) // 2 - Inches(0.6)
+    ty = y + (h - title_h) // 2 - Inches(1.2)
     tb = _textbox(slide, "lay-title", x, ty, w, title_h, lang, [_t(s.title, lang)],
                   glossary, title_pt, bold=True, align=PP_ALIGN.CENTER,
                   anchor=MSO_ANCHOR.BOTTOM, fit=(s.id, "title"), min_pt=TITLE_PT_MIN)
@@ -242,8 +242,87 @@ def _centered(slide, s, lang, glossary, title_pt, sub_color):
                  fit=(s.id, "bullets"))
 
 
+TITLE_BG = "bg-title.png"
+HERO_PT, HERO_PT_MIN = 66, 40
+# keynote-style gradient for the accent words of the opening title
+HERO_GRADIENT = ("0284C7", "4F46E5", "9333EA")
+
+
+def _gradient_text(tb, stops=HERO_GRADIENT):
+    """Replace each run's solid fill with a left-to-right linear gradient."""
+    from lxml import etree
+    from pptx.oxml.ns import qn
+    for p in tb.text_frame.paragraphs:
+        for r in p.runs:
+            rpr = r._r.get_or_add_rPr()
+            old = rpr.find(qn("a:solidFill"))
+            grad = etree.Element(qn("a:gradFill"), rotWithShape="1")
+            lst = etree.SubElement(grad, qn("a:gsLst"))
+            for i, c in enumerate(stops):
+                gs = etree.SubElement(lst, qn("a:gs"), pos=str(i * 100000 // (len(stops) - 1)))
+                etree.SubElement(gs, qn("a:srgbClr"), val=c)
+            etree.SubElement(grad, qn("a:lin"), ang="0", scaled="0")
+            if old is not None:
+                old.addprevious(grad)
+                rpr.remove(old)
+            else:
+                rpr.insert(0, grad)
+
+
+def _tracking(tb, hundredths_pt):
+    for p in tb.text_frame.paragraphs:
+        for r in p.runs:
+            r._r.get_or_add_rPr().set("spc", str(hundredths_pt))
+
+
 def title(slide, s, lang, glossary):
-    _centered(slide, s, lang, glossary, 48, "muted")
+    """Opening slide, keynote style: dark stage with a horizon of light, a small
+    tracked eyebrow, a huge title whose accent words glow in a gradient on
+    their own line, a one-line promise, and the credit at the bottom."""
+    _background(slide, TITLE_BG)
+    x, w = MARGIN, SLIDE_W - 2 * MARGIN
+    full = _t(s.title, lang)
+    accent = _t(s.extra.get("accent"), lang)
+    head, tail = (full[: -len(accent)].rstrip(), accent) \
+        if accent and full.endswith(accent) else (full, "")
+    line_h = Inches(1.15)
+    y = Inches(1.2)
+    eyebrow = _t(s.extra.get("eyebrow"), lang)
+    if eyebrow:
+        eb = _textbox(slide, "lay-eyebrow", x, y, w, Inches(0.5), lang, [eyebrow],
+                      glossary, 18, bold=True, color=COLORS["accent2"],
+                      align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE,
+                      fit=(s.id, "eyebrow"), max_lines=1)
+        if lang == "en":  # letter-spacing suits Latin caps, not Hebrew
+            _tracking(eb, 300)
+    y += Inches(0.6)
+    tb = _textbox(slide, "lay-title", x, y, w, line_h, lang, [head], glossary, HERO_PT,
+                  bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE,
+                  fit=(s.id, "title"), min_pt=TITLE_PT_MIN)
+    _head_font(tb, lang)
+    y += line_h
+    if tail:
+        tb2 = _textbox(slide, "lay-title-accent", x, y, w, line_h, lang, [tail], glossary,
+                       HERO_PT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE,
+                       fit=(s.id, "title"), min_pt=TITLE_PT_MIN)
+        _head_font(tb2, lang)
+        _gradient_text(tb2)
+        y += line_h
+    bottom = SLIDE_H - MARGIN
+    if s.tip:
+        add_tip(slide, getattr(s.tip, lang), lang, glossary, s.id)
+        bottom = tip_box()[1] - TIP_GAP
+    items = _bullets(s, lang)
+    sub_h = Inches(0.6)
+    if items:
+        _textbox(slide, "lay-body", x, y + Inches(0.15), w, sub_h, lang, [items[0]],
+                 glossary, 24, color=COLORS["text"], align=PP_ALIGN.CENTER,
+                 anchor=MSO_ANCHOR.MIDDLE, fit=(s.id, "subtitle"))
+    if len(items) > 1:
+        cy = y + Inches(0.15) + sub_h + Inches(0.2)
+        _textbox(slide, "lay-credit", x, cy, w, bottom - cy, lang, items[1:], glossary, 14,
+                 color=COLORS["muted"], align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.BOTTOM,
+                 fit=(s.id, "credit"))
 
 
 def section(slide, s, lang, glossary):
@@ -371,7 +450,7 @@ def code(slide, s, lang, glossary):
         _bullet_box(slide, (x, y, text_w, h), s, lang, glossary, SMALL_PT)
     cx = x + text_w + (GAP if s.bullets else 0)
     cw = x + w - cx
-    _rect(slide, "lay-code-card", cx, y, cw, h, lang, "bg", line="accent")
+    _rect(slide, "lay-code-card", cx, y, cw, h, lang, "code_bg", line="accent")
     pad = Inches(0.25)
     src = s.extra.get("code", "")
     fit = (s.id, "code", [src], cw - 2 * pad, h - 2 * pad, CODE_PT)
@@ -384,7 +463,7 @@ def code(slide, s, lang, glossary):
     tb.name = "lay-code"
     tf = tb.text_frame
     write_paragraphs(tf, [src], "en", size, [], bullet=False,
-                     color=COLORS["ok"])
+                     color=COLORS["code_text"])
     tf.auto_size = MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE
     for p in tf.paragraphs:
         for r in p.runs:
@@ -393,6 +472,7 @@ def code(slide, s, lang, glossary):
 
 LAYOUTS = {
     "title": title,
+    "divider": title,  # part dividers share the keynote cover
     "section": section,
     "bullets": bullets,
     "bullets-diagram": bullets_diagram,

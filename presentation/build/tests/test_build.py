@@ -41,10 +41,10 @@ def test_skeleton_validates():
 
 def test_build_both_langs(decks):
     ids = [s.id for s in load_deck(DECK).slides]
-    assert len(ids) == 33
+    assert len(ids) == 43
     for lang in ("en", "he"):
         prs = decks[lang]
-        assert len(prs.slides) == 33
+        assert len(prs.slides) == 43
         assert (prs.slide_width, prs.slide_height) == (SLIDE_W, SLIDE_H)
         got = [s.name for s in prs.slides]  # slide name == slide id
         assert got == ids
@@ -52,9 +52,9 @@ def test_build_both_langs(decks):
 
 def test_notes_prefix_and_end(decks):
     for lang in ("en", "he"):
-        sl = decks[lang].slides
-        assert _notes(sl[25]).startswith("[3:00] [@45:00]")
-        assert _notes(sl[26]).startswith("[backup, not timed]")
+        sl = {s.name: s for s in decks[lang].slides}
+        assert _notes(sl["qa"]).startswith("[3:00] [@45:00]")
+        assert _notes(sl["appendix"]).startswith("[backup, not timed]")
 
 
 def _all_text(prs):
@@ -497,3 +497,44 @@ def test_transcript_is_current_and_complete(lang):
         assert first.strip() in md
     assert md.count("💡") == sum(1 for s in deck.slides if s.tip)
     assert ("<div dir=\"rtl\">" in md) == (lang == "he")
+
+
+def test_opening_slide_is_keynote_style(decks):
+    from presentation.build.theme import ASSETS
+    assert (ASSETS / "bg.png").exists() and (ASSETS / "bg-title.png").exists()
+    for lang, accent in (("en", "with AI"), ("he", "עם AI")):
+        sl = decks[lang].slides[0]
+        names = {sh.name: sh for sh in sl.shapes}
+        assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-body"} <= set(names)
+        # the source is cited on the References slide, not on the cover
+        assert "Dwarampudi" not in " ".join(sh.text_frame.text for sh in sl.shapes
+                                             if sh.has_text_frame)
+        assert names["lay-title-accent"].text_frame.text.replace("‎", "").replace(
+            "‏", "").strip() == accent
+        runs = [r for p in names["lay-title-accent"].text_frame.paragraphs for r in p.runs]
+        assert runs and all(r._r.rPr.find(
+            "{http://schemas.openxmlformats.org/drawingml/2006/main}gradFill") is not None
+            for r in runs)
+        assert min(r.font.size.pt for r in runs) >= 40
+
+
+def test_part_dividers_open_each_part(decks):
+    deck = load_deck(DECK)
+    divs = [s for s in deck.slides if s.layout == "divider"]
+    assert [s.id for s in divs] == [f"part-{i}" for i in range(1, 7)] + ["appendix"]
+    order = [s.id for s in deck.slides]
+    for d in divs[:-1]:  # each divider sits right before the first slide of its part
+        nxt = deck.slides[order.index(d.id) + 1]
+        assert nxt.part == d.part and nxt.layout != "divider"
+        assert d.budget_s == 0
+    for lang in ("en", "he"):
+        sl = {s.name: s for s in decks[lang].slides}["part-3"]
+        names = {sh.name for sh in sl.shapes}
+        assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-footer-num"} <= names
+
+
+def test_speckit_cake_pair_follows_speckit():
+    order = [s.id for s in load_deck(DECK).slides]
+    i = order.index("speckit")
+    assert order[i + 1:i + 3] == ["speckit-cake", "speckit-cake-heltec"]
+    assert order.index("part-4") > i + 2  # the Heltec case study stays later

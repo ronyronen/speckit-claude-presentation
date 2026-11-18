@@ -40,7 +40,7 @@ def _box(slide, kind, x, y, w, h, name, text, lang, glossary, size,
     sh.line.color.rgb = COLORS["accent"]
     sh.line.width = Pt(1.5)
     sh.shadow.inherit = False
-    on_light = fill in ("accent", "tip")
+    on_light = fill in ("accent", "tip", "warn")
     _text(sh, text, lang, glossary, size,
           COLORS["bg"] if on_light else COLORS["text"], bold)
     return sh
@@ -64,7 +64,9 @@ def layers(slide, area, diagram, lang, glossary):
     label_h = Inches(0.6)
     box_h = (h - 2 * label_h - 3 * gap) // 2
     bw = (w - gap) // 2
-    bands = [("band_plan", ["bmad", "speckit"]), ("band_exec", ["gsd", "superpowers"])]
+    bands = [("band_plan", ["speckit", "bmad"]), ("band_exec", ["superpowers", "gsd"])]
+    if lang == "he":  # reading order starts on the right in Hebrew
+        bands = [(b, keys[::-1]) for b, keys in bands]
     cy = y
     for band, keys in bands:
         tb = slide.shapes.add_textbox(x, cy, w, label_h)
@@ -119,12 +121,16 @@ def _edge_label(slide, diagram, key, lang, glossary, cx, cy):
 
 
 def decision(slide, area, diagram, lang, glossary):
-    """Left track: GSD (Q1, Q2). Right track: Superpowers (Q3). Independent."""
+    """Left track: Superpowers (TDD question). Right track: GSD (long sessions,
+    human review). Independent."""
     x, y, w, h = area
     track_gap = Inches(0.5)
     lw = Inches(7.4)
     rw = w - lw - track_gap
-    rx = x + lw + track_gap
+    sx = x                      # Superpowers track first (left in EN)
+    gx = x + rw + track_gap     # GSD track second
+    if lang == "he":            # Hebrew reads right to left: Superpowers on the right
+        gx, sx = x, x + lw + track_gap
     lab_h = Inches(0.5)
     oh = Inches(1.0)
     # Diamonds shrink on short areas so the connectors (and their labels)
@@ -134,7 +140,7 @@ def decision(slide, area, diagram, lang, glossary):
     oy = y + h - oh
     dy = y + lab_h + Inches(0.1)
 
-    for key, tx, tw in (("track_context", x, lw), ("track_discipline", rx, rw)):
+    for key, tx, tw in (("track_discipline", sx, rw), ("track_context", gx, lw)):
         tb = slide.shapes.add_textbox(int(tx), int(y), int(tw), int(lab_h))
         tb.name = f"track-{key}"
         _text(tb, _label(diagram, key, lang), lang, glossary, 18,
@@ -153,13 +159,13 @@ def decision(slide, area, diagram, lang, glossary):
                     fill=fill, bold=True)
 
     shapes = {
-        "q_long": diamond("q_long", x),
-        "q_review": diamond("q_review", x + dw + Inches(0.7)),
-        "q_tdd": diamond("q_tdd", rx + (rw - dw) // 2),
-        "add_gsd": outcome("add_gsd", x + Inches(1.6), Inches(2.4), "accent"),
-        "skip_gsd": outcome("skip_gsd", x + lw - Inches(2.4), Inches(2.4), "surface"),
-        "add_superpowers": outcome("add_superpowers", rx, (rw - Inches(0.15)) // 2, "accent"),
-        "skip_superpowers": outcome("skip_superpowers", rx + (rw + Inches(0.15)) // 2,
+        "q_long": diamond("q_long", gx),
+        "q_review": diamond("q_review", gx + dw + Inches(0.7)),
+        "q_tdd": diamond("q_tdd", sx + (rw - dw) // 2),
+        "add_gsd": outcome("add_gsd", gx + Inches(1.6), Inches(2.4), "accent"),
+        "skip_gsd": outcome("skip_gsd", gx + lw - Inches(2.4), Inches(2.4), "surface"),
+        "add_superpowers": outcome("add_superpowers", sx, (rw - Inches(0.15)) // 2, "accent"),
+        "skip_superpowers": outcome("skip_superpowers", sx + (rw + Inches(0.15)) // 2,
                                     (rw - Inches(0.15)) // 2, "surface"),
     }
     for src, dst, lab in DECISION_EDGES:
@@ -418,7 +424,241 @@ def fresh_context(slide, area, diagram, lang, glossary):
     return rail
 
 
+def _dashed(sh):
+    from pptx.enum.dml import MSO_LINE
+    sh.line.dash_style = MSO_LINE.DASH
+    return sh
+
+
+def _vline(slide, name, x, y1, y2):
+    c = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, int(x), int(y1), int(x), int(y2))
+    c.name = name
+    c.line.color.rgb = COLORS["muted"]
+    c.line.width = Pt(1.5)
+    return _dashed(c)
+
+
+_VIBE = ("prompt", "ai_code", "accept")
+_SDD_STEPS = ("spec", "plan", "tasks", "generate", "review", "ship")
+_SDD_DOCS = {"spec": "spec_md", "plan": "plan_md", "tasks": "tasks_md", "generate": "code"}
+
+
+def vibe_sdd(slide, area, diagram, lang, glossary):
+    """Left: vibe coding as a closed loop (decisions stay in the chat).
+    Right: SDD as a top-down pipeline; the first four stages each leave a file."""
+    x, y, w, h = area
+    mid = Inches(0.5)
+    lw = w * 21 // 50
+    rx, rw = x + lw + mid, w - lw - mid
+    title_h = Inches(0.5)
+    top = y + title_h + Inches(0.1)
+    body_h = y + h - top
+    _caption(slide, "vibe-title", x, y, lw, title_h, _label(diagram, "vibe_title", lang),
+             lang, glossary, "accent2", 22)
+    _caption(slide, "sdd-title", rx, y, rw, title_h, _label(diagram, "sdd_title", lang),
+             lang, glossary, "accent2", 22)
+    _vline(slide, "vibe-divider", x + lw + mid // 2, y, y + h)
+
+    # the loop: prompt (top) -> AI code (bottom right) -> accept? (bottom left) -> prompt
+    note_h = Inches(1.0)
+    bw, bh = Inches(2.3), Inches(0.8)
+    loop_h = body_h - note_h - Inches(0.1)
+    by = top + loop_h - bh
+    pos = {"prompt": (x + (lw - bw) // 2, top), "ai_code": (x + lw - bw, by),
+           "accept": (x, by)}
+    box = {k: _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, px, py, bw, bh, f"vibe-{k}",
+                   _label(diagram, k, lang), lang, glossary, 20, bold=True)
+           for k, (px, py) in pos.items()}
+    _arrow(slide, box["prompt"], _RIGHT, box["ai_code"], _TOP)
+    _arrow(slide, box["ai_code"], _LEFT, box["accept"], _RIGHT)
+    _arrow(slide, box["accept"], _TOP, box["prompt"], _LEFT)
+    _caption(slide, "vibe-note", x, y + h - note_h, lw, note_h,
+             _label(diagram, "vibe_note", lang), lang, glossary, "warn", 18)
+
+    # the pipeline
+    n = len(_SDD_STEPS)
+    sw, dw, dgap = Inches(2.5), Inches(1.3), Inches(0.35)
+    sh_ = min(Inches(0.6), (body_h - (n - 1) * Inches(0.16)) // n)
+    sgap = (body_h - n * sh_) // (n - 1)
+    prev = None
+    for i, k in enumerate(_SDD_STEPS):
+        sy = top + i * (sh_ + sgap)
+        st = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, rx, sy, sw, sh_, f"sdd-{k}",
+                  _label(diagram, k, lang), lang, glossary, 18,
+                  fill="accent" if k == "spec" else "surface", bold=True)
+        if prev is not None:
+            _arrow(slide, prev, _BOTTOM, st, _TOP)
+        prev = st
+        if k in _SDD_DOCS:
+            d = _box(slide, MSO_SHAPE.FLOWCHART_DOCUMENT, rx + sw + dgap, sy, dw, sh_,
+                     f"doc-{k}", _label(diagram, _SDD_DOCS[k], lang), lang, glossary, 18)
+            d.line.color.rgb = COLORS["ok"]
+            _arrow(slide, st, _RIGHT, d, _LEFT)
+    nx = rx + sw + dgap + dw + Inches(0.25)
+    _caption(slide, "sdd-note", nx, top, rx + rw - nx, body_h,
+             _label(diagram, "sdd_note", lang), lang, glossary, "ok", 18)
+
+
+_BMAD = ("1", "2", "3", "4")
+_QUICK = ("q1", "q2", "q3")
+
+
+def bmad_phases(slide, area, diagram, lang, glossary):
+    """Four phases left to right: phase header, the agents, the document they
+    hand on. Each document feeds the next phase's agents. Quick-flow lane below."""
+    x, y, w, h = area
+    cg = Inches(0.4)
+    cw = (w - 3 * cg) // 4
+    head_h, doc_h, lane_h = Inches(0.6), Inches(0.9), Inches(0.75)
+    lane_y = y + h - lane_h
+    doc_y = lane_y - Inches(0.4) - doc_h
+    ag_y = y + head_h + Inches(0.15)
+    ag_h = doc_y - Inches(0.35) - ag_y
+    prev_doc = None
+    for i, k in enumerate(_BMAD):
+        cx = x + i * (cw + cg)
+        _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, y, cw, head_h, f"phase-{k}",
+             _label(diagram, f"p{k}", lang), lang, glossary, 20, fill="accent", bold=True)
+        ag = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, ag_y, cw, ag_h, f"agents-{k}",
+                  _label(diagram, f"a{k}", lang), lang, glossary, 18)
+        doc = _box(slide, MSO_SHAPE.FLOWCHART_DOCUMENT, cx, doc_y, cw, doc_h, f"doc-{k}",
+                   _label(diagram, f"d{k}", lang), lang, glossary, 18, bold=True)
+        doc.line.color.rgb = COLORS["ok"]
+        _arrow(slide, ag, _BOTTOM, doc, _TOP)
+        if prev_doc is not None:
+            _arrow(slide, prev_doc, _RIGHT, ag, _LEFT)
+        prev_doc = doc
+    lab_w = Inches(3.2)
+    _caption(slide, "quick-label", x, lane_y, lab_w, lane_h,
+             _label(diagram, "quick", lang), lang, glossary, "warn", 18)
+    pg = Inches(0.45)
+    pw = (w - lab_w - Inches(0.2) - 2 * pg) // 3
+    prev = None
+    for i, k in enumerate(_QUICK):
+        pill = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + lab_w + Inches(0.2) + i * (pw + pg),
+                    lane_y, pw, lane_h, f"quick-{k}", _label(diagram, k, lang), lang,
+                    glossary, 18, bold=True)
+        pill.adjustments[0] = 0.5
+        pill.line.color.rgb = COLORS["warn"]
+        if prev is not None:
+            _arrow(slide, prev, _RIGHT, pill, _LEFT)
+        prev = pill
+
+
+_KIT = ("specify", "clarify", "plan", "tasks", "analyze", "implement")
+_KIT_OPTIONAL = {"clarify", "analyze"}
+
+
+def speckit_flow(slide, area, diagram, lang, glossary):
+    """Six commands in a row (clarify and analyze dashed: optional); under each,
+    the files it writes; every file lands in one feature folder."""
+    x, y, w, h = area
+    n = len(_KIT)
+    g = Inches(0.3)
+    bw = (w - (n - 1) * g) // n
+    tag_h, bh, art_h, fold_h = Inches(0.4), Inches(0.85), Inches(1.0), Inches(0.75)
+    by = y + tag_h + Inches(0.05)
+    ay = by + bh + Inches(0.1)
+    fy = y + h - fold_h
+    fw = Inches(7.5)
+    folder = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, x + (w - fw) // 2, fy, fw, fold_h,
+                  "kit-folder", _label(diagram, "folder", lang), lang, glossary, 20,
+                  fill="accent", bold=True)
+    prev = None
+    for i, k in enumerate(_KIT):
+        bx = x + i * (bw + g)
+        b = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, bx, by, bw, bh, f"kit-{k}",
+                 _label(diagram, k, lang), lang, glossary, 20, bold=True)
+        if k in _KIT_OPTIONAL:
+            _dashed(b)
+            b.line.color.rgb = COLORS["muted"]
+            _caption(slide, f"kit-optional-{k}", bx, y, bw, tag_h,
+                     _label(diagram, "optional", lang), lang, glossary, "muted", 18)
+        if prev is not None:
+            _arrow(slide, prev, _RIGHT, b, _LEFT)
+        prev = b
+        ax = max(x, bx - g // 2)
+        aw = min(x + w, bx + bw + g // 2) - ax
+        art = _caption(slide, f"kit-file-{k}", ax, ay, aw, art_h,
+                       _label(diagram, f"{k}_out", lang), lang, glossary, "ok", 18)
+        art.text_frame.vertical_anchor = MSO_ANCHOR.TOP
+        _arrow(slide, art, _BOTTOM, folder, _TOP)
+
+
+_SP = ("s1", "s2", "s3", "s4", "s5", "s6", "s7")
+
+
+def superpowers_flow(slide, area, diagram, lang, glossary):
+    """The seven-step workflow as a snake: 1-4 left to right, then 5-7 back
+    right to left underneath. TDD (step 5) is highlighted."""
+    x, y, w, h = area
+    g = Inches(0.5)
+    bw = (w - 3 * g) // 4
+    bh = min(Inches(1.25), (h - Inches(0.7)) // 2)
+    row2 = y + h - bh
+    cols = [x + i * (bw + g) for i in range(4)]
+    pos = [(cols[0], y), (cols[1], y), (cols[2], y), (cols[3], y),
+           (cols[3], row2), (cols[2], row2), (cols[1], row2)]
+    boxes = []
+    for k, (bx, by) in zip(_SP, pos):
+        fill = "accent" if k == "s5" else "surface"
+        b = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, bx, by, bw, bh, f"sp-{k}",
+                 _label(diagram, k, lang), lang, glossary, 18, fill=fill, bold=True)
+        if k == "s7":
+            b.line.color.rgb = COLORS["ok"]
+        boxes.append(b)
+    for i in range(3):
+        _arrow(slide, boxes[i], _RIGHT, boxes[i + 1], _LEFT)
+    _arrow(slide, boxes[3], _BOTTOM, boxes[4], _TOP)
+    for i in range(4, 6):
+        _arrow(slide, boxes[i], _LEFT, boxes[i + 1], _RIGHT)
+    _caption(slide, "sp-gate", cols[0], row2, bw, bh, _label(diagram, "gate", lang),
+             lang, glossary, "warn", 18)
+
+
+_CAKE = ("constitution", "specify", "clarify", "plan", "tasks", "analyze", "implement")
+
+
+def cake_order(slide, area, diagram, lang, glossary):
+    """One cake order walked through the seven Spec Kit steps, as a snake of
+    cards (1-4 left to right, 5-7 right to left underneath). Each card is the
+    step's name over the file it writes; analyze is amber: it catches a clash."""
+    x, y, w, h = area
+    g = Inches(0.4)
+    cw = (w - 3 * g) // 4
+    head_h = Inches(0.5)
+    row_gap = Inches(0.45)
+    ch = (h - row_gap) // 2
+    row2 = y + ch + row_gap
+    cols = [x + i * (cw + g) for i in range(4)]
+    pos = [(cols[0], y), (cols[1], y), (cols[2], y), (cols[3], y),
+           (cols[3], row2), (cols[2], row2), (cols[1], row2)]
+    bodies = []
+    for k, (cx, cy) in zip(_CAKE, pos):
+        hot = k == "analyze"
+        _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, cy, cw, head_h, f"cake-step-{k}",
+             _label(diagram, k, lang), lang, glossary, 18,
+             fill="warn" if hot else "accent", bold=True)
+        b = _box(slide, MSO_SHAPE.ROUNDED_RECTANGLE, cx, cy + head_h + Inches(0.06), cw,
+                 ch - head_h - Inches(0.06), f"cake-card-{k}",
+                 _label(diagram, f"{k}_card", lang), lang, glossary, 18)
+        if hot:
+            b.line.color.rgb = COLORS["warn"]
+            b.line.width = Pt(2.5)
+        bodies.append(b)
+    for i in range(3):
+        _arrow(slide, bodies[i], _RIGHT, bodies[i + 1], _LEFT)
+    tasks_head = next(sh for sh in slide.shapes if sh.name == "cake-step-tasks")
+    _arrow(slide, bodies[3], _BOTTOM, tasks_head, _TOP)
+    for i in range(4, 6):
+        _arrow(slide, bodies[i], _LEFT, bodies[i + 1], _RIGHT)
+    _caption(slide, "cake-note", cols[0], row2, cw, ch, _label(diagram, "note", lang),
+             lang, glossary, "accent2", 18)
+
+
 DIAGRAMS = {"layers": layers, "decision": decision, "branch-flow": branch_flow,
             "sdlc-adlc": sdlc_adlc, "sdd-pipeline": sdd_pipeline,
             "context-rot": context_rot, "team-roles": team_roles,
-            "fresh-context": fresh_context}
+            "fresh-context": fresh_context, "vibe-sdd": vibe_sdd,
+            "bmad-phases": bmad_phases, "speckit-flow": speckit_flow,
+            "superpowers-flow": superpowers_flow, "cake-order": cake_order}

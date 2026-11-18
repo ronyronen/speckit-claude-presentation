@@ -7,74 +7,107 @@ place in the right-to-left sentence, and that nothing is clipped.
 
 ## 1. title
 - [ ] פיתוח מבוסס spec עם AI
-- [ ] Spec-Driven Development (SDD) עם AI (בינה מלאכותית)
-- [ ] על בסיס המאמר של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)
+- [ ] קודם כותבים מה רוצים. אחר כך ה-AI בונה.
+- [ ] עם AI
 
 ## 2. hidden-questions
 - [ ] prompt אחד, הרבה שאלות נסתרות
 - [ ] ה-AI עונה על כולן בעצמו: בשקט, בניחוש
 - [ ] TIP: רשמו שלוש שאלות שה-AI יצטרך לנחש, וענו עליהן לפני שאתם כותבים prompt.
 
-## 3. intent-gap
+## 3. part-1
+- [ ] מ-prompt ל-spec
+- [ ] למה AI מהיר ומילולי צריך כוונה כתובה
+- [ ] ל-spec
+
+## 4. intent-gap
 - [ ] פער הכוונה: SDLC מול ADLC
 - [ ] הדרך הישנה: SDLC (מחזור חיי פיתוח תוכנה), איטית
-- [ ] הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מבינה הכול מילולית
+- [ ] הדרך החדשה: ADLC (מונח שמתגבש), מהירה אבל מבינה הכול מילולית
 - [ ] SDLC: הדרך הישנה
 - [ ] ADLC: מחזור פיתוח עם agents
 - [ ] ה-AI agent בונה
 
-## 4. vibe-vs-sdd
+## 5. vibe-vs-sdd
 - [ ] vibe coding מול SDD
 - [ ] vibe coding: סקיצה על מפית
-- [ ] כותבים prompt, מאשרים, וחוזר חלילה עד שזה נראה עובד
+- [ ] ה-AI כותב קוד
+- [ ] ההחלטות נשארות בצ'אט. ב-session הבא ה-context נעלם.
 - [ ] SDD: שרטוט של אדריכל
+- [ ] ה-AI כותב קוד
+- [ ] בדיקה מול ה-spec
+- [ ] ההחלטות כתובות בקבצים. כל שינוי מוביל חזרה ל-spec.
 - [ ] TIP: לניסויים, vibe coding; כשהקוד צריך להחזיק לאורך זמן, עברו ל-spec.
 
-## 5. sdd-core
+## 6. sdd-core
 - [ ] SDD: ה-spec הוא מקור האמת
 - [ ] ה-constitution (חוקי הבית): כללים שכל שלב חייב לציית להם
 - [ ] למדתם משהו? מעדכנים את ה-spec ומייצרים מחדש
 - [ ] שינוי? מעדכנים את ה-spec
 - [ ] TIP: כשהקוד וה-spec סותרים, תקנו קודם את ה-spec ורק אז ייצרו את הקוד מחדש.
 
-## 6. context-engineering
+## 7. part-2
+- [ ] ה-context הוא הכול
+- [ ] מה ה-AI רואה, ומה הוא שוכח
+
+## 8. context-engineering
 - [ ] context engineering: מה ה-AI רואה
 - [ ] ה-AI יודע רק מה שמונח על השולחן שלו עכשיו
 - [ ] השולחן הזה הוא ה-context window: ה-prompt, הקבצים, הצ'אט עד עכשיו
 - [ ] context engineering: לבחור מה עולה על השולחן
 - [ ] TIP: הפנו את ה-agent לקבצים המדויקים שהוא צריך, לא לכל הפרויקט.
 
-## 7. context-rot
+## 9. context-rot
 - [ ] context rot: כשה-AI שוכח
 - [ ] ה-context מתמלא
 - [ ] TIP: פתחו session חדש כשה-AI שוכח החלטות קודמות, ותנו לו את ה-spec.
 
-## 8. bmad
-- [ ] BMAD: צוות agile של AI
-- [ ] כל agent ממלא תפקיד: אנליסט, מנהל מוצר, ארכיטקט, מפתח
-- [ ] TIP: קחו רק את התפקידים שחסרים לכם; פרויקט קטן כמעט אף פעם לא צריך צוות שלם.
+## 10. part-3
+- [ ] Spec Kit, Superpowers, BMAD ו-GSD
 
-## 9. speckit
+## 11. speckit
 - [ ] Spec Kit: ה-spec החי
-- [ ] קוד שסוטה מה-spec
+- [ ] תיקייה אחת לכל feature בתוך specs/
 
-## 10. superpowers
+## 12. speckit-cake
+- [ ] Spec Kit בקצרה: הזמנת עוגה אחת
+- [ ] TIP: קראו את ה-spec כמו מישהו זר; כל שאלה שהוא היה שואל שייכת ל-clarify.
+
+## 13. speckit-cake-heltec
+- [ ] ה-firmware של Heltec
+- [ ] firmware בנוי, 11/11 בדיקות עוברות
+- [ ] TIP: למדו את השלבים על דוגמת צעצוע לפני שמשתמשים בהם על קוד אמיתי.
+
+## 14. superpowers
 - [ ] Superpowers: משמעת שה-AI לא יכול לדלג עליה
 - [ ] כמו checklist של טייס: skills שה-agent חייב לעבוד לפיהם
-- [ ] workflow של 7 שלבים, מ-brainstorming ועד merge
-- [ ] TDD (פיתוח מונחה בדיקות): קוד שנכתב לפני הבדיקה שלו נמחק
-- [ ] שני reviews: האם זה תואם ל-spec? האם הקוד טוב?
+- [ ] branch מבודד
+- [ ] 3. כותבים plan
+- [ ] קודם spec, אז איכות
+- [ ] merge או PR
+- [ ] בכל שלב נכנס skill. ה-agent לא יכול לדלג עליו.
 - [ ] TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
 
-## 11. two-layers
-- [ ] BMAD: הצוות
-- [ ] Spec Kit: ה-spec החי
-- [ ] GSD: context נקי
-- [ ] Superpowers: משמעת
+## 15. bmad
+- [ ] BMAD: צוות agile של AI
+- [ ] מעצב UX
+- [ ] מפתח · QA
+- [ ] brief לפרויקט
+- [ ] PRD + עיצוב UX
+- [ ] epics ו-stories
+- [ ] story אחרי story
+- [ ] Quick flow: עבודה קטנה מדלגת על שלבים 1-3
+- [ ] TIP: קחו רק את התפקידים שחסרים לכם; פרויקט קטן כמעט אף פעם לא צריך צוות שלם.
 
-## 12. decision-rule
-- [ ] שכבת context: GSD
+## 16. two-layers
+- [ ] Spec Kit: ה-spec החי
+- [ ] Superpowers: משמעת
+- [ ] BMAD: הצוות
+- [ ] GSD: context נקי
+
+## 17. decision-rule
 - [ ] שכבת משמעת: Superpowers
+- [ ] שכבת context: GSD
 - [ ] sessions ארוכים?
 - [ ] רגילים לעבוד עם TDD?
 - [ ] הוסיפו GSD
@@ -83,7 +116,11 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] ותרו על Superpowers
 - [ ] TIP: התחילו עם כלי תכנון אחד; הוסיפו שכבה רק כשאתם נתקלים בבעיה שהיא פותרת.
 
-## 13. heltec-board
+## 18. part-4
+- [ ] case study אמיתי
+- [ ] firmware ל-Heltec WiFi Kit V3, שנבנה עם Spec Kit
+
+## 19. heltec-board
 - [ ] לוח Heltec עם DHT22: מרומז מול מפורש
 - [ ] מרומז: ה-prompt
 - [ ] מפורש: ה-spec
@@ -91,84 +128,88 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C
 - [ ] 3 קריאות כושלות ברצף: SENSOR ERROR
 
-## 14. specify-hysteresis
+## 20. specify-hysteresis
 - [ ] specify: ה-hysteresis הוגדר, לא נוחש
 - [ ] specify הגדיר טווח הדלקה וכיבוי; clarify שאל: ומה קורה בדיוק על הגבול?
 - [ ] הוחלט: נדלק רק מעל 27 °C, כבה רק מתחת ל-25 °C
 - [ ] TIP: שאלו על מקרי הקצה: בדיוק על הסף, חיישן חסר, הפעלה ראשונה.
 
-## 15. plan-tested
+## 21. plan-tested
 - [ ] plan ולוגיקה בדוקה (11/11)
 - [ ] plan: להפריד את ההחלטות מקוד החומרה
 
-## 16. analyze-caught
+## 22. analyze-caught
 - [ ] מה /speckit-analyze תפס
 - [ ] HIGH: שגיאה מוצגת אחרי קריאה 1, או 3?
 - [ ] ה-spec נוסח מחדש: תוך 3 קריאות
 - [ ] MEDIUM: לכלל “לא לקרוס” לא הייתה בדיקה
 - [ ] MEDIUM: הכלל “בלי חומרה” לא נבדק
 
-## 17. behavior-photos
+## 23. behavior-photos
 - [ ] התנהגות: OK ו-WARNING על הלוח
 - [ ] OK ב-24.0 °C
 - [ ] WARNING ב-26.6 °C: נשאר בגלל ה-hysteresis
 - [ ] TIP: צלמו את התוצאות על החומרה האמיתית; ל-reviewer קל יותר להאמין לתמונה מאשר ל-log.
 
-## 18. main-vs-dev
+## 24. part-5
+- [ ] branches, pull requests ו-specs משותפים ב-GitHub
+
+## 25. main-vs-dev
 - [ ] main מול dev: מהדורה מול טיוטה
 - [ ] main = המהדורה המודפסת; dev = שולחן הטיוטות
 - [ ] כלל צוות: merge ל-main רק אחרי שהבדיקות עוברות
 - [ ] TIP: שמרו על main תמיד עובד: עשו merge אליו רק אחרי שהבדיקות עוברות.
 
-## 19. issues-prs
+## 26. issues-prs
 - [ ] issues ו-pull requests
 - [ ] issue = כרטיס משימה: מה שבור או חסר, ולמה
 - [ ] PR (pull request) = בקשת שינוי שמישהו עושה לה review
 - [ ] TIP: כתבו 'Fixes #2' ב-PR שנכנס ל-main, וה-issue ייסגר אוטומטית ב-merge.
 
-## 20. shared-repo
+## 27. shared-repo
 - [ ] repo משותף, specs/ משותף
 - [ ] specs/ = מחברת הצוות: מה כל אחד בונה, ולמה
 - [ ] ה-specs נכנסים באותו PR יחד עם הקוד שהם מתארים
 - [ ] TIP: עברו קודם על שינויי ה-spec בכל pull request, ורק אחר כך על הקוד.
 
-## 21. skills
+## 28. part-6
+- [ ] skills, צוותים של skills ו-constitution אחד
+
+## 29. skills
 - [ ] skills: כרטיסי מתכון ל-AI
 - [ ] כרטיס מתכון ל-AI: צעדים כתובים שהוא טוען כשצריך
 - [ ] הכרטיס הזה הוא skill: כותבים פעם אחת, משתמשים בכל מקום
 - [ ] TIP: הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם.
 
-## 22. team-of-skills
+## 30. team-of-skills
 - [ ] צוותים של skills: הדוגמה של /team
 - [ ] שלושה תפקידי AI: ארכיטקט, product owner, מפתח בכיר
 
-## 23. shared-constitution
+## 31. shared-constitution
 - [ ] constitution אחת לכמה פרויקטים
 - [ ] חוקי הבית על המקרר: בדיקות, שמות, אבטחה, review
 - [ ] TIP: שמרו על constitution קצרה; כללים שאף אחד לא קורא, אף אחד לא מקיים.
 
-## 24. takeaways
+## 32. takeaways
 - [ ] כתבו את הכוונה לפני שה-AI כותב את הקוד
 - [ ] שמרו על השולחן של ה-AI מסודר: ב-sessions ארוכים יש context rot
 - [ ] בפרויקט Heltec: Spec Kit עם review אנושי הספיק
 - [ ] branches, PRs ו-specs/ משותף הופכים את זה לעבודת צוות
 - [ ] TIP: כתבו spec של עמוד אחד לפני ה-session הבא שלכם עם AI, כבר מחר.
 
-## 25. resources
-- [ ] מאמר: V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)
-- [ ] מחקר: Chroma, “Context Rot” (2025)
-- [ ] ההרצאה: github.com/ronyronen/speckit-claude-presentation
+## 33. resources
+- [ ] חומרי ההרצאה: github.com/ronyronen/speckit-claude-presentation
 
-## 27. a1-stages-catch-mistakes
+## 36. a1-stages-catch-mistakes
 - [ ] הטעות שנתפסה בפרויקט Heltec
 
-## 28. a2-overlap-gaps
-- [ ] גם BMAD וגם Spec Kit מתכננים לפני הקוד
+## 37. a2-overlap-gaps
+- [ ] גם Spec Kit וגם BMAD מתכננים לפני הקוד
 - [ ] ה-checklist של Spec Kit, הבודק של BMAD: בקרות קלות
 - [ ] כלי תכנון לא עוצרים context rot
 - [ ] כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד
 
-## 29. a7-gsd
+## 38. a7-gsd
 - [ ] גיבוי: GSD, התחלה נקייה לכל משימה
 - [ ] כל משימה מקבלת agent חדש עם context נקי
 - [ ] session ראשי
@@ -178,19 +219,27 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] קבצי הפרויקט: spec, plan, state
 - [ ] TIP: כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מאותה נקודה.
 
-## 30. a3-specify-init
+## 39. a3-specify-init
 - [ ] גיבוי: איך מתחילים פרויקט Spec Kit
 
-## 31. a4-tool-relationship
+## 40. a4-tool-relationship
 - [ ] Spec Kit כותבת את המסמכים; העוזר עושה את העבודה
 - [ ] אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים
 
-## 32. a5-vscode-extensions
+## 41. a5-vscode-extensions
 - [ ] גיבוי: הרחבות ל-VS Code
 - [ ] PlatformIO לבנייה ולצריבה של הלוח
 - [ ] תצוגה מקדימה של Markdown כדי לקרוא specs לצד הקוד
 - [ ] TIP: השאירו את ה-spec פתוח בחלונית תצוגה בזמן שה-agent עובד.
 
-## 33. a6-git-checkpoints
+## 42. a6-git-checkpoints
 - [ ] גיבוי: נקודות שמירה ב-Git לכל שלב
 - [ ] tag אחד לכל שלב, מ-01-start ועד 09-hardware-verified
+
+## 43. a8-next-steps
+- [ ] מתחילים מספר הלימוד ב-repo: docs/textbook.md
+- [ ] משחזרים את ה-case study: tags מ-01-start ועד 09-hardware-verified
+- [ ] מנסים Spec Kit על feature קטן משלכם
+- [ ] מוסיפים Superpowers ל-Claude Code ומתרגלים TDD
+- [ ] יסודות: context engineering, מחקר Lost in the Middle, השוואת כלי SDD
+- [ ] TIP: לומדים שכבה אחת בכל פעם: קודם spec, כלים רק כשמרגישים את הבעיה.

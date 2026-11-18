@@ -3,8 +3,8 @@
 A beginner-friendly, **theory-first 45-minute talk** on **Spec-Driven
 Development (SDD)**, given in **English or Hebrew** (two decks, identical
 content). The first ~24 minutes cover the theory: the intent gap, vibe
-coding vs SDD, context engineering and context rot, and how **BMAD**,
-**GitHub Spec Kit**, **GSD** and **Superpowers** work as different layers,
+coding vs SDD, context engineering and context rot, and how **GitHub Spec Kit**,
+**Superpowers**, **BMAD** and **GSD** work as different layers,
 plus a practical decision rule. Then comes an ~8-minute case study: a real
 **Heltec WiFi Kit V3** firmware built with Spec Kit, using **Claude Code**
 and **Codex** as coding agents. The talk closes with the GitHub team
@@ -15,18 +15,13 @@ a shared constitution).
 > The problem is that the product behavior was not sufficiently defined.
 
 **Repository:** [github.com/ronyronen/speckit-claude-presentation](https://github.com/ronyronen/speckit-claude-presentation)
-· **Latest release:** [v1.0.0](https://github.com/ronyronen/speckit-claude-presentation/releases/latest)
+· **Latest release:** [download](https://github.com/ronyronen/speckit-claude-presentation/releases/latest)
 (both decks and both transcripts, ready to download)
 
 This repository is the companion material for the talk. It contains a
 working firmware example, the full set of Spec Kit artifacts that produced
 it, a standalone Markdown textbook, and the single content source from
 which both slide decks are generated.
-
-The theory part is based on Vimal Dwarampudi,
-["Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers"](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a)
-(Medium, Jun 2026). Claims from the article were fact-checked before they
-went on a slide; the article's opinions are attributed to its author.
 
 ## Status
 
@@ -54,15 +49,20 @@ failure handling. See [firmware/README.md](firmware/README.md).
 ## Slide decks
 
 📊 Two decks, same content, timed speaker notes in each. Each deck has
-26 timed slides (45:00, including 3:00 of Q&A) and 7 backup slides at
-the end. One backup slide explains GSD as a relay diagram; the timed
-slides only mention GSD briefly.
+28 timed slides (45:00, including 3:00 of Q&A) and 8 backup slides at
+the end. A divider slide opens each of the six parts and the backup
+section (43 slides in all). Right after the Spec Kit slide, one
+birthday-cake order walks through all seven Spec Kit steps, then a table
+maps each step to the real Heltec project. The vibe coding vs SDD, Spec Kit, Superpowers and BMAD slides
+each carry a native diagram (drawn from `deck.yaml`, in both languages).
+One backup slide explains GSD as a relay diagram, and the last one is a
+learning path ([Where to go next](#where-to-go-next)).
 
 | Part | Time |
 |---|---|
-| Opening, the intent gap, vibe coding vs SDD | 9:00 |
-| Context engineering and context rot | 4:30 |
-| BMAD, Spec Kit, GSD and Superpowers as layers, plus the decision rule | 10:30 |
+| Opening, the intent gap, vibe coding vs SDD | 8:00 |
+| Context engineering and context rot | 4:00 |
+| Spec Kit (with a cake-order walkthrough), Superpowers, BMAD and GSD as layers, plus the decision rule | 12:00 |
 | Case study: Heltec firmware with Spec Kit | 8:00 |
 | GitHub team workflow | 5:00 |
 | What's next | 3:00 |
@@ -76,7 +76,8 @@ The decks:
   · [transcript](presentation/transcript-he.md)
 
 Each transcript is the full talk script, slide by slide, with timings and tips.
-Tips appear on the slides as a light-bulb icon. The same files are attached
+Tips appear on the slides as a light-bulb icon. The decks use a light
+paper-and-blueprint theme with a keynote-style cover. The same files are attached
 to every [GitHub release](https://github.com/ronyronen/speckit-claude-presentation/releases).
 
 ### Rebuilding the decks
@@ -106,6 +107,14 @@ to every [GitHub release](https://github.com/ronyronen/speckit-claude-presentati
 
   ```bash
   python3 -m pytest presentation/build/tests -q
+  ```
+
+- **Backgrounds.** `assets/bg.png` (content slides: a faint blueprint grid)
+  and `assets/bg-title.png` (opening and section slides: a keynote-style
+  horizon of light) are drawn by code. To redraw them:
+
+  ```bash
+  python3 -m presentation.build.backgrounds
   ```
 
 - **Fonts.** Both decks use Arial, with Courier New for code: fonts every
@@ -197,8 +206,8 @@ from their own repos:
 
 | Tool | Layer in the talk | Install |
 |---|---|---|
-| [Superpowers](https://github.com/obra/superpowers) | discipline (TDD, review, plans) | plugin, see above |
 | [GitHub Spec Kit](https://github.com/github/spec-kit) | the living spec | `specify` CLI, see step 4 |
+| [Superpowers](https://github.com/obra/superpowers) | discipline (TDD, review, plans) | plugin, see above |
 | [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) | AI agile team | `npx bmad-method install` (see its README) |
 | [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) | fresh context per task | see its README |
 
@@ -314,6 +323,30 @@ firmware implementation. Compare [examples/prompt-only](examples/prompt-only)
 (Claude Code uses `/speckit-<command>`; Codex uses `$speckit-<command>` —
 see [docs/codex.md](docs/codex.md).)
 
+## Where to go next
+
+A learning path for after the talk, in order:
+
+1. **Read the textbook** in this repo: [docs/textbook.md](docs/textbook.md).
+   It covers everything from the talk in long form.
+2. **Replay the case study.** Check out the [Git checkpoints](#git-checkpoints)
+   one by one (`git checkout 03-spec-created`, then `04-spec-clarified`, …)
+   and read what changed at each stage.
+3. **Try Spec Kit on one small feature of your own.** Start with the
+   [Spec Kit docs](https://github.github.io/spec-kit/) and GitHub's
+   [introduction to spec-driven development](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/).
+4. **Add Superpowers** (see [step 3 of the installation](#3-claude-code-plugins-superpowers-and-friends))
+   and practise TDD with it: ask for a failing test first.
+5. **Learn the fundamentals** behind the talk:
+   - Anthropic, [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+   - Liu, N. F. et al. (2024), [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172), TACL
+   - Chroma, [Context Rot](https://www.trychroma.com/research/context-rot) (2025)
+   - Martin Fowler's site, [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
+   - Anthropic, [Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+6. **Add other layers only when you feel the pain:**
+   [BMAD docs](https://docs.bmad-method.org/) for up-front planning with roles,
+   [GSD](https://github.com/open-gsd/gsd-core) for long sessions.
+
 ## Learn more
 
 - This repo on GitHub: [ronyronen/speckit-claude-presentation](https://github.com/ronyronen/speckit-claude-presentation)
@@ -332,12 +365,17 @@ see [docs/codex.md](docs/codex.md).)
 
 ## References
 
-- Vimal Dwarampudi, [“Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers”](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a) (Medium, Jun 2026)
-- [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
-  [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) ·
-  [Superpowers](https://github.com/obra/superpowers)
+- Dwarampudi, V. (2026). [*Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers*](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a). Medium.
+- [Spec Kit](https://github.com/github/spec-kit) ·
+  [Superpowers](https://github.com/obra/superpowers) ·
+  [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
+  [GSD (gsd-core)](https://github.com/open-gsd/gsd-core)
 - Chroma, [“Context Rot”](https://www.trychroma.com/research/context-rot) (2025)
-- [Spec Kit](https://github.com/github/spec-kit)
+- Liu, N. F. et al. (2024). [*Lost in the Middle: How Language Models Use Long Contexts*](https://arxiv.org/abs/2307.03172). TACL.
+- Anthropic, [“Effective context engineering for AI agents”](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- Martin Fowler's site, [“Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl”](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
+- GitHub Blog, [“Spec-driven development with AI: get started with a new open source toolkit”](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)
+- [BMAD documentation](https://docs.bmad-method.org/)
 - [Spec Kit documentation](https://github.github.io/spec-kit/)
 - [Claude Code documentation](https://code.claude.com/docs) · [Claude Code plugins](https://code.claude.com/docs/en/plugins)
 - [Codex documentation](https://developers.openai.com/codex)

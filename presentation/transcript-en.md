@@ -10,10 +10,6 @@ Deck: `presentation/speckit-workshop.pptx`
 
 Welcome. AI means artificial intelligence, and today is about one idea: when you build software with an AI coding assistant like Claude Code or Codex, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec is simply a written description of what the software should do.
 
-The theory follows Vimal Dwarampudi's Medium article "Spec-Driven AI"; where something is his opinion, I will say so.
-
-Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-
 ### 2. One prompt, many hidden questions
 
 `[1:00] [@1:30]`
@@ -28,15 +24,21 @@ Now count the hidden questions. What does "too hot" mean? At the number, or just
 
 The AI will not stop and ask. It answers every one of them anyway, silently, by guessing. This talk is about making those guesses visible.
 
-### 3. The intent gap: SDLC vs ADLC
+### 3. From prompt to spec
 
-`[2:30] [@4:00]`
+`[0:00] [@1:30]`
+
+Transition: Why a fast, literal AI needs written intent
+
+### 4. The intent gap: SDLC vs ADLC
+
+`[2:00] [@3:30]`
 
 Analogy: a very fast translator who never asks what you meant. Every word you say is translated perfectly, including the words you got wrong.
 
 Start with the old way. For decades software followed the SDLC, the software development life cycle: requirements, design, code, test, release. People did every step, and slowly. The documents written at the start drifted out of date, but the slowness hid the problem, because a confused developer could walk over and ask.
 
-The article calls the new way the ADLC, roughly "agentic development life cycle". That is the author's framing, not an industry-standard term yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. In the article's words, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
+The new way is sometimes called the ADLC, roughly "agentic development life cycle". It is an emerging term, not an industry standard yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. Put simply, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
 
 Both share one unsolved problem: does what got built match what was intended? In the old world, requirement documents went stale before the ink dried. In early AI coding, the answer was "prompt harder". Neither worked reliably.
 
@@ -46,9 +48,9 @@ The fix sounds almost boring: write the intent down first, in a form both people
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 4. Vibe coding vs SDD
+### 5. Vibe coding vs SDD
 
-`[2:30] [@6:30]`
+`[2:30] [@6:00]`
 
 > 💡 **Tip:** Explore with vibe coding; switch to a spec once the code has to last.
 
@@ -64,11 +66,15 @@ The difference shows up a month later. With vibe coding, someone asks why the wa
 
 So this is not good versus bad. It is a choice, and one question decides it: will this code need to survive? If yes, it deserves a spec.
 
+Point at the picture. On the left, a loop with no exit: prompt, the AI writes code, you accept or reject, and round again. Nothing is written down outside the chat. On the right, a line that goes somewhere: spec, plan, tasks, code, a review against the spec, and only then ship. Every one of the first four steps leaves a file behind.
+
 That is the tip on the slide: explore with vibe coding, and switch to a spec the moment the code has to last.
 
-### 5. SDD: the spec is the source of truth
+Source (diagram adapted from): https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-`[2:30] [@9:00]`
+### 6. SDD: the spec is the source of truth
+
+`[2:00] [@8:00]`
 
 > 💡 **Tip:** Fix the spec first when code and spec disagree, then regenerate the code.
 
@@ -78,9 +84,9 @@ SDD makes the spec the source of truth. Not the code, and not the chat. The code
 
 The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
 
-Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
+Spec Kit, GitHub's free toolkit that we will meet properly on slide 11, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
 
-Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. The article describes this feedback loop, with the constitution as a rail running underneath every stage.
+Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. Think of it as a feedback loop, with the constitution as a rail running underneath every stage.
 
 The constitution is not paperwork. Every later stage is checked against it, so you write the rules once and the AI respects them everywhere.
 
@@ -88,9 +94,15 @@ The tip is the habit that makes all of this work: when the code and the spec dis
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 6. Context engineering: what the AI sees
+### 7. Context is everything
 
-`[2:00] [@11:00]`
+`[0:00] [@8:00]`
+
+Transition: What the AI sees, and what it forgets
+
+### 8. Context engineering: what the AI sees
+
+`[1:30] [@9:30]`
 
 > 💡 **Tip:** Point the agent at the exact files it needs, not the whole project.
 
@@ -106,9 +118,9 @@ This is also why SDD helps. A short spec and plan are the perfect things to put 
 
 Rule of thumb: less but relevant beats more but noisy. And the tip: point the agent at the exact files it needs, instead of saying "look at the whole project".
 
-### 7. Context rot: when the AI forgets
+### 9. Context rot: when the AI forgets
 
-`[2:30] [@13:30]`
+`[2:30] [@12:00]`
 
 > 💡 **Tip:** Start a fresh session when the AI forgets earlier decisions, and hand it the spec.
 
@@ -120,7 +132,7 @@ This has a name: context rot. And it is not just a feeling. In July 2025, resear
 
 So quality drops long before the window is full, and a bigger window does not make the problem go away.
 
-What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 11.
+What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec. A tool called GSD does this automatically for every task; we will meet it on slide 16.
 
 Sources:
 
@@ -128,33 +140,21 @@ https://www.trychroma.com/research/context-rot
 
 https://arxiv.org/abs/2307.03172
 
-### 8. BMAD: an AI agile team
+### 10. Four tools, two layers
 
-`[1:30] [@15:00]`
+`[0:00] [@12:00]`
 
-> 💡 **Tip:** Borrow only the roles you miss; a small project rarely needs the whole team.
+Transition: Spec Kit, Superpowers, BMAD and GSD
 
-Analogy: a film crew. The director, the camera operator and the editor each have one clear job, and they pass the work along in a known order.
+### 11. Spec Kit: the living spec
 
-BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organizing idea is the agile team. Instead of one general-purpose AI assistant, you get several specialized agent roles, such as an analyst, a product manager, an architect, a developer and a tester. Each has a narrow job and its own focused context.
-
-The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
-
-The article quotes a specific number of roles; we could not verify it, so I am not repeating it.
-
-In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
-
-Source: https://github.com/bmad-code-org/BMAD-METHOD
-
-### 9. Spec Kit: the living spec
-
-`[2:00] [@17:00]`
+`[1:30] [@13:30]`
 
 Analogy: getting a building permit. Each office stamps a different form, and each stamp exists to catch a different kind of mistake before anyone pours concrete.
 
-Spec Kit is GitHub's open-source toolkit for spec-driven development. Where BMAD organizes agents, Spec Kit organizes documents. The documents are the engine: each stage reads the previous document and writes the next one, all as plain Markdown files inside your project.
+Spec Kit is GitHub's open-source toolkit for spec-driven development. Spec Kit organizes documents. The documents are the engine: each stage reads the previous document and writes the next one, all as plain Markdown files inside your project.
 
-Walk the table. The constitution catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests by following the task list, so the code stays tied to the spec.
+Walk the row of commands. The dashed ones, clarify and analyze, are optional but worth it. The constitution, set up once per project, catches rules being broken silently. Specify writes the spec, and clarify then asks you the questions it left open, so requirements are decided instead of guessed. Plan and tasks turn the spec into a design and a numbered to-do list, which catches a wrong design or missing steps. Analyze cross-checks all the documents against each other and against the constitution; it catches documents that disagree. Implement writes the code and the tests by following the task list, so the code stays tied to the spec. Everything lands in one folder per feature, specs/ and the feature name, which travels with the branch.
 
 The idea to remember: every stage catches a different kind of mistake, and each one is cheap to fix at that stage and expensive later.
 
@@ -162,11 +162,55 @@ Spec Kit works with several AI coding assistants, including Claude Code and Code
 
 This is the tool we used in the case study, so you will see these stages for real in a few minutes.
 
-Source: https://github.com/github/spec-kit
+Source: https://github.com/github/spec-kit · docs: https://github.github.io/spec-kit/
 
-### 10. Superpowers: discipline the AI can't skip
+### 12. Spec Kit in a nutshell: one cake order
 
-`[1:30] [@18:30]`
+`[1:30] [@15:00]`
+
+> 💡 **Tip:** Read your spec like a stranger; every question they would ask belongs in clarify.
+
+Analogy: the birthday cake from the start of the talk, but this time ordered properly.
+
+Here is Spec Kit in a nutshell, with one cake. The constitution is the bakery's house rules: no nuts, ever. Every order has to obey it.
+
+Specify writes the order: chocolate, twelve people, "Happy 8th, Noa", Friday at five. What and for whom, not how to bake it.
+
+Clarify asks what the order left open. Any allergies? Yes, one guest is gluten-free. Without that question, the baker guesses.
+
+Plan decides how: two layers, a 20 centimetre tin, gluten-free flour. Tasks turns the plan into steps: bake, make the cream, assemble, write the text.
+
+Analyze reads everything side by side before anyone turns the oven on, and finds a clash: the order says twelve people, but a 20 centimetre tin feeds about eight. Fixing that on paper takes a minute; finding it on Friday ruins the party.
+
+Implement bakes, ticking off each task against the order.
+
+Every step wrote something down. That is the whole idea of Spec Kit.
+
+### 13. Same seven steps, real project
+
+`[1:30] [@16:30]`
+
+> 💡 **Tip:** Learn the steps on a toy example before you use them on real code.
+
+Analogy: the same recipe card, now used for a real dish.
+
+Now the same seven steps on a real project: the Heltec firmware you will see in detail in Part 4. Read each row as cake on the left, firmware on the right.
+
+The constitution: no nuts, ever, becomes "the decision logic must be testable without the board". Specify: twelve people on Friday becomes "read the sensor, show the value, warn when it is too hot". Clarify: the gluten-free guest becomes the exact thresholds, warn above 27 degrees and clear below 25.
+
+Plan: the tin and the layers become a design that keeps the decision logic apart from the hardware code. Tasks: numbered steps, with the tests written first.
+
+Analyze: the tin that was too small becomes two requirements that disagreed, show an error after one failed read or after three. It was caught on paper, before any code.
+
+Implement: the cake is the firmware, built, with eleven of eleven tests passing.
+
+Remember the cake, and you remember Spec Kit.
+
+Source: https://github.com/ronyronen/speckit-claude-presentation/tree/main/specs/001-heltec-monitor
+
+### 14. Superpowers: discipline the AI can't skip
+
+`[1:30] [@18:00]`
 
 > 💡 **Tip:** Ask for a failing test first, then only the code that makes it pass.
 
@@ -174,49 +218,67 @@ Analogy: a pilot's pre-flight checklist. Pilots are not short on skill. They rea
 
 Superpowers, created by Jesse Vincent, starts from a simple insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
 
-Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building, review and merge. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
+Its README describes a seven-step workflow, and that is the picture. Brainstorming asks you questions before any design. A git worktree gives the work its own isolated branch. The plan splits it into small tasks. A fresh subagent takes each task. Then come TDD, code review, and finishing with a merge or a PR. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
 
 Then the work passes two reviews: first, does it match the spec? Second, is the code itself good?
 
-On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers). The article's "170k in three months" figure does not match the record, so I am not repeating it.
+On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers).
 
 Tip: ask for a failing test first, then only the code that makes it pass.
 
 Source: https://github.com/obra/superpowers
 
-### 11. Four metaphors, two layers
+### 15. BMAD: an AI agile team
 
-`[2:30] [@21:00]`
+`[1:30] [@19:30]`
+
+> 💡 **Tip:** Borrow only the roles you miss; a small project rarely needs the whole team.
+
+Analogy: a film crew. The director, the camera operator and the editor each have one clear job, and they pass the work along in a known order.
+
+Where Spec Kit organizes documents, BMAD organizes agents. BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organizing idea is the agile team. Instead of one general-purpose AI assistant, you get several specialized agent roles, such as an analyst, a product manager, an architect, a developer and a tester. Each has a narrow job and its own focused context.
+
+The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
+
+Walk the picture left to right: four phases, analysis, planning, solutioning and implementation. In each column, the agents on top write the document underneath, and that document is what the next phase starts from. The amber lane at the bottom is the quick flow: for a bug fix or a small feature you skip the first three phases and go straight to a short spec, a story and a review.
+
+In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
+
+Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
+
+### 16. Four metaphors, two layers
+
+`[2:00] [@21:30]`
 
 Analogy: building a house needs an architect and a site foreman. The architect decides what to build; the foreman keeps the work on track every day. Neither replaces the other.
 
-Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks. Superpowers is discipline.
+Here are the four frameworks on one picture, each with its metaphor. Spec Kit is the living document. Superpowers is discipline. BMAD is the team. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks.
 
-They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is BMAD and Spec Kit. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is GSD and Superpowers.
+They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is Spec Kit and BMAD. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is Superpowers and GSD.
 
-This is the article's most useful idea: these tools are not competitors. Planning tools do not solve context rot; a planning agent can drift in a long session like any other. And none of the planning tools enforce TDD at the moment the code is written.
+This is the most useful idea here: these tools are not competitors. Planning tools do not solve context rot; a planning agent can drift in a long session like any other. And none of the planning tools enforce TDD at the moment the code is written.
 
 There is real overlap too. Spec Kit's acceptance checklist is a light quality gate, and BMAD has a tester role, so on smaller projects with careful human review, the planning layer may be enough on its own.
 
-The author goes further: he writes that mature teams are converging on all four. That is his opinion. I would rather give you a rule for deciding, and that is the next slide.
+Some practitioners go further and argue that mature teams are converging on all four. That is an opinion. I would rather give you a rule for deciding, and that is the next slide.
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 12. Decision rule: which layers do you need?
+### 17. Decision rule: which layers do you need?
 
-`[3:00] [@24:00]`
+`[2:30] [@24:00]`
 
 > 💡 **Tip:** Start with one planning tool; add a layer only when you feel its pain.
 
 Analogy: choosing a vehicle. You do not buy a truck for a short commute, and you do not move house on a bicycle. The trip decides the vehicle.
 
-This is the article's practical decision rule, drawn as two simple tracks. Start with a planning tool, for example Spec Kit, then ask three questions.
+Here is a practical decision rule, drawn as two simple tracks. Start with a planning tool, for example Spec Kit, then ask three questions.
 
-First track, the context layer, GSD. Question one: are your AI sessions long, hours of work on their own? If yes, add GSD, because you will hit context rot. If no, ask question two: does a human review the output after each phase? If nobody does, add GSD. If you review every phase, skip it; each review is a natural checkpoint.
+First track, the discipline layer, Superpowers. Question one: does your team have a strong TDD habit that survives deadline pressure? If no, add Superpowers and let the tool enforce it. If yes, skip it.
 
-Second track, the discipline layer, Superpowers. Question three: does your team have a strong TDD habit that survives deadline pressure? If no, add Superpowers and let the tool enforce it. If yes, skip it.
+Second track, the context layer, GSD. Question two: are your AI sessions long, hours of work on their own? If yes, add GSD, because you will hit context rot. If no, ask question three: does a human review the output after each phase? If nobody does, add GSD. If you review every phase, skip it; each review is a natural checkpoint.
 
-Let's try the rule on the project you are about to see, the Heltec temperature monitor. Question one: were the sessions long? No; each Spec Kit stage was a short, focused session. Question two: did a human review each phase? Yes; I read and approved every document before the next stage started. So the context track says: skip GSD. Question three: a strong TDD habit? Here the habit was written into the project's constitution: Principle II says every threshold and state change needs a test written before or alongside the code. So the discipline track says: skip Superpowers too. Spec Kit alone, plus a human, was the right size for that job.
+Let's try the rule on the project you are about to see, the Heltec temperature monitor. Question one: a strong TDD habit? Here the habit was written into the project's constitution: Principle II says every threshold and state change needs a test written before or alongside the code. So the discipline track says: skip Superpowers. Question two: were the sessions long? No; each Spec Kit stage was a short, focused session. Question three: did a human review each phase? Yes; I read and approved every document before the next stage started. So the context track says: skip GSD too. Spec Kit alone, plus a human, was the right size for that job.
 
 One more honest answer: sometimes you need none of this. Adapted from the companion textbook's chapter "When Not to Use Spec Kit" (docs/textbook.md, section 22): skip the spec for throwaway experiments you will delete, for trivial and unambiguous changes like renaming a variable, and when you do not yet know what is technically possible and need to explore first. That is research, not specification.
 
@@ -226,7 +288,13 @@ Tip: start with one planning tool, and add a layer only when you feel its pain.
 
 Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
-### 13. Heltec board + DHT22: implicit vs explicit
+### 18. A real case study
+
+`[0:00] [@24:00]`
+
+Transition: Heltec WiFi Kit V3 firmware, built with Spec Kit
+
+### 19. Heltec board + DHT22: implicit vs explicit
 
 `[1:30] [@25:30]`
 
@@ -240,7 +308,7 @@ On the right is what the spec says after the Spec Kit stages: read the DHT22 eve
 
 The firmware also supports a BME280 sensor, chosen at build time, but everything you will see today ran on the DHT22.
 
-### 14. Specify: hysteresis decided, not guessed
+### 20. Specify: hysteresis decided, not guessed
 
 `[1:30] [@27:00]`
 
@@ -258,7 +326,7 @@ The first band was 30 and 28 °C. During hardware bring-up we lowered it so a cu
 
 Tip: ask about the edges, exactly at the threshold, sensor missing, first boot.
 
-### 15. Plan + tested logic (11/11)
+### 21. Plan + tested logic (11/11)
 
 `[1:30] [@28:30]`
 
@@ -272,7 +340,7 @@ The command on the slide, pio, is PlatformIO's command-line tool; "native" means
 
 Without the plan stage, the easy path is to call the sensor library straight from the logic, and then nothing can be tested without hardware on the desk.
 
-### 16. What /speckit-analyze caught
+### 22. What /speckit-analyze caught
 
 `[1:30] [@30:00]`
 
@@ -286,13 +354,13 @@ We fixed the wording to "within three readings" before any code was written. Ana
 
 None of these is a coding bug. They are disagreements in our own requirements, caught while fixing them cost one sentence.
 
-### 17. Behavior: OK and WARNING on the board
+### 23. Behavior: OK and WARNING on the board
 
 `[2:00] [@32:00]`
 
 > 💡 **Tip:** Photograph real hardware results; reviewers trust a photo faster than a log.
 
-Analogy: see slide 14, the thermostat. These photos show it working.
+Analogy: see slide 20, the thermostat. These photos show it working.
 
 Pause about 10 seconds on each photo so people can read the screen.
 
@@ -306,7 +374,13 @@ And what did we not need? GSD or Superpowers. The sessions were short and a huma
 
 Tip: photograph real hardware results; reviewers trust a photo faster than a log.
 
-### 18. main vs dev: published vs draft
+### 24. Working as a team
+
+`[0:00] [@32:00]`
+
+Transition: Branches, pull requests and shared specs on GitHub
+
+### 25. main vs dev: published vs draft
 
 `[1:30] [@33:30]`
 
@@ -324,7 +398,7 @@ The diagram is this repo's real history, as an illustration: issue #2 is a to-do
 
 Tip: keep main always working, and merge into it only after the tests pass.
 
-### 19. Issues and pull requests
+### 26. Issues and pull requests
 
 `[1:30] [@35:00]`
 
@@ -340,7 +414,7 @@ Here is a small surprise: issue 2 is still open. GitHub only closes an issue aut
 
 Tip: write "Fixes #2" in the PR that goes into main, and GitHub then closes the issue on merge.
 
-### 20. Shared repo, shared specs/
+### 27. Shared repo, shared specs/
 
 `[2:00] [@37:00]`
 
@@ -360,7 +434,13 @@ Each Spec Kit stage of this repo is also tagged in Git and on GitHub, from 01-st
 
 Tip: in every pull request, review the spec changes first, then the code.
 
-### 21. Skills: recipe cards for the AI
+### 28. What's next
+
+`[0:00] [@37:00]`
+
+Transition: Skills, teams of skills, one constitution
+
+### 29. Skills: recipe cards for the AI
 
 `[1:00] [@38:00]`
 
@@ -378,7 +458,7 @@ Write a skill once and you can share it across projects and teammates, so everyo
 
 Tip: turn the instruction you repeat most often into your first skill.
 
-### 22. Teams of skills: the /team example
+### 30. Teams of skills: the /team example
 
 `[1:00] [@39:00]`
 
@@ -386,11 +466,11 @@ Analogy: a small band. The drummer, the bassist and the singer each know their p
 
 Skills can also define roles, and roles can work as a team. This talk is the example. It was planned by three AI roles: an architect who coordinated, a product owner who wrote the brief, and a senior developer who estimated the work and checked the facts. The architect passed messages between them and made the call when they disagreed; I approved every scope decision.
 
-That team caught real problems: an inflated star count in the article, an archived GSD repository, and slides naming the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
+That team caught real problems: an inflated star count in a source, an archived GSD repository, and slides naming the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
 
 This was a custom setup on my machine, not a product you can download, but the pattern is reusable.
 
-### 23. One constitution for many projects
+### 31. One constitution for many projects
 
 `[1:00] [@40:00]`
 
@@ -404,7 +484,7 @@ The next step is one constitution shared across projects and teams: testing rule
 
 Tip: keep the constitution short; rules nobody reads are rules nobody follows.
 
-### 24. Takeaways
+### 32. Takeaways
 
 `[1:30] [@41:30]`
 
@@ -424,7 +504,7 @@ Five: make it a team sport, with issues, branches, pull requests and a shared sp
 
 And one thing to do tomorrow, the tip: before your next AI coding session, write a one-page spec. Who is it for, what should it do, and how will you know it works?
 
-### 25. Resources
+### 33. References
 
 `[0:30] [@42:00]`
 
@@ -446,7 +526,9 @@ Context rot: https://www.trychroma.com/research/context-rot
 
 Lost in the Middle: https://arxiv.org/abs/2307.03172
 
-### 26. Questions?
+Where to go next: the last backup slide has a learning path, and the repo README has the full reading list.
+
+### 34. Questions?
 
 `[3:00] [@45:00]`
 
@@ -462,13 +544,19 @@ Likely questions:
 
 "How long did the Heltec spec take?" Specify through implement all ran on one day, 2026-09-10, per the tags and commit dates in the repo.
 
-If time runs out, point to the resources slide and the repo.
+If time runs out, point to the references slide and the repo.
 
 ---
 
 ## Backup slides (not timed)
 
-### 27. Backup: each stage catches a mistake
+### 35. Backup slides
+
+`[backup, not timed]`
+
+backup, not timed. Transition: Details for the questions
+
+### 36. Backup: each stage catches a mistake
 
 `[backup, not timed]`
 
@@ -476,31 +564,31 @@ backup, not timed. Use only if someone asks how each stage pays for itself.
 
 Clarify settled the exact edges of the hysteresis band (strictly above, strictly below). Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
 
-### 28. Backup: overlap and gaps
+### 37. Backup: overlap and gaps
 
 `[backup, not timed]`
 
 backup, not timed. For questions comparing the tools.
 
-The article's argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
+The argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
 
-### 29. Backup: GSD, a fresh start for every task
+### 38. Backup: GSD, a fresh start for every task
 
 `[backup, not timed]`
 
 > 💡 **Tip:** Write decisions into files, not the chat, so a fresh session can pick them up.
 
-backup, not timed. Use if someone asks about long sessions or GSD (slides 11 and 12 mention it).
+backup, not timed. Use if someone asks about long sessions or GSD (slides 16 and 17 mention it).
 
 Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
 
-GSD is short for a blunt phrase, "Get Sh*t Done", and the article calls it fundamentally a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
+GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 9): quality drops as the window fills, so never let it fill.
 
 Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
 
 The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
 
-One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The article still links the old one. The original project was published under the name TÂCHES.
+One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The original project was published under the name TÂCHES.
 
 Sources:
 
@@ -508,19 +596,19 @@ https://github.com/open-gsd/gsd-core
 
 https://github.com/gsd-build/get-shit-done
 
-### 30. Backup: starting a Spec Kit project
+### 39. Backup: starting a Spec Kit project
 
 `[backup, not timed]`
 
 backup, not timed. Show only if someone wants to try it tonight. The full setup steps are in the repo README and in docs/textbook.md, chapter 5.
 
-### 31. Backup: how the tools relate
+### 40. Backup: how the tools relate
 
 `[backup, not timed]`
 
-backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+backup, not timed. Use with slide 16. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
 
-### 32. Backup: VS Code extensions
+### 41. Backup: VS Code extensions
 
 `[backup, not timed]`
 
@@ -528,8 +616,28 @@ backup, not timed. Use with slide 11. Spec Kit is not an AI itself: it sets up t
 
 backup, not timed. For the hands-on crowd. The full extension list is in the repo README, section 5.
 
-### 33. Backup: git checkpoints per stage
+### 42. Backup: git checkpoints per stage
 
 `[backup, not timed]`
 
 backup, not timed. Tags make each stage easy to replay: 03-spec-created still has open questions, 04-spec-clarified has the answers, 07-analysis-complete shows the contradiction found, 08-implemented has 11/11 tests passing, and 09-hardware-verified is the DHT22 run on the board.
+
+### 43. Backup: where to go next
+
+`[backup, not timed]`
+
+> 💡 **Tip:** Learn one layer at a time: a spec first, tools only when you feel the pain.
+
+backup, not timed. A learning path for after the talk, in order.
+
+1. The textbook in this repo explains everything from today in long form: https://github.com/ronyronen/speckit-claude-presentation/blob/main/docs/textbook.md
+
+2. Replay the case study by checking out the tags one by one, from 01-start to 09-hardware-verified, and read what changed at each stage.
+
+3. Spec Kit docs and quick start: https://github.github.io/spec-kit/ · GitHub's introduction: https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/
+
+4. Superpowers: https://github.com/obra/superpowers · installing Claude Code plugins: https://code.claude.com/docs/en/plugins
+
+5. Fundamentals: Anthropic, "Effective context engineering for AI agents": https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents · Liu et al., "Lost in the Middle": https://arxiv.org/abs/2307.03172 · Chroma, "Context Rot": https://www.trychroma.com/research/context-rot · Martin Fowler's site on SDD tools: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html · Claude Code best practices: https://www.anthropic.com/engineering/claude-code-best-practices
+
+6. The other layers when you need them: BMAD https://docs.bmad-method.org/ · GSD https://github.com/open-gsd/gsd-core
