@@ -1,7 +1,7 @@
 # Theory deck: single source of truth for the EN and HE decks.
 # Task 4 (P1a) fixed ids, parts, budgets, layouts and diagram refs.
-# Task 5 (P1b): EN content, beginner tone. HE values are still placeholders
-# (Task 8); where an EN key was added or renamed, the EN text is copied into he.
+# Task 5 (P1b): EN content, beginner tone.
+# Task 8: HE content, translated from the final EN (meaning, not word by word).
 meta:
   total_budget: "45:00"
   qa_budget: "3:00"
@@ -12,17 +12,23 @@ meta:
     venue: "Medium, Jun 2026"
 
 glossary_keep_en: [TIP, Spec Kit, BMAD, GSD, Superpowers, SDD, SDLC, ADLC, AI,
-  agent, agents, prompt, prompts, context, context window, context rot,
-  context engineering, constitution, spec, specs, specs/, specify, clarify,
-  plan, tasks, analyze, implement, TDD, Git, GitHub, main, dev, branch,
-  feature branch, issue, issues, PR, PRs, pull request, pull requests, merge,
-  commit, skill, skills, /team, CLI, OLED, DHT22, BME280, Heltec, ESP32-S3,
-  GPIO4, repo, VS Code, PlatformIO, Claude Code, Codex, Medium, vibe coding,
-  hysteresis, OK, WARNING, SENSOR ERROR, Markdown]
+  agent, agents, prompt, prompts, prompt engineering, context, context window,
+  context rot, context engineering, constitution, spec, specs, specs/, specify,
+  clarify, clarification, clarifications, plan, tasks, analyze, implement, TDD,
+  Git, GitHub, main, dev, branch, branches, feature branch, default branch,
+  feature, issue, issues, PR, PRs, pull request, pull requests, merge, merges,
+  commit, commits, push, tag, tags, review, reviews, reviewer, skill, skills,
+  /team, CLI, OLED, DHT22, BME280, Heltec, ESP32-S3, GPIO4, repo, repository,
+  README, firmware, build, VS Code, PlatformIO, pio, native, Claude Code, Codex,
+  Medium, vibe coding, hysteresis, OK, WARNING, SENSOR ERROR, Markdown, tokens,
+  session, sessions, workflow, brainstorming, checklist, framework, frameworks,
+  state machine, adapters, brief, user stories, setup, case study,
+  product owner, waterfall, FR, SC]
 glossary_forbidden_he: ["טיפ", "טיפים", "בקשת משיכה", "בקשות משיכה", "ענף",
-  "ענפים", "מאגר", "מאגרים", "חוקה", "חוקות", "סוכן", "סוכנים", "סוכנת",
-  "מפרט", "מפרטים", "מיומנות", "מיומנויות", "בינה מלאכותית", "חלון הקשר",
-  "חלון ההקשר", "ריקבון הקשר", "הנדסת הקשר", "פיתוח מונחה בדיקות", "מיזוג"]
+  "ענפים", "ענפי", "מאגר", "מאגרים", "מאגרי", "חוקה", "חוקות", "סוכן", "סוכנים",
+  "סוכני", "סוכנת", "מפרט", "מפרטים", "מיומנות", "מיומנויות", "חלון הקשר",
+  "חלון ההקשר", "ריקבון הקשר", "הנדסת הקשר", "מיזוג", "תגית", "תגיות", "סשן",
+  "סשנים", "ריוויו"]
 
 slides:
   # ---------------------------------------------------------------- Part 0
@@ -32,15 +38,18 @@ slides:
     layout: title
     title: { en: "Spec-Driven Development with AI", he: "פיתוח מבוסס spec עם AI" }
     bullets:
-      - { key: subtitle, en: "Spec-Driven Development (SDD) with artificial intelligence (AI)", he: "מ-vibe coding ל-spec חי: BMAD, Spec Kit, GSD ו-Superpowers" }
-      - { key: credit, en: "Based on V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "מבוסס על המאמר של V. Dwarampudi, Spec-Driven AI (Medium, 2026)" }
+      - { key: subtitle, en: "Spec-Driven Development (SDD) with artificial intelligence (AI)", he: "Spec-Driven Development (SDD) עם AI (בינה מלאכותית)" }
+      - { key: credit, en: "Based on V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "על בסיס המאמר של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)" }
     sources: [article]
     notes:
       en: |
         Welcome. AI means artificial intelligence, and today is about one idea: when you build software with an AI coding assistant like Claude Code or Codex, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec is simply a written description of what the software should do.
         The theory follows Vimal Dwarampudi's Medium article "Spec-Driven AI"; where something is his opinion, I will say so.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-      he: "ברוכים הבאים. מציינים את המאמר כבר בהתחלה.\nhttps://medium.com/ (קישור זמני)"
+      he: |
+        ברוכים הבאים. AI זה בינה מלאכותית, והיום נדבר על רעיון אחד: כשבונים תוכנה עם עוזר קוד מבוסס AI, כמו Claude Code או Codex, כותבים קודם מה רוצים, ורק אז הוא כותב את הקוד. לזה קוראים Spec-Driven Development, או SDD. spec הוא פשוט תיאור כתוב של מה שהתוכנה צריכה לעשות.
+        החלק התיאורטי מבוסס על המאמר של Vimal Dwarampudi ב-Medium, “Spec-Driven AI”; כשמשהו הוא דעה שלו, אגיד את זה.
+        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   - id: hidden-questions
     part: "0"
@@ -48,18 +57,22 @@ slides:
     layout: bullets
     title: { en: "One prompt, many hidden questions", he: "prompt אחד, הרבה שאלות נסתרות" }
     bullets:
-      - { key: prompt, en: "“Build a temperature monitor that warns when it’s too hot”", he: "תבנה מוניטור טמפרטורה עם נורת אזהרה" }
-      - { key: threshold, en: "Too hot means what? At the edge, does the warning flicker?", he: "איזה סף? מה קורה בדיוק על הגבול?" }
-      - { key: sensor, en: "Which sensor? What if it stops answering?", he: "איזה חיישן, באילו יחידות, וכל כמה זמן קוראים אותו?" }
-      - { key: guess, en: "The AI answers all of these anyway, silently, by guessing", he: "ה-AI עונה על כל השאלות בכל מקרה, בניחוש" }
-    tip: { key: ask-first, en: "List three questions the AI would have to guess, and answer them before prompting.", he: "לפני שכותבים prompt, רשמו שלוש שאלות שה-AI יצטרך לנחש לגביהן." }
+      - { key: prompt, en: "“Build a temperature monitor that warns when it’s too hot”", he: "“תבנה מוניטור טמפרטורה שמזהיר כשחם מדי”" }
+      - { key: threshold, en: "Too hot means what? At the edge, does the warning flicker?", he: "מה זה “חם מדי”? ועל הגבול, האזהרה מהבהבת?" }
+      - { key: sensor, en: "Which sensor? What if it stops answering?", he: "איזה חיישן? ומה קורה כשהוא מפסיק לענות?" }
+      - { key: guess, en: "The AI answers all of these anyway, silently, by guessing", he: "ה-AI עונה על כל אלה בכל מקרה, בשקט, בניחוש" }
+    tip: { key: ask-first, en: "List three questions the AI would have to guess, and answer them before prompting.", he: "רשמו שלוש שאלות שה-AI יצטרך לנחש, וענו עליהן לפני שאתם כותבים prompt." }
     notes:
       en: |
         Analogy: ordering a birthday cake by saying only "make it nice". You get a cake, but every decision you skipped, the baker made for you.
         The slide shows the request in short. The real prompt, word for word, was: "Build an application for a Heltec WiFi Kit V3 that reads a sensor, shows the value on the display, and shows a warning when the value is too high." Nothing else. It sounds complete.
         Now count the hidden questions. What does "too hot" mean? At the number, or just above it? If the temperature hovers at the edge, does the warning flicker? Which sensor, and what if it stops answering?
         The AI will not stop and ask. It answers every one of them anyway, silently, by guessing. This talk is about making those guesses visible.
-      he: "Analogy: להזמין עוגה ולהגיד רק 'שתהיה יפה'.\nעוברים על כל שאלה נסתרת."
+      he: |
+        Analogy: להזמין עוגת יום הולדת ולהגיד רק “שתהיה יפה”. תקבלו עוגה, אבל כל החלטה שדילגתם עליה, האופה קיבל במקומכם.
+        בשקף רואים את הבקשה בקיצור. ה-prompt האמיתי, מילה במילה, היה: “תבנה אפליקציה ל-Heltec WiFi Kit V3 שקוראת חיישן, מציגה את הערך על המסך ומציגה אזהרה כשהערך גבוה מדי.” ותו לא. זה נשמע שלם.
+        עכשיו בואו נספור את השאלות הנסתרות. מה זה “חם מדי”? בדיוק במספר, או קצת מעליו? אם הטמפרטורה מרחפת על הגבול, האזהרה מהבהבת? איזה חיישן, ומה קורה אם הוא מפסיק לענות?
+        ה-AI לא יעצור לשאול. הוא יענה על כל אחת מהן בכל מקרה, בשקט, בניחוש. ההרצאה הזאת עוסקת בלהפוך את הניחושים האלה לגלויים.
 
   # ---------------------------------------------------------------- Part I
   - id: intent-gap
@@ -68,22 +81,22 @@ slides:
     layout: bullets-diagram
     title: { en: "The intent gap: SDLC vs ADLC", he: "פער הכוונה: SDLC מול ADLC" }
     bullets:
-      - { key: sdlc, en: "Old way: software development life cycle (SDLC), slow docs", he: "SDLC: אנשים כותבים קוד, והמסמכים מתיישנים לאט" }
-      - { key: adlc, en: "New way: ADLC (the article’s term), fast but literal", he: "ADLC: agent כותב קוד בדקות, ממה שאמרתם, בדיוק כפי שאמרתם" }
+      - { key: sdlc, en: "Old way: software development life cycle (SDLC), slow docs", he: "הדרך הישנה: SDLC (מחזור חיי פיתוח תוכנה), איטית" }
+      - { key: adlc, en: "New way: ADLC (the article’s term), fast but literal", he: "הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מילולית" }
     diagram:
       name: sdlc-adlc
       labels:
-        sdlc_title: { en: "SDLC: the old way", he: "SDLC: the old way" }
-        adlc_title: { en: "ADLC: the AI way", he: "ADLC: the AI way" }
-        requirements: { en: "Requirements", he: "Requirements" }
-        design: { en: "Design", he: "Design" }
-        build: { en: "Build", he: "Build" }
-        test: { en: "Test", he: "Test" }
-        release: { en: "Release", he: "Release" }
-        intent: { en: "Your intent", he: "Your intent" }
-        agent_builds: { en: "AI agent builds", he: "AI agent builds" }
-        check: { en: "Check", he: "Check" }
-        correct: { en: "Correct", he: "Correct" }
+        sdlc_title: { en: "SDLC: the old way", he: "SDLC: הדרך הישנה" }
+        adlc_title: { en: "ADLC: the AI way", he: "ADLC: הדרך עם AI" }
+        requirements: { en: "Requirements", he: "דרישות" }
+        design: { en: "Design", he: "עיצוב" }
+        build: { en: "Build", he: "בנייה" }
+        test: { en: "Test", he: "בדיקות" }
+        release: { en: "Release", he: "שחרור" }
+        intent: { en: "Your intent", he: "הכוונה שלכם" }
+        agent_builds: { en: "AI agent builds", he: "ה-AI agent בונה" }
+        check: { en: "Check", he: "בדיקה" }
+        correct: { en: "Correct", he: "תיקון" }
     sources: [article, F8]
     notes:
       en: |
@@ -94,7 +107,14 @@ slides:
         So here is the intent gap: what you meant and what you typed are not the same thing. Humans used to fill that gap with conversation. The agent fills it with guesses, at high speed. The faster the builder, the faster that gap grows.
         The fix sounds almost boring: write the intent down first, in a form both people and the AI can read, and keep it up to date. Everything else today builds on that.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-      he: "Analogy: מתרגם מהיר שאף פעם לא שואל למה התכוונתם.\nהתרשים יגיע בשלב P2.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
+      he: |
+        Analogy: מתרגם מהיר מאוד שאף פעם לא שואל למה התכוונתם. כל מילה שאתם אומרים מתורגמת בצורה מושלמת, כולל המילים שטעיתם בהן.
+        נתחיל מהדרך הישנה. במשך עשורים, פיתוח תוכנה עבד לפי SDLC, מחזור חיי פיתוח התוכנה: דרישות, עיצוב, קוד, בדיקות, שחרור. אנשים עשו כל שלב, ולאט. המסמכים שנכתבו בהתחלה התיישנו, אבל האיטיות הסתירה את הבעיה, כי מפתח מבולבל יכול היה פשוט לקום ולשאול.
+        המאמר קורא לדרך החדשה ADLC, בערך “agentic development life cycle”. זה הניסוח של הכותב, עדיין לא מונח מקובל בתעשייה, אבל הוא שימושי. agent הוא AI שיכול לערוך קבצים ולהריץ פקודות בעצמו. הוא כותב את הקוד בדקות, ובונה בדיוק ממה שהקלדתם. במילים של המאמר, SDLC מתמקד בתיאום בין אנשים, ו-ADLC מתמקד בביצוע אוטונומי עם פיקוח אנושי.
+        לשתיהן יש בעיה פתוחה אחת: האם מה שנבנה תואם את מה שהתכוונו? בעולם הישן, מסמכי הדרישות התיישנו עוד לפני שהדיו התייבש. בימים הראשונים של קוד עם AI, התשובה הייתה “לכתוב prompt חזק יותר”. אף אחת מהן לא עבדה באמת.
+        אז הנה פער הכוונה: מה שהתכוונתם ומה שהקלדתם הם לא אותו דבר. פעם אנשים סגרו את הפער הזה בשיחה. ה-agent סוגר אותו בניחושים, ובמהירות. ככל שהבונה מהיר יותר, הפער גדל מהר יותר.
+        הפתרון נשמע כמעט משעמם: לכתוב את הכוונה קודם, בצורה שגם אנשים וגם ה-AI יכולים לקרוא, ולשמור אותה מעודכנת. כל השאר היום נבנה על זה.
+        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   - id: vibe-vs-sdd
     part: I
@@ -102,17 +122,17 @@ slides:
     layout: compare
     title: { en: "Vibe coding vs SDD", he: "vibe coding מול SDD" }
     columns:
-      - heading: { en: "Vibe coding: the napkin", he: "vibe coding" }
+      - heading: { en: "Vibe coding: the napkin", he: "vibe coding: סקיצה על מפית" }
         items:
-          - { en: "Prompt, accept, repeat until it seems to work", he: "prompt, מאשרים, וחוזר חלילה עד שזה נראה עובד" }
-          - { en: "Decisions hide in a chat nobody rereads", he: "ההחלטות חיות בהיסטוריית צ'אט שאף אחד לא קורא שוב" }
-          - { en: "Great for a quick throwaway prototype", he: "מצוין לגרסת ניסיון מהירה שזורקים אחר כך" }
-      - heading: { en: "SDD: the blueprint", he: "פיתוח מבוסס spec" }
+          - { en: "Prompt, accept, repeat until it seems to work", he: "prompt, מאשרים, חוזרים, עד שזה נראה עובד" }
+          - { en: "Decisions hide in a chat nobody rereads", he: "ההחלטות מתחבאות בצ'אט שאף אחד לא קורא שוב" }
+          - { en: "Great for a quick throwaway prototype", he: "מצוין לאב-טיפוס מהיר שזורקים אחר כך" }
+      - heading: { en: "SDD: the blueprint", he: "SDD: שרטוט של אדריכל" }
         items:
-          - { en: "Write the intent, review it, then generate code", he: "כותבים spec, בודקים אותו, ורק אז מייצרים קוד" }
-          - { en: "Decisions live in files the whole team reads", he: "ההחלטות חיות בקבצים שכל הצוות יכול לקרוא" }
+          - { en: "Write the intent, review it, then generate code", he: "כותבים את הכוונה, בודקים, ורק אז מייצרים קוד" }
+          - { en: "Decisions live in files the whole team reads", he: "ההחלטות חיות בקבצים שכל הצוות קורא" }
           - { en: "Built for code you will maintain next month", he: "מתאים לקוד שתתחזקו גם בחודש הבא" }
-    tip: { key: pick-mode, en: "Explore with vibe coding; switch to a spec once the code has to last.", he: "עושים vibe coding כדי לחקור, ועוברים ל-spec כשהקוד צריך לשרוד." }
+    tip: { key: pick-mode, en: "Explore with vibe coding; switch to a spec once the code has to last.", he: "חקרו עם vibe coding; עברו ל-spec ברגע שהקוד צריך לשרוד." }
     notes:
       en: |
         Analogy: a napkin sketch versus an architect's blueprint. Both are drawings. You would never build a house from the napkin, and you would never draw a blueprint just to try out an idea.
@@ -122,16 +142,23 @@ slides:
         The difference shows up a month later. With vibe coding, someone asks why the warning triggers at 27 degrees, and the honest answer is: the AI picked it. With a spec, you open a file and the decision is there, with the reason next to it.
         So this is not good versus bad. It is a choice, and one question decides it: will this code need to survive? If yes, it deserves a spec.
         That is the tip on the slide: explore with vibe coding, and switch to a spec the moment the code has to last.
-      he: "Analogy: סקיצה על מפית מול שרטוט של אדריכל.\nלשניהם יש מקום."
+      he: |
+        Analogy: סקיצה על מפית מול שרטוט של אדריכל. שניהם ציורים. לא בונים בית מהמפית, ולא משרטטים תוכנית אדריכלית רק כדי לנסות רעיון.
+        vibe coding הוא המפית. זו דרך עבודה שבה מתארים מה רוצים, מקבלים את מה שה-AI מייצר, מריצים, וממשיכים לכתוב prompts עד שזה נראה עובד. אף פעם לא באמת קוראים את הקוד. ההחלטות שלכם חיות בהיסטוריית צ'אט שאף אחד, כולל אתם, לא יקרא שוב.
+        ובכנות, זה בסדר גמור להרבה דברים: אב-טיפוס שזורקים, סקריפט שמריצים פעם אחת, בדיקה אם רעיון בכלל אפשרי.
+        פיתוח מבוסס spec הוא השרטוט. כותבים את הכוונה קודם, בודקים אותה, ורק אז נותנים ל-AI לייצר את הקוד. ההחלטות חיות בקבצים פשוטים בתוך הפרויקט, ליד הקוד, שם כל הצוות יכול לקרוא אותן, לבדוק ולשנות.
+        ההבדל מתגלה חודש אחרי. עם vibe coding, מישהו שואל למה האזהרה נדלקת ב-27 מעלות, והתשובה הכנה היא: ה-AI בחר. עם spec, פותחים קובץ וההחלטה שם, עם הסיבה לידה.
+        אז זה לא טוב מול רע. זו בחירה, ושאלה אחת מכריעה: האם הקוד הזה צריך לשרוד? אם כן, מגיע לו spec.
+        זה ה-TIP בשקף: חקרו עם vibe coding, ועברו ל-spec ברגע שהקוד צריך להחזיק מעמד.
 
   - id: sdd-core
     part: I
     budget: "2:30"
     layout: bullets-diagram
-    title: { en: "SDD: the spec is the source of truth", he: "הרעיון המרכזי של SDD: ה-spec הוא מקור האמת" }
+    title: { en: "SDD: the spec is the source of truth", he: "SDD: ה-spec הוא מקור האמת" }
     bullets:
-      - { key: constitution, en: "The constitution: house rules every stage must obey", he: "ה-constitution מחזיקה את הכללים שכל שלב חייב לכבד" }
-      - { key: loop, en: "Learned something? Update the spec, then regenerate", he: "לולאת משוב: מה שלומדים חוזר ומעדכן את ה-spec" }
+      - { key: constitution, en: "The constitution: house rules every stage must obey", he: "ה-constitution (חוקי הבית): כללים שכל שלב חייב לכבד" }
+      - { key: loop, en: "Learned something? Update the spec, then regenerate", he: "למדתם משהו? מעדכנים את ה-spec ומייצרים מחדש" }
     diagram:
       name: sdd-pipeline
       labels:
@@ -142,9 +169,9 @@ slides:
         implement: { en: "Implement", he: "Implement" }
         clarify: { en: "Clarify", he: "Clarify" }
         analyze: { en: "Analyze", he: "Analyze" }
-        feedback: { en: "Change? Update the spec", he: "Change? Update the spec" }
-        rail: { en: "House rules for every stage", he: "House rules for every stage" }
-    tip: { key: one-truth, en: "Fix the spec first when code and spec disagree, then regenerate the code.", he: "כשהקוד וה-spec לא מסכימים, מתקנים קודם את ה-spec ואז מייצרים מחדש." }
+        feedback: { en: "Change? Update the spec", he: "שינוי? מעדכנים את ה-spec" }
+        rail: { en: "House rules for every stage", he: "חוקי הבית לכל שלב" }
+    tip: { key: one-truth, en: "Fix the spec first when code and spec disagree, then regenerate the code.", he: "תקנו קודם את ה-spec כשהקוד וה-spec לא מסכימים, ואז ייצרו את הקוד מחדש." }
     sources: [article, F10]
     notes:
       en: |
@@ -156,7 +183,15 @@ slides:
         The constitution is not paperwork. Every later stage is checked against it, so you write the rules once and the AI respects them everywhere.
         The tip is the habit that makes all of this work: when the code and the spec disagree, fix the spec first.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-      he: "Analogy: כרטיס מתכון שכל המטבח מבשל לפיו.\nהתרשים יגיע בשלב P2.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
+      he: |
+        Analogy: מטבח של מסעדה שמבשל מכרטיס מתכון אחד. אם המנה יוצאת לא טוב, לא מתקנים רק את הצלחת; מתקנים את המתכון, כדי שגם המנה של מחר תצא נכון.
+        SDD הופך את ה-spec למקור האמת. לא הקוד ולא הצ'אט. הקוד הוא משהו שה-AI מייצר מה-spec, ויכול לייצר שוב.
+        העבודה עוברת בשלבים. קודם ה-constitution: חוקי הבית של הפרויקט, שנכתבים פעם אחת. בפרויקט החומרה שלנו, אחד הכללים הוא שלוגיקת ההחלטות חייבת להיות ניתנת לבדיקה בלי הלוח. אחר כך specify: מה המערכת צריכה לעשות, בשביל מי, ואיך נדע שהיא עובדת? אחר כך plan: איך נבנה את זה? אחר כך tasks: רשימת משימות ממוספרת. ואז implement: ה-AI כותב את הקוד.
+        Spec Kit, ערכת הכלים החינמית של GitHub שנכיר כמו שצריך בשקף 9, מוסיפה שתי נקודות ביקורת חשובות, שמסומנות בתרשים כשערים. clarify שואל אתכם את השאלות שה-spec השאיר פתוחות, אחת אחת, ורושם את התשובות. analyze בודק את המסמכים זה מול זה, עוד לפני שיש קוד.
+        ואז הלולאה. כשלומדים משהו תוך כדי בנייה, דרישה משתנה או בדיקה חושפת פער, לא מתקנים את הקוד בשקט. מעדכנים את ה-spec, ומייצרים מחדש משם. המאמר מתאר את לולאת המשוב הזאת, עם ה-constitution כמסילה שעוברת מתחת לכל שלב.
+        ה-constitution היא לא ניירת. כל שלב בהמשך נבדק מולה, אז כותבים את הכללים פעם אחת וה-AI מכבד אותם בכל מקום.
+        ה-TIP הוא ההרגל שגורם לכל זה לעבוד: כשהקוד וה-spec לא מסכימים, תקנו קודם את ה-spec.
+        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   # ---------------------------------------------------------------- Part II
   - id: context-engineering
@@ -165,11 +200,11 @@ slides:
     layout: bullets
     title: { en: "Context engineering: what the AI sees", he: "context engineering: מה ה-AI רואה" }
     bullets:
-      - { key: desk, en: "The AI only knows what is on its desk right now", he: "The AI only knows what is on its desk right now" }
-      - { key: window, en: "That desk is the context window: prompt, files, chat so far", he: "ה-context window הוא כל מה שה-AI רואה ברגע זה" }
-      - { key: curate, en: "Context engineering: choosing what goes on the desk", he: "בוחרים מה נכנס: spec, plan והקבצים שבאמת חשובים" }
+      - { key: desk, en: "The AI only knows what is on its desk right now", he: "ה-AI יודע רק מה שמונח על השולחן שלו עכשיו" }
+      - { key: window, en: "That desk is the context window: prompt, files, chat so far", he: "השולחן הזה הוא ה-context window: ה-prompt, הקבצים, הצ'אט עד כה" }
+      - { key: curate, en: "Context engineering: choosing what goes on the desk", he: "context engineering: לבחור מה עולה על השולחן" }
       - { key: less, en: "Less but relevant beats more but noisy", he: "מעט ורלוונטי עדיף על הרבה ורועש" }
-    tip: { key: point-files, en: "Point the agent at the exact files it needs, not the whole project.", he: "הפנו את ה-agent לקבצים המדויקים שהוא צריך, ולא לכל הפרויקט." }
+    tip: { key: point-files, en: "Point the agent at the exact files it needs, not the whole project.", he: "הפנו את ה-agent לקבצים המדויקים שהוא צריך, לא לכל הפרויקט." }
     notes:
       en: |
         Analogy: packing a small backpack for a day hike. You cannot take the whole house, so what you choose to pack decides how the day goes.
@@ -178,7 +213,13 @@ slides:
         Context engineering is the skill of choosing what goes on the desk, on purpose: the spec, the plan, the two or three files that actually matter, and nothing else. It is the bigger cousin of prompt engineering. Prompt engineering is about how you phrase one request; context engineering is about everything the AI can see when it answers.
         This is also why SDD helps. A short spec and plan are the perfect things to put on the desk: dense, current and relevant.
         Rule of thumb: less but relevant beats more but noisy. And the tip: point the agent at the exact files it needs, instead of saying "look at the whole project".
-      he: "Analogy: לארוז תיק קטן לטיול של יום.\nרק מה שצריך."
+      he: |
+        Analogy: לארוז תיק קטן לטיול של יום. אי אפשר לקחת את כל הבית, אז מה שבוחרים לארוז קובע איך היום ייראה.
+        הנה האינטואיציה. ה-AI לא זוכר את הפרויקט שלכם כמו שאתם זוכרים. בכל רגע הוא רואה רק מה שמונח על השולחן שלו: ההוראות שלכם, הקבצים שהוא פתח, והשיחה עד עכשיו. לשולחן הזה יש גודל קבוע. השם הרשמי הוא context window, והוא נמדד ב-tokens, שהם בערך חלקי מילים.
+        כל מה שה-AI מייצר מגיע ממה שעל השולחן. אם החלטה חשובה לא נמצאת עליו, ה-AI לא יודע שהיא קיימת. אם השולחן קבור בקבצים לא רלוונטיים ובצ'אט ישן, הדבר החשוב עדיין שם, רק קשה יותר לשים לב אליו.
+        context engineering זה לבחור בכוונה מה עולה על השולחן: ה-spec, ה-plan, שניים-שלושה הקבצים שבאמת חשובים, ותו לא. זה בן הדוד הגדול של prompt engineering. prompt engineering עוסק באיך מנסחים בקשה אחת; context engineering עוסק בכל מה שה-AI רואה כשהוא עונה.
+        זו גם הסיבה ש-SDD עוזר. spec ו-plan קצרים הם בדיוק מה שכדאי לשים על השולחן: דחוסים, עדכניים ורלוונטיים.
+        כלל אצבע: מעט ורלוונטי עדיף על הרבה ורועש. וה-TIP: הפנו את ה-agent לקבצים המדויקים שהוא צריך, במקום להגיד “תסתכל על כל הפרויקט”.
 
   - id: context-rot
     part: II
@@ -186,15 +227,15 @@ slides:
     layout: bullets-diagram
     title: { en: "Context rot: when the AI forgets", he: "context rot: כשה-AI שוכח" }
     bullets:
-      - { key: long, en: "A long chat is a whiteboard that keeps filling up", he: "סשנים ארוכים ממלאים את החלון בפרטים ישנים ולא רלוונטיים" }
-      - { key: quality, en: "Research: answers get less reliable as the input grows", he: "איכות התשובות יורדת הרבה לפני שהחלון מתמלא" }
+      - { key: long, en: "A long chat is a whiteboard that keeps filling up", he: "צ'אט ארוך הוא לוח מחיק שהולך ומתמלא" }
+      - { key: quality, en: "Research: answers get less reliable as the input grows", he: "מחקר: התשובות פחות אמינות ככל שהקלט גדל" }
     diagram:
       name: context-rot
       labels:
-        axis_quality: { en: "Answer quality", he: "Answer quality" }
-        axis_context: { en: "Context filling up", he: "Context filling up" }
+        axis_quality: { en: "Answer quality", he: "איכות התשובות" }
+        axis_context: { en: "Context filling up", he: "ה-context מתמלא" }
         rot_zone: { en: "Context rot", he: "Context rot" }
-    tip: { key: fresh-session, en: "Start a fresh session when the AI forgets earlier decisions, and hand it the spec.", he: "Start a fresh session when the AI forgets earlier decisions, and hand it the spec." }
+    tip: { key: fresh-session, en: "Start a fresh session when the AI forgets earlier decisions, and hand it the spec.", he: "פתחו session חדש כשה-AI שוכח החלטות קודמות, ותנו לו את ה-spec." }
     sources: [F7]
     notes:
       en: |
@@ -206,19 +247,27 @@ slides:
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
-      he: "Analogy: משחק טלפון שבור שרק הולך ומתארך.\nהתרשים יגיע בשלב P2.\nhttps://www.trychroma.com/research/context-rot\nhttps://arxiv.org/abs/2307.03172"
+      he: |
+        Analogy: לוח מחיק בפגישה ארוכה. אחרי שעתיים הוא מלא, ההחלטה מהדקה החמישית דחוקה בפינה מתחת לשלושה ציורים אחרים, ואנשים מתחילים לסתור אותה בלי לשים לב.
+        זה מה שקורה ב-session ארוך עם AI. ה-context window מתמלא בהודעות ישנות, בניסיונות שנכשלו ובקבצים שכבר לא צריך. ההחלטות מההתחלה עדיין שם, טכנית, אבל הן נקברות ונשכחות בשקט.
+        לזה יש שם: context rot. וזו לא רק תחושה. ביולי 2025, חוקרים ב-Chroma, Kelly Hong, Anton Troynikov ו-Jeff Huber, בדקו 18 מודלי AI ומצאו שהביצועים נעשים פחות אמינים ככל שהקלט מתארך, גם במשימות פשוטות. מאמר קודם של Nelson Liu ועמיתיו, “Lost in the Middle”, הראה שמודלים משתמשים במידע שבתחילת קלט ארוך ובסופו הרבה יותר טוב מאשר במידע שבאמצע.
+        אז האיכות יורדת הרבה לפני שהחלון מתמלא, וחלון גדול יותר לא פותר את הבעיה.
+        מה עוזר? לשמור על sessions קצרים וממוקדים. לכתוב החלטות לקבצים, לא רק לצ'אט. וכשה-AI מתחיל לשכוח על מה הסכמתם, אל תתווכחו איתו: פתחו session חדש ותנו לו את ה-spec.
+        Sources:
+        https://www.trychroma.com/research/context-rot
+        https://arxiv.org/abs/2307.03172
 
   # ---------------------------------------------------------------- Part III
   - id: bmad
     part: III
     budget: "1:30"
     layout: bullets
-    title: { en: "BMAD: an AI agile team", he: "BMAD: צוות אג'ילי שלם" }
+    title: { en: "BMAD: an AI agile team", he: "BMAD: צוות agile של AI" }
     bullets:
-      - { key: roles, en: "Agents play roles: analyst, product manager, architect, developer", he: "agents משחקים תפקידים: אנליסט, מנהל מוצר, ארכיטקט ומפתח" }
-      - { key: docs, en: "Each role hands a written document to the next", he: "כל תפקיד מעביר מסמך לתפקיד הבא" }
+      - { key: roles, en: "Agents play roles: analyst, product manager, architect, developer", he: "agents משחקים תפקידים: אנליסט, מנהל מוצר, ארכיטקט, מפתח" }
+      - { key: docs, en: "Each role hands a written document to the next", he: "כל תפקיד מעביר מסמך כתוב לתפקיד הבא" }
       - { key: fit, en: "Fits bigger projects that need planning up front", he: "מתאים לפרויקטים גדולים שצריכים תכנון מראש" }
-    tip: { key: roles-small, en: "Borrow only the roles you miss; a small project rarely needs the whole team.", he: "בפרויקט קטן, קחו רק את התפקידים שבאמת חסרים לכם." }
+    tip: { key: roles-small, en: "Borrow only the roles you miss; a small project rarely needs the whole team.", he: "קחו רק את התפקידים שחסרים לכם; פרויקט קטן כמעט אף פעם לא צריך צוות שלם." }
     sources: [F1]
     notes:
       en: |
@@ -228,7 +277,13 @@ slides:
         The article quotes a specific number of roles; we could not verify it, so I am not repeating it.
         In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
         Source: https://github.com/bmad-code-org/BMAD-METHOD
-      he: "Analogy: צוות צילום שבו לכל אחד יש תפקיד אחד ברור.\nhttps://github.com/bmad-code-org/BMAD-METHOD"
+      he: |
+        Analogy: צוות צילום. לבמאי, לצלם ולעורך יש לכל אחד תפקיד אחד ברור, והם מעבירים את העבודה הלאה בסדר ידוע.
+        BMAD הוא קיצור של Breakthrough Method for Agile AI-Driven Development. הרעיון המארגן שלו הוא צוות agile. במקום עוזר AI כללי אחד, מקבלים כמה תפקידי agent מתמחים, כמו אנליסט, מנהל מוצר, ארכיטקט, מפתח ובודק. לכל אחד תפקיד צר, וה-context הממוקד שלו.
+        הדבר המרכזי הוא ההעברה. כל תפקיד מייצר מסמך כתוב, brief, מסמך דרישות, ארכיטקטורה, user stories, ומעביר אותו לתפקיד הבא. כך נשאר תיעוד של כל החלטה.
+        המאמר מצטט מספר מסוים של תפקידים; לא הצלחנו לאמת אותו, אז אני לא חוזר עליו.
+        לפי הקריאה שלי, BMAD מתאים לפרויקטים גדולים שצריכים תכנון רציני מראש. בפרויקט קטן, הצוות המלא מוגזם, וזה ה-TIP: קחו רק את התפקידים שבאמת חסרים לכם.
+        Source: https://github.com/bmad-code-org/BMAD-METHOD
 
   - id: speckit
     part: III
@@ -238,14 +293,14 @@ slides:
     table:
       header:
         - { en: "Stage", he: "שלב" }
-        - { en: "You get", he: "תוצר" }
+        - { en: "You get", he: "מה מקבלים" }
         - { en: "It catches", he: "מה הוא תופס" }
       rows:
-        - [ { en: "constitution", he: "constitution" }, { en: "constitution.md", he: "constitution.md" }, { en: "Rules broken silently", he: "Rules broken silently" } ]
-        - [ { en: "specify + clarify", he: "specify" }, { en: "spec.md", he: "spec.md" }, { en: "Guessed requirements", he: "דרישות לא ברורות" } ]
-        - [ { en: "plan + tasks", he: "plan" }, { en: "plan.md, tasks.md", he: "plan.md" }, { en: "Wrong design, missing steps", he: "ארכיטקטורה שגויה" } ]
-        - [ { en: "analyze", he: "tasks" }, { en: "A report", he: "tasks.md" }, { en: "Documents that disagree", he: "צעדים חסרים" } ]
-        - [ { en: "implement", he: "implement" }, { en: "Code and tests", he: "קוד ובדיקות" }, { en: "Code drifting from the spec", he: "סטייה מה-spec" } ]
+        - [ { en: "constitution", he: "constitution" }, { en: "constitution.md", he: "constitution.md" }, { en: "Rules broken silently", he: "כללים שנשברים בשקט" } ]
+        - [ { en: "specify + clarify", he: "specify + clarify" }, { en: "spec.md", he: "spec.md" }, { en: "Guessed requirements", he: "דרישות מנוחשות" } ]
+        - [ { en: "plan + tasks", he: "plan + tasks" }, { en: "plan.md, tasks.md", he: "plan.md, tasks.md" }, { en: "Wrong design, missing steps", he: "תכנון שגוי, צעדים חסרים" } ]
+        - [ { en: "analyze", he: "analyze" }, { en: "A report", he: "דוח" }, { en: "Documents that disagree", he: "מסמכים שסותרים זה את זה" } ]
+        - [ { en: "implement", he: "implement" }, { en: "Code and tests", he: "קוד ובדיקות" }, { en: "Code drifting from the spec", he: "קוד שמתרחק מה-spec" } ]
     sources: [speckit]
     notes:
       en: |
@@ -256,18 +311,25 @@ slides:
         Spec Kit works with several AI coding assistants, including Claude Code and Codex, and its files do not depend on any one of them. Switch assistants mid-project and the spec stays.
         This is the tool we used in the case study, so you will see these stages for real in a few minutes.
         Source: https://github.com/github/spec-kit
-      he: "Analogy: תהליך היתר בנייה, כל חותמת תופסת טעות אחרת.\nhttps://github.com/github/spec-kit"
+      he: |
+        Analogy: להוציא היתר בנייה. כל משרד מחתים טופס אחר, וכל חותמת קיימת כדי לתפוס סוג אחר של טעות, לפני שמישהו יוצק בטון.
+        Spec Kit היא ערכת כלים בקוד פתוח של GitHub לפיתוח מבוסס spec. איפה ש-BMAD מארגן agents, Spec Kit מארגנת מסמכים. המסמכים הם המנוע: כל שלב קורא את המסמך הקודם וכותב את הבא, הכול כקבצי Markdown פשוטים בתוך הפרויקט.
+        נעבור על הטבלה. ה-constitution תופסת כללים שנשברים בשקט. specify כותב את ה-spec, ו-clarify שואל אתכם את השאלות שנשארו פתוחות, כך שהדרישות מוחלטות ולא מנוחשות. plan ו-tasks הופכים את ה-spec לתכנון ולרשימת משימות ממוספרת, וזה תופס תכנון שגוי או צעדים חסרים. analyze בודק את כל המסמכים זה מול זה ומול ה-constitution; הוא תופס מסמכים שסותרים זה את זה. implement כותב את הקוד והבדיקות לפי רשימת המשימות, כך שהקוד נשאר קשור ל-spec.
+        הרעיון לזכור: כל שלב תופס סוג אחר של טעות, וכל טעות זולה לתיקון בשלב הזה ויקרה אחר כך.
+        Spec Kit עובדת עם כמה עוזרי קוד, כולל Claude Code ו-Codex, והקבצים שלה לא תלויים באף אחד מהם. מחליפים עוזר באמצע הפרויקט, וה-spec נשאר.
+        זה הכלי שהשתמשנו בו ב-case study, אז תראו את השלבים האלה באמת בעוד כמה דקות.
+        Source: https://github.com/github/spec-kit
 
   - id: gsd
     part: III
     budget: "1:30"
     layout: bullets
-    title: { en: "GSD: a fresh start for every task", he: "GSD: context נקי לכל משימה" }
+    title: { en: "GSD: a fresh start for every task", he: "GSD: התחלה נקייה לכל משימה" }
     bullets:
-      - { key: fresh, en: "Like a relay race: each task gets a fresh runner, a clean context", he: "כל משימה מתחילה ב-context חדש ונקי" }
-      - { key: state, en: "Project memory lives in files, not in one long chat", he: "מצב הפרויקט נשמר בקבצים, לא בזיכרון של הצ'אט" }
-      - { key: rot, en: "Built to dodge context rot on long projects", he: "תשובה ישירה ל-context rot בסשנים ארוכים" }
-    tip: { key: decisions-in-files, en: "Write decisions into files, not the chat, so a fresh session can pick them up.", he: "Write decisions into files, not the chat, so a fresh session can pick them up." }
+      - { key: fresh, en: "Like a relay race: each task gets a fresh runner, a clean context", he: "כמו מרוץ שליחים: כל משימה מקבלת רץ חדש ו-context נקי" }
+      - { key: state, en: "Project memory lives in files, not in one long chat", he: "הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד" }
+      - { key: rot, en: "Built to dodge context rot on long projects", he: "נבנה כדי לחמוק מ-context rot בפרויקטים ארוכים" }
+    tip: { key: decisions-in-files, en: "Write decisions into files, not the chat, so a fresh session can pick them up.", he: "כתבו החלטות לקבצים, לא לצ'אט, כדי ש-session חדש יוכל להמשיך מהן." }
     sources: [F4, F5, F6]
     notes:
       en: |
@@ -279,19 +341,27 @@ slides:
         Sources:
         https://github.com/open-gsd/gsd-core
         https://github.com/gsd-build/get-shit-done
-      he: "Analogy: מרוץ שליחים שבו כל רץ מתחיל רענן עם המקל.\nhttps://github.com/open-gsd/gsd-core"
+      he: |
+        Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
+        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, והמאמר מגדיר אותו ביסודו ככלי context engineering. התובנה שלו היא זו מהשקף הקודם: האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
+        כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
+        הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד, וזה מה שמאפשר לכל רץ חדש לקחת את המקל.
+        הערה מעשית: ה-repository המקורי, gsd-build/get-shit-done, עבר לארכיון, וה-README שלו מפנה ל-open-gsd/gsd-core. המאמר עדיין מקשר לישן. הפרויקט המקורי פורסם תחת השם TÂCHES.
+        Sources:
+        https://github.com/open-gsd/gsd-core
+        https://github.com/gsd-build/get-shit-done
 
   - id: superpowers
     part: III
     budget: "1:30"
     layout: bullets
-    title: { en: "Superpowers: discipline the AI can't skip", he: "Superpowers: משמעת שנאכפת" }
+    title: { en: "Superpowers: discipline the AI can't skip", he: "Superpowers: משמעת שה-AI לא יכול לדלג עליה" }
     bullets:
-      - { key: skills, en: "A pilot’s checklist for the agent: skills it must follow", he: "ספרייה של skills שה-agent חייב לפעול לפיהם" }
-      - { key: flow, en: "A 7-step workflow, from brainstorming to merge", he: "A 7-step workflow, from brainstorming to merge" }
-      - { key: tdd, en: "TDD (test-driven development): code before its test is deleted", he: "TDD קודם כול: בדיקה נכשלת לפני כל שורת קוד" }
-      - { key: verify, en: "Two reviews: does it match the spec? Is the code good?", he: "אין הכרזה על סיום בלי הוכחה עדכנית" }
-    tip: { key: tdd-habit, en: "Ask for a failing test first, then only the code that makes it pass.", he: "אם הצוות מדלג על בדיקות תחת לחץ, תנו לכלים לאכוף אותן." }
+      - { key: skills, en: "A pilot’s checklist for the agent: skills it must follow", he: "checklist של טייס בשביל ה-agent: skills שהוא חייב לפעול לפיהם" }
+      - { key: flow, en: "A 7-step workflow, from brainstorming to merge", he: "workflow של 7 שלבים, מ-brainstorming ועד merge" }
+      - { key: tdd, en: "TDD (test-driven development): code before its test is deleted", he: "TDD (פיתוח מונחה בדיקות): קוד שנכתב לפני הבדיקה שלו נמחק" }
+      - { key: verify, en: "Two reviews: does it match the spec? Is the code good?", he: "שני reviews: זה תואם ל-spec? והקוד עצמו טוב?" }
+    tip: { key: tdd-habit, en: "Ask for a failing test first, then only the code that makes it pass.", he: "בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור." }
     sources: [F2, F3, F5]
     notes:
       en: |
@@ -302,7 +372,14 @@ slides:
         On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers). The article's "170k in three months" figure does not match the record, so I am not repeating it.
         Tip: ask for a failing test first, then only the code that makes it pass.
         Source: https://github.com/obra/superpowers
-      he: "Analogy: רשימת תיוג של טייס, שמקריאים בקול בכל טיסה.\nhttps://github.com/obra/superpowers"
+      he: |
+        Analogy: checklist של טייס לפני המראה. לטייסים לא חסר ניסיון. הם מקריאים את ה-checklist בקול בכל טיסה, כי שלבים שמדלגים עליהם הם הדרך שבה קורות תאונות.
+        Superpowers, שנוצר על ידי Jesse Vincent, יוצא מתובנה דומה: הבעיה של קוד עם AI היא לא אינטליגנציה, אלא משמעת. זו ספרייה של skills, נהלים כתובים, שה-agent חייב לפעול לפיהם.
+        ה-README שלו מתאר workflow של שבעה שלבים, מ-brainstorming על העיצוב, דרך spec מאושר ו-plan, ועד בנייה, review ו-merge. החלק הכי קשוח הוא TDD, פיתוח מונחה בדיקות: קודם כותבים בדיקה שנכשלת, ואז רק מספיק קוד כדי שתעבור. Superpowers אוכף את זה מילולית: קוד שנכתב לפני הבדיקה שלו נמחק.
+        אחר כך העבודה עוברת שני reviews: קודם, האם היא תואמת ל-spec? ושנית, האם הקוד עצמו טוב?
+        לגבי אימוץ: ל-repository יש יותר מ-300,000 כוכבים ב-GitHub נכון לנובמבר 2026 (github.com/obra/superpowers). המספר במאמר, “170 אלף בשלושה חודשים”, לא תואם את הנתונים, אז אני לא חוזר עליו.
+        TIP: בקשו קודם בדיקה שנכשלת, ורק אז את הקוד שגורם לה לעבור.
+        Source: https://github.com/obra/superpowers
 
   - id: two-layers
     part: III
@@ -310,13 +387,13 @@ slides:
     layout: bullets-diagram
     title: { en: "Four metaphors, two layers", he: "ארבע מטאפורות, שתי שכבות" }
     bullets:
-      - { key: layers, en: "Planning says what to build; execution keeps it on track", he: "כלי תכנון וכלי ביצוע פותרים בעיות שונות" }
+      - { key: layers, en: "Planning says what to build; execution keeps it on track", he: "תכנון אומר מה לבנות; ביצוע שומר שזה יישאר על המסלול" }
     diagram:
       name: layers
       labels:
-        band_plan: { en: "Planning: what to build", he: "תכנון וממשל" }
-        band_exec: { en: "Execution: build it reliably", he: "משמעת ביצוע" }
-        bmad: { en: "BMAD: the team", he: "BMAD: צוות אג'ילי" }
+        band_plan: { en: "Planning: what to build", he: "תכנון: מה לבנות" }
+        band_exec: { en: "Execution: build it reliably", he: "ביצוע: לבנות באמינות" }
+        bmad: { en: "BMAD: the team", he: "BMAD: הצוות" }
         speckit: { en: "Spec Kit: the living spec", he: "Spec Kit: ה-spec החי" }
         gsd: { en: "GSD: fresh context", he: "GSD: context נקי" }
         superpowers: { en: "Superpowers: discipline", he: "Superpowers: משמעת" }
@@ -330,7 +407,14 @@ slides:
         There is real overlap too. Spec Kit's acceptance checklist is a light quality gate, and BMAD has a tester role, so on smaller projects with careful human review, the planning layer may be enough on its own.
         The author goes further: he writes that mature teams are converging on all four. That is his opinion. I would rather give you a rule for deciding, and that is the next slide.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-      he: "Analogy: אדריכל ומנהל עבודה, שניהם נחוצים, תפקידים שונים.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
+      he: |
+        Analogy: כדי לבנות בית צריך אדריכל ומנהל עבודה. האדריכל מחליט מה בונים; מנהל העבודה דואג שהעבודה תתקדם כמו שצריך, כל יום. אף אחד מהם לא מחליף את השני.
+        הנה ארבעת ה-frameworks בתמונה אחת, כל אחד עם המטאפורה שלו. BMAD הוא הצוות. Spec Kit היא המסמך החי. GSD הוא context נקי. Superpowers הוא משמעת.
+        הם יושבים בשתי שכבות. השכבה העליונה היא תכנון ומשילות: מה בונים, למה, ולפי אילו כללים? זה BMAD ו-Spec Kit. השכבה התחתונה היא משמעת ביצוע: איך בונים באמינות, במשך שעות, בלי שה-AI יסטה או ידלג על בדיקות? זה GSD ו-Superpowers.
+        זה הרעיון הכי שימושי במאמר: הכלים האלה לא מתחרים זה בזה. כלי תכנון לא פותרים context rot; agent של תכנון יכול לסטות ב-session ארוך כמו כל אחד אחר. ואף אחד מכלי התכנון לא אוכף TDD ברגע שהקוד נכתב.
+        יש גם חפיפה אמיתית. ה-checklist של Spec Kit הוא שער איכות קל, ול-BMAD יש תפקיד של בודק, אז בפרויקטים קטנים עם review אנושי קפדני, שכבת התכנון לבדה אולי מספיקה.
+        הכותב הולך רחוק יותר: הוא כותב שצוותים בוגרים מתכנסים לשימוש בכל הארבעה. זו דעה שלו. אני מעדיף לתת לכם כלל להחלטה, וזה השקף הבא.
+        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   - id: decision-rule
     part: III
@@ -342,16 +426,16 @@ slides:
       labels:
         track_context: { en: "Context layer: GSD", he: "שכבת context: GSD" }
         track_discipline: { en: "Discipline layer: Superpowers", he: "שכבת משמעת: Superpowers" }
-        q_long: { en: "Long sessions?", he: "סשנים ארוכים?" }
+        q_long: { en: "Long sessions?", he: "sessions ארוכים?" }
         q_review: { en: "Human review each phase?", he: "אדם בודק כל שלב?" }
-        q_tdd: { en: "Strong TDD habit?", he: "הרגלי TDD חזקים?" }
+        q_tdd: { en: "Strong TDD habit?", he: "הרגל TDD חזק?" }
         add_gsd: { en: "Add GSD", he: "הוסיפו GSD" }
-        skip_gsd: { en: "Skip GSD", he: "וותרו על GSD" }
+        skip_gsd: { en: "Skip GSD", he: "ותרו על GSD" }
         add_superpowers: { en: "Add Superpowers", he: "הוסיפו Superpowers" }
-        skip_superpowers: { en: "Skip Superpowers", he: "וותרו" }
+        skip_superpowers: { en: "Skip Superpowers", he: "ותרו על Superpowers" }
         "yes": { en: "yes", he: "כן" }
         "no": { en: "no", he: "לא" }
-    tip: { key: start-speckit, en: "Start with one planning tool; add a layer only when you feel its pain.", he: "התחילו רק עם Spec Kit; הוסיפו שכבה רק כשאתם מרגישים את הכאב." }
+    tip: { key: start-speckit, en: "Start with one planning tool; add a layer only when you feel its pain.", he: "התחילו עם כלי תכנון אחד; הוסיפו שכבה רק כשאתם מרגישים את הכאב שלה." }
     sources: [article]
     notes:
       en: |
@@ -364,25 +448,34 @@ slides:
         Spec-driven development earns its cost when getting the requirement wrong is expensive.
         Tip: start with one planning tool, and add a layer only when you feel its pain.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-      he: "Analogy: בחירת רכב, לא קונים משאית לנסיעה קצרה לעבודה.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
+      he: |
+        Analogy: לבחור רכב. לא קונים משאית לנסיעה קצרה לעבודה, ולא עוברים דירה על אופניים. הנסיעה קובעת את הרכב.
+        זה כלל ההחלטה המעשי מהמאמר, מצויר כשני מסלולים פשוטים. מתחילים עם כלי תכנון, למשל Spec Kit, ואז שואלים שלוש שאלות.
+        מסלול ראשון, שכבת ה-context, GSD. שאלה אחת: ה-sessions שלכם עם ה-AI ארוכים, שעות של עבודה עצמאית? אם כן, הוסיפו GSD, כי תיתקלו ב-context rot. אם לא, שאלה שתיים: האם אדם עושה review לתוצר אחרי כל שלב? אם אף אחד לא, הוסיפו GSD. אם אתם בודקים כל שלב, ותרו עליו; כל review הוא נקודת ביקורת טבעית.
+        מסלול שני, שכבת המשמעת, Superpowers. שאלה שלוש: יש לצוות הרגל TDD חזק, ששורד לחץ של דדליין? אם לא, הוסיפו Superpowers ותנו לכלי לאכוף אותו. אם כן, ותרו.
+        בואו ננסה את הכלל על הפרויקט שתראו עוד רגע, מוניטור הטמפרטורה של Heltec. שאלה אחת: ה-sessions היו ארוכים? לא; כל שלב של Spec Kit היה session קצר וממוקד. שאלה שתיים: אדם בדק כל שלב? כן; קראתי ואישרתי כל מסמך לפני שהשלב הבא התחיל. אז מסלול ה-context אומר: ותרו על GSD. שאלה שלוש: הרגל TDD חזק? כאן ההרגל נכתב לתוך ה-constitution של הפרויקט: עיקרון II קובע שלכל סף ולכל שינוי מצב צריכה להיות בדיקה, שנכתבת לפני הקוד או יחד איתו. אז מסלול המשמעת אומר: ותרו גם על Superpowers. Spec Kit לבד, יחד עם אדם, היה בדיוק בגודל הנכון לעבודה הזאת.
+        ועוד תשובה כנה: לפעמים לא צריך שום דבר מזה. בהשראת הפרק “When Not to Use Spec Kit” בספר הלימוד הנלווה (docs/textbook.md, סעיף 22): ותרו על spec בניסויים שתזרקו, בשינויים טריוויאליים וחד-משמעיים כמו שינוי שם של משתנה, וכשאתם עוד לא יודעים מה אפשרי טכנית וצריכים קודם לחקור. זה מחקר, לא כתיבת spec.
+        פיתוח מבוסס spec מצדיק את המחיר שלו כשטעות בדרישה עולה ביוקר.
+        TIP: התחילו עם כלי תכנון אחד, והוסיפו שכבה רק כשאתם מרגישים את הכאב שלה.
+        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   # ---------------------------------------------------------------- Part IV
   - id: heltec-board
     part: IV
     budget: "1:30"
     layout: compare
-    title: { en: "Heltec board + DHT22: implicit vs explicit", he: "הלוח והדרישה: Heltec עם DHT22" }
+    title: { en: "Heltec board + DHT22: implicit vs explicit", he: "לוח Heltec עם DHT22: מרומז מול מפורש" }
     columns:
-      - heading: { en: "Implicit: the prompt", he: "מרומז" }
+      - heading: { en: "Implicit: the prompt", he: "מרומז: ה-prompt" }
         items:
-          - { en: "Show the temperature on the screen", he: "להציג את הטמפרטורה על ה-OLED" }
+          - { en: "Show the temperature on the screen", he: "להציג את הטמפרטורה על המסך" }
           - { en: "Warn when it gets too hot", he: "להזהיר כשחם מדי" }
-          - { en: "(nothing about failures)", he: "(nothing about failures)" }
-      - heading: { en: "Explicit: the spec", he: "מפורש" }
+          - { en: "(nothing about failures)", he: "(שום דבר על תקלות)" }
+      - heading: { en: "Explicit: the spec", he: "מפורש: ה-spec" }
         items:
-          - { en: "Read the DHT22 every 2 s, temperature only", he: "קריאת DHT22 כל 2 שניות, צלזיוס, ספרה אחת אחרי הנקודה" }
-          - { en: "WARNING above 27 °C, back to OK below 25 °C", he: "WARNING ב-30.0 מעלות, חזרה ל-OK ב-29.0 מעלות" }
-          - { en: "3 failed reads in a row → SENSOR ERROR", he: "3 failed reads in a row → SENSOR ERROR" }
+          - { en: "Read the DHT22 every 2 s, temperature only", he: "לקרוא את ה-DHT22 כל 2 שניות, טמפרטורה בלבד" }
+          - { en: "WARNING above 27 °C, back to OK below 25 °C", he: "WARNING מעל 27 °C, חזרה ל-OK מתחת ל-25 °C" }
+          - { en: "3 failed reads in a row → SENSOR ERROR", he: "3 קריאות כושלות ברצף: SENSOR ERROR" }
     notes:
       en: |
         Analogy: see slide 2, the cake order. Same request, now with the real answers written down.
@@ -390,7 +483,12 @@ slides:
         On the left is everything the one-line prompt said: show the temperature, warn when it is too hot. And nothing at all about failures.
         On the right is what the spec says after the Spec Kit stages: read the DHT22 every two seconds, temperature only. Enter WARNING above 27 °C, return to OK only below 25 °C. After three failed reads in a row, show SENSOR ERROR instead of a frozen number.
         The firmware also supports a BME280 sensor, chosen at build time, but everything you will see today ran on the DHT22.
-      he: "Analogy: see slide 2"
+      he: |
+        Analogy: ראו שקף 2, הזמנת העוגה. אותה בקשה, הפעם עם התשובות האמיתיות בכתב.
+        בואו נראה את התיאוריה עובדת על משהו אמיתי. הלוח הוא Heltec WiFi Kit V3: לוח מיקרו-בקר קטן מבוסס ESP32-S3, עם מסך OLED מובנה וזעיר של 0.96 אינץ', כלומר תצוגת LED אורגנית. אין לו חיישן טמפרטורה משלו, וזה הדבר הראשון שה-prompt המעורפל השאיר פתוח. חיברנו DHT22, חיישן זול של טמפרטורה ולחות, לפין 4, פין קלט/פלט כללי.
+        בעמודה של ה-prompt, כל מה שה-prompt בן השורה האחת אמר: להציג את הטמפרטורה, להזהיר כשחם מדי. ושום דבר על תקלות.
+        בעמודה של ה-spec, מה שכתוב אחרי שלבי Spec Kit: לקרוא את ה-DHT22 כל שתי שניות, טמפרטורה בלבד. להיכנס ל-WARNING מעל 27 °C, ולחזור ל-OK רק מתחת ל-25 °C. אחרי שלוש קריאות כושלות ברצף, להציג SENSOR ERROR במקום מספר קפוא.
+        ה-firmware תומך גם בחיישן BME280, שנבחר בזמן ה-build, אבל כל מה שתראו היום רץ על ה-DHT22.
 
   - id: specify-hysteresis
     part: IV
@@ -398,15 +496,15 @@ slides:
     layout: code
     title: { en: "Specify: hysteresis decided, not guessed", he: "specify: ה-hysteresis הוחלט, לא נוחש" }
     bullets:
-      - { key: question, en: "Specify wrote an on/off band; clarify asked: exactly at the edge?", he: "ה-spec שאל: מה קורה בדיוק ב-30 מעלות?" }
-      - { key: answer, en: "Decided: on above 27 °C, off below 25 °C, strictly", he: "החלטנו על פס של מעלה אחת כדי שהנורה תפסיק להבהב" }
+      - { key: question, en: "Specify wrote an on/off band; clarify asked: exactly at the edge?", he: "specify כתב פס הדלקה וכיבוי; clarify שאל: ומה בדיוק על הגבול?" }
+      - { key: answer, en: "Decided: on above 27 °C, off below 25 °C, strictly", he: "הוחלט: נדלק רק מעל 27 °C, כבה רק מתחת ל-25 °C" }
     code: |
       FR-003: Enter WARNING when temperature
               is strictly above 27.0 °C.
       FR-004: Leave WARNING only when it is
               strictly below 25.0 °C.
               No toggling in [25.0 °C, 27.0 °C].
-    tip: { key: edge-cases, en: "Ask about the edges: exactly at the threshold, sensor missing, first boot.", he: "שאלו בשלב ה-spec על מקרי קצה: בדיוק על הסף, חיישן חסר, הפעלה ראשונה." }
+    tip: { key: edge-cases, en: "Ask about the edges: exactly at the threshold, sensor missing, first boot.", he: "שאלו על מקרי הקצה: בדיוק על הסף, חיישן חסר, הדלקה ראשונה." }
     notes:
       en: |
         Analogy: a home thermostat. The heating turns on at 19 degrees and off at 21, not both at 20, otherwise it would click on and off all day.
@@ -415,7 +513,13 @@ slides:
         Then clarify asked what nobody had thought about: what happens at exactly the threshold? Our answer: strictly. Exactly 27.0 does not trigger; exactly 25.0 does not clear.
         The first band was 30 and 28 °C. During hardware bring-up we lowered it so a cupped hand can trigger the warning, and recorded that as a new clarification, not a quiet code edit.
         Tip: ask about the edges, exactly at the threshold, sensor missing, first boot.
-      he: "Analogy: see slide 5"
+      he: |
+        Analogy: תרמוסטט בבית. החימום נדלק ב-19 מעלות ונכבה ב-21, לא שניהם ב-20, אחרת הוא היה מקליק כל היום.
+        לכתוב קוד לאזהרה זה טריוויאלי; להחליט עליה זה החלק הקשה. עם סף אחד, קריאה שמרחפת על הגבול הייתה מדליקה ומכבה את האזהרה כל שתי שניות.
+        שלב ה-specify הפך את “חם מדי” לפס מפורש: מספר אחד שמדליק את האזהרה, מספר נמוך יותר שמכבה אותה, וביניהם המצב נשאר כמו שהיה. הרווח הזה נקרא hysteresis. בשקף אלה FR-003 ו-FR-004; FR זה functional requirement, דרישה פונקציונלית, ממוספרת כדי שבדיקות ומשימות יוכלו להפנות אליה.
+        אחר כך clarify שאל משהו שאף אחד לא חשב עליו: מה קורה בדיוק על הסף? התשובה שלנו: רק מעל, ורק מתחת. בדיוק 27.0 לא מדליק; בדיוק 25.0 לא מכבה.
+        הפס הראשון היה 30 ו-28 °C. בזמן העלאת החומרה הורדנו אותו, כדי שיד סגורה סביב החיישן תדליק את האזהרה, ותיעדנו את זה כ-clarification חדש, לא כשינוי שקט בקוד.
+        TIP: שאלו על מקרי הקצה, בדיוק על הסף, חיישן חסר, הדלקה ראשונה.
 
   - id: plan-tested
     part: IV
@@ -423,8 +527,8 @@ slides:
     layout: code
     title: { en: "Plan + tested logic (11/11)", he: "plan ולוגיקה בדוקה (11/11)" }
     bullets:
-      - { key: pure, en: "Plan: keep the decisions apart from the hardware code", he: "ה-plan הפריד בין לוגיקה טהורה לקוד חומרה" }
-      - { key: tests, en: "So 11 tests run on a laptop, no board needed: 11/11 pass", he: "אחת עשרה בדיקות רצות על המחשב, בלי הלוח" }
+      - { key: pure, en: "Plan: keep the decisions apart from the hardware code", he: "plan: להפריד את ההחלטות מקוד החומרה" }
+      - { key: tests, en: "So 11 tests run on a laptop, no board needed: 11/11 pass", he: "וכך 11 בדיקות רצות על לפטופ, בלי לוח: 11/11 עוברות" }
     code: |
       $ pio test -e native
       test_warning_triggers_strictly_above_27 [PASSED]
@@ -440,7 +544,12 @@ slides:
         That separation pays off immediately. The logic has eleven unit tests that run on a laptop with no board attached. They check every rule we just decided: warning strictly above 27, exactly 27 does nothing, clears strictly below 25, no toggling anywhere inside the band, three failures to enter SENSOR ERROR, and recovery afterwards.
         The command on the slide, pio, is PlatformIO's command-line tool; "native" means run the tests on this computer instead of the board. Result: 11 out of 11 pass. The output on the slide is shortened; the full run lists all eleven.
         Without the plan stage, the easy path is to call the sensor library straight from the logic, and then nothing can be tested without hardware on the desk.
-      he: "Analogy: see slide 11"
+      he: |
+        Analogy: סימולטור טיסה. טייסים מתרגלים החלטות בלי מטוס אמיתי; אנחנו בודקים את לוגיקת ההחלטות בלי הלוח האמיתי.
+        ההחלטה הכי חשובה ב-plan הגיעה ישר מה-constitution: להפריד את לוגיקת ההחלטות, ה-state machine שבוחרת בין OK, WARNING ו-SENSOR ERROR, מכל קוד החומרה. החיישן, המסך והפלט הטורי הם adapters דקים סביבה: חתיכות קוד קטנות שכל תפקידן לדבר עם החומרה ולהעביר מספרים פשוטים פנימה והחוצה, בלי שום החלטה משלהן.
+        ההפרדה הזאת משתלמת מיד. ללוגיקה יש אחת עשרה בדיקות יחידה שרצות על לפטופ, בלי לוח מחובר. הן בודקות כל כלל שהחלטנו: אזהרה רק מעל 27, בדיוק 27 לא עושה כלום, כיבוי רק מתחת ל-25, שום הבהוב בתוך הפס, שלוש תקלות כדי להיכנס ל-SENSOR ERROR, והתאוששות אחר כך.
+        הפקודה בשקף, pio, היא כלי שורת הפקודה של PlatformIO; native אומר להריץ את הבדיקות על המחשב הזה במקום על הלוח. התוצאה: 11 מתוך 11 עוברות. הפלט בשקף מקוצר; הריצה המלאה מציגה את כל האחת עשרה.
+        בלי שלב ה-plan, הדרך הקלה היא לקרוא לספריית החיישן ישר מהלוגיקה, ואז שום דבר לא ניתן לבדיקה בלי חומרה על השולחן.
 
   - id: analyze-caught
     part: IV
@@ -450,11 +559,11 @@ slides:
     table:
       header:
         - { en: "Finding", he: "ממצא" }
-        - { en: "Fixed before coding", he: "תיקון" }
+        - { en: "Fixed before coding", he: "תוקן לפני הקוד" }
       rows:
-        - [ { en: "HIGH: error shown after 1 read, or 3?", he: "משימה בלי דרישה מאחוריה" }, { en: "Spec reworded: within 3 reads", he: "הסרנו את המשימה" } ]
-        - [ { en: "MEDIUM: “never crash” rule had no test", he: "דרישה בלי בדיקה" }, { en: "Added a long failure-run test", he: "הוספנו בדיקה" } ]
-        - [ { en: "MEDIUM: hardware-free rule not checked", he: "החיישן נקרא בשני שמות" }, { en: "Added a task to check it", he: "DHT22 בכל מקום" } ]
+        - [ { en: "HIGH: error shown after 1 read, or 3?", he: "HIGH: שגיאה מוצגת אחרי קריאה 1, או 3?" }, { en: "Spec reworded: within 3 reads", he: "ה-spec נוסח מחדש: תוך 3 קריאות" } ]
+        - [ { en: "MEDIUM: “never crash” rule had no test", he: "MEDIUM: לכלל “לא לקרוס” לא הייתה בדיקה" }, { en: "Added a long failure-run test", he: "נוספה בדיקה של רצף תקלות ארוך" } ]
+        - [ { en: "MEDIUM: hardware-free rule not checked", he: "MEDIUM: הכלל “בלי חומרה” לא נבדק" }, { en: "Added a task to check it", he: "נוספה משימה שבודקת אותו" } ]
     notes:
       en: |
         Analogy: a proofreader who reads chapter 2 and chapter 9 side by side, and notices they describe two different endings.
@@ -462,7 +571,12 @@ slides:
         In this project it found a real contradiction, marked HIGH. During clarify we had decided that a single glitch should not declare the sensor dead: three failed reads in a row are needed. But an older success criterion in the same file still promised the error would be visible within one reading. Two sentences, one file, two different devices.
         We fixed the wording to "within three readings" before any code was written. Analyze also flagged two medium gaps: the "never crash" rule had no automated test, and the hardware-free rule was not checked automatically. We added tasks for both.
         None of these is a coding bug. They are disagreements in our own requirements, caught while fixing them cost one sentence.
-      he: "Analogy: see slide 9"
+      he: |
+        Analogy: מגיה שקורא את פרק 2 ואת פרק 9 זה לצד זה, ושם לב שהם מתארים שני סופים שונים.
+        analyze לא קורא קוד. הוא בודק כל דרישה, כל קריטריון הצלחה וכל משימה זה מול זה, ומול ה-constitution.
+        בפרויקט הזה הוא מצא סתירה אמיתית, בדרגת HIGH. ב-clarify החלטנו שתקלה בודדת לא מספיקה כדי להכריז שהחיישן מת: צריך שלוש קריאות כושלות ברצף. אבל קריטריון הצלחה ישן יותר באותו קובץ עדיין הבטיח שהשגיאה תוצג תוך קריאה אחת. שני משפטים, קובץ אחד, שני מכשירים שונים.
+        תיקנו את הניסוח ל“תוך שלוש קריאות” לפני שנכתבה שורת קוד אחת. analyze סימן גם שני פערים בינוניים: לכלל “לא לקרוס” לא הייתה בדיקה אוטומטית, והכלל של לוגיקה בלי חומרה לא נבדק אוטומטית. הוספנו משימות לשניהם.
+        אף אחד מאלה הוא לא באג בקוד. אלה סתירות בדרישות שלנו עצמן, שנתפסו כשהתיקון עלה משפט אחד.
 
   - id: behavior-photos
     part: IV
@@ -470,9 +584,9 @@ slides:
     layout: photos
     title: { en: "Behavior: OK and WARNING on the board", he: "התנהגות: OK ו-WARNING על הלוח" }
     images:
-      - { file: photo-ok.jpg, caption: { en: "OK at 24.0 °C", he: "OK: מתחת ל-30 מעלות" } }
-      - { file: photo-warning.jpg, caption: { en: "WARNING at 26.6 °C: held by hysteresis", he: "WARNING: 30 מעלות ומעלה" } }
-    tip: { key: photo-proof, en: "Photograph real hardware results; reviewers trust a photo faster than a log.", he: "צלמו תוצאות אמיתיות מהחומרה; הן משכנעות סוקרים מהר יותר מלוגים." }
+      - { file: photo-ok.jpg, caption: { en: "OK at 24.0 °C", he: "OK ב-24.0 °C" } }
+      - { file: photo-warning.jpg, caption: { en: "WARNING at 26.6 °C: held by hysteresis", he: "WARNING ב-26.6 °C: נשאר בגלל ה-hysteresis" } }
+    tip: { key: photo-proof, en: "Photograph real hardware results; reviewers trust a photo faster than a log.", he: "צלמו תוצאות אמיתיות מהחומרה; מי שעושה review סומך על תמונה מהר יותר מעל log." }
     notes:
       en: |
         Analogy: see slide 15, the thermostat. These photos show it working.
@@ -482,28 +596,35 @@ slides:
         This is why the photos matter. The unit tests proved the logic on a laptop; the photos prove the same behavior on the physical device, with the real sensor. We use photos instead of a live demo on purpose: they never fail on stage.
         And what did we not need? GSD or Superpowers. The sessions were short and a human reviewed every stage, so the decision rule says skip GSD. And the constitution already required tests first (Principle II), so the Superpowers question also says skip.
         Tip: photograph real hardware results; reviewers trust a photo faster than a log.
-      he: "Analogy: see slide 2"
+      he: |
+        Analogy: ראו שקף 15, התרמוסטט. התמונות האלה מראות אותו עובד.
+        עצרו בערך 10 שניות על כל תמונה, כדי שאנשים יספיקו לקרוא את המסך.
+        זה הלוח האמיתי, עם ה-DHT22 מחובר. בתמונת ה-OK, טמפרטורת חדר רגילה: המסך מציג OK ו-24.0 מעלות.
+        בתמונת ה-WARNING, חיממתי את החיישן ביד. תסתכלו טוב על המספר: 26.6 מעלות, והמסך עדיין אומר WARNING. מתחיל היה קורא לזה באג, כי 26.6 מתחת לסף של 27. זה לא באג; זה ה-spec. הקריאה עלתה מעל 27, האזהרה נדלקה, והיא נשארת דלוקה עד שהטמפרטורה יורדת מתחת ל-25. זה פס ה-hysteresis משלושה שקפים קודם, גלוי על חומרה אמיתית.
+        בגלל זה התמונות חשובות. בדיקות היחידה הוכיחו את הלוגיקה על לפטופ; התמונות מוכיחות את אותה התנהגות על המכשיר הפיזי, עם החיישן האמיתי. אנחנו משתמשים בתמונות במקום בדמו חי בכוונה: הן אף פעם לא נכשלות על הבמה.
+        ומה לא היינו צריכים? GSD או Superpowers. ה-sessions היו קצרים ואדם בדק כל שלב, אז כלל ההחלטה אומר לוותר על GSD. וה-constitution כבר דרשה בדיקות קודם (עיקרון II), אז גם השאלה על Superpowers אומרת לוותר.
+        TIP: צלמו תוצאות אמיתיות מהחומרה; מי שעושה review סומך על תמונה מהר יותר מעל log.
 
   # ---------------------------------------------------------------- Part V
   - id: main-vs-dev
     part: V
     budget: "1:30"
     layout: bullets-diagram
-    title: { en: "main vs dev: published vs draft", he: "main מול dev" }
+    title: { en: "main vs dev: published vs draft", he: "main מול dev: מהדורה מול טיוטה" }
     bullets:
-      - { key: roles, en: "main = the published edition; dev = the draft desk", he: "main הוא מה שמשוחרר; dev הוא המקום שבו העבודה נוחתת קודם" }
-      - { key: rule, en: "Team rule: merge to main only after tests pass", he: "Team rule: merge to main only after tests pass" }
+      - { key: roles, en: "main = the published edition; dev = the draft desk", he: "main = המהדורה המודפסת; dev = שולחן הטיוטות" }
+      - { key: rule, en: "Team rule: merge to main only after tests pass", he: "כלל צוות: merge ל-main רק אחרי שהבדיקות עוברות" }
     diagram:
       name: branch-flow
       highlight: [dev, main]
       labels: &branch_labels
         issue: { en: "issue #2", he: "issue #2" }
-        feature: { en: "feature branch (DHT22)", he: "feature branch" }
+        feature: { en: "feature branch (DHT22)", he: "feature branch (DHT22)" }
         pr3: { en: "PR #3", he: "PR #3" }
         dev: { en: "dev", he: "dev" }
         prs: { en: "PR #4", he: "PR #4" }
         main: { en: "main", he: "main" }
-    tip: { key: keep-main-working, en: "Keep main always working: merge into it only after the tests pass.", he: "Keep main always working: merge into it only after the tests pass." }
+    tip: { key: keep-main-working, en: "Keep main always working: merge into it only after the tests pass.", he: "שמרו על main תמיד עובד: עשו merge אליו רק אחרי שהבדיקות עוברות." }
     notes:
       en: |
         Analogy: a newspaper. The printed edition is what readers see, and it must always be right. The draft desk is where the messy work happens.
@@ -512,7 +633,13 @@ slides:
         The team rule: merge into main only after the tests pass and the work is verified. To merge means bringing the changes from one branch into another.
         The diagram is this repo's real history, as an illustration: issue #2 is a to-do card asking for DHT22 support, and PR #3 is the change that delivered it; more on both next slide. To be clear, this was a one-person project, early work went straight to main, there is no automated test server, and main is not locked. A real team would add those.
         Tip: keep main always working, and merge into it only after the tests pass.
-      he: "Analogy: דלפק ההגשה במטבח, המנות מחכות שם לפני שהן יוצאות לסועדים."
+      he: |
+        Analogy: עיתון. המהדורה המודפסת היא מה שהקוראים רואים, והיא חייבת להיות נכונה תמיד. שולחן הטיוטות הוא המקום שבו העבודה המבולגנת קורית.
+        קודם קצת אוצר מילים. Git הוא הכלי שעוקב אחרי כל גרסה של הקבצים שלכם. GitHub הוא האתר שבו צוות משתף Git repository, או repo: תיקיית הפרויקט עם כל ההיסטוריה שלה. branch הוא עותק מקביל של הפרויקט, שבו אפשר לעבוד בלי להפריע לאף אחד.
+        שני branches חשובים כאן. main הוא המהדורה המודפסת: תמיד עובד, תמיד בטוח למסור למישהו. dev הוא שולחן הטיוטות: העבודה נוחתת שם קודם, מתחברת ונבדקת.
+        כלל הצוות: merge ל-main רק אחרי שהבדיקות עוברות והעבודה אומתה. merge פירושו להכניס את השינויים מ-branch אחד ל-branch אחר.
+        התרשים הוא ההיסטוריה האמיתית של ה-repo הזה, כהמחשה: issue #2 הוא כרטיס משימה שביקש תמיכה ב-DHT22, ו-PR #3 הוא השינוי שסיפק אותה; עוד עליהם בשקף הבא. ולהבהיר: זה היה פרויקט של אדם אחד, עבודה מוקדמת הלכה ישר ל-main, אין שרת בדיקות אוטומטי, ו-main לא נעול. צוות אמיתי היה מוסיף את כל אלה.
+        TIP: שמרו על main תמיד עובד, ועשו merge אליו רק אחרי שהבדיקות עוברות.
 
   - id: issues-prs
     part: V
@@ -520,13 +647,13 @@ slides:
     layout: bullets-diagram
     title: { en: "Issues and pull requests", he: "issues ו-pull requests" }
     bullets:
-      - { key: issue, en: "Issue = a to-do card: what is wrong or wanted, and why", he: "issue מסביר למה; pull request מראה איך" }
-      - { key: link, en: "PR (pull request) = a change request someone reviews", he: "קשרו כל PR ל-issue שלו כדי שההיסטוריה תסביר את עצמה" }
+      - { key: issue, en: "Issue = a to-do card: what is wrong or wanted, and why", he: "issue = כרטיס משימה: מה שבור או חסר, ולמה" }
+      - { key: link, en: "PR (pull request) = a change request someone reviews", he: "PR (pull request) = בקשת שינוי שמישהו עושה לה review" }
     diagram:
       name: branch-flow
       highlight: [issue, pr3, prs]
       labels: *branch_labels
-    tip: { key: fixes-keyword, en: "Write 'Fixes #2' in the PR into main; GitHub then closes the issue on merge.", he: "Write 'Fixes #2' in the PR into main; GitHub then closes the issue on merge." }
+    tip: { key: fixes-keyword, en: "Write 'Fixes #2' in the PR into main; GitHub then closes the issue on merge.", he: "כתבו 'Fixes #2' ב-PR שנכנס ל-main; GitHub יסגור את ה-issue ב-merge." }
     notes:
       en: |
         Analogy: a work order and a signed delivery note. The work order says what is needed and why; the delivery note shows exactly what was done, and someone signs it before it is accepted.
@@ -534,7 +661,12 @@ slides:
         Follow the real chain on the diagram. Issue number 2 asked for DHT22 support, because the original sensor was not available. The work happened on a feature branch called 001-heltec-monitor-dht22-sensor. PR number 3 merged it into dev. Then PR number 4 carried it from dev into main. PRs 1 and 5 through 7 are other dev-to-main merges.
         Here is a small surprise: issue 2 is still open. GitHub only closes an issue automatically when a PR or commit that says "Fixes #2" lands on the default branch, here main. Nobody wrote "Fixes #2". And even if PR 3 had said it, GitHub would have ignored it, because PR 3 targeted dev, not the default branch.
         Tip: write "Fixes #2" in the PR that goes into main, and GitHub then closes the issue on merge.
-      he: "Analogy: הזמנת עבודה ותעודת המשלוח החתומה."
+      he: |
+        Analogy: הזמנת עבודה ותעודת משלוח חתומה. הזמנת העבודה אומרת מה צריך ולמה; תעודת המשלוח מראה בדיוק מה נעשה, ומישהו חותם עליה לפני שהיא מתקבלת.
+        issue הוא הזמנת העבודה: כרטיס ב-GitHub שמתאר באג או שיפור, ולמה זה חשוב. pull request, או PR, הוא תעודת המשלוח: סט שינויים שאתם מציעים, ומישהו עושה לו review לפני ה-merge. שינויים נכנסים דרך PRs, אף פעם לא ב-push ישיר ל-main.
+        עקבו אחרי השרשרת האמיתית בתרשים. issue מספר 2 ביקש תמיכה ב-DHT22, כי החיישן המקורי לא היה זמין. העבודה נעשתה ב-feature branch בשם 001-heltec-monitor-dht22-sensor. PR מספר 3 עשה לו merge ל-dev. ואז PR מספר 4 העביר אותו מ-dev ל-main. PRs 1 ו-5 עד 7 הם merges אחרים מ-dev ל-main.
+        והנה הפתעה קטנה: issue 2 עדיין פתוח. GitHub סוגר issue אוטומטית רק כש-PR או commit שכתוב בו “Fixes #2” נכנס ל-default branch, כאן main. אף אחד לא כתב “Fixes #2”. וגם אם PR 3 היה כותב את זה, GitHub היה מתעלם, כי PR 3 כוון ל-dev, לא ל-default branch.
+        TIP: כתבו “Fixes #2” ב-PR שנכנס ל-main, ו-GitHub יסגור את ה-issue ב-merge.
 
   - id: shared-repo
     part: V
@@ -542,13 +674,13 @@ slides:
     layout: bullets-diagram
     title: { en: "Shared repo, shared specs/", he: "repo משותף, specs/ משותף" }
     bullets:
-      - { key: specs, en: "specs/ = the team notebook: what each of us builds, and why", he: "תיקיית specs/ נוסעת עם הקוד בכל branch" }
-      - { key: travel, en: "Specs ride in the same PR as the code they describe", he: "Specs ride in the same PR as the code they describe" }
+      - { key: specs, en: "specs/ = the team notebook: what each of us builds, and why", he: "specs/ = מחברת הצוות: מה כל אחד בונה, ולמה" }
+      - { key: travel, en: "Specs ride in the same PR as the code they describe", he: "ה-specs נוסעים באותו PR עם הקוד שהם מתארים" }
     diagram:
       name: branch-flow
       highlight: [feature, dev]
       labels: *branch_labels
-    tip: { key: specs-in-pr, en: "Review the spec changes first in every pull request, then the code.", he: "בכל pull request, סקרו קודם את שינויי ה-spec ורק אחר כך את הקוד." }
+    tip: { key: specs-in-pr, en: "Review the spec changes first in every pull request, then the code.", he: "עברו קודם על שינויי ה-spec בכל pull request, ורק אחר כך על הקוד." }
     notes:
       en: |
         Analogy: a shared lab notebook. Every scientist writes down what they are trying and why, so nobody repeats an experiment or undoes someone else's.
@@ -558,17 +690,24 @@ slides:
         Imagine a second developer joining tomorrow. They would open specs/002 for their own feature, on their own branch, and everyone could read it in the PR before a line of code merged.
         Each Spec Kit stage of this repo is also tagged in Git and on GitHub, from 01-start to 09-hardware-verified, so you can replay how the spec grew.
         Tip: in every pull request, review the spec changes first, then the code.
-      he: "Analogy: ספר מתכונים משותף שכל טבח מעדכן במקום."
+      he: |
+        Analogy: מחברת מעבדה משותפת. כל מדען כותב מה הוא מנסה ולמה, כדי שאף אחד לא יחזור על ניסוי או יבטל את העבודה של מישהו אחר.
+        ל-repo שכמה מפתחים חולקים יש סיכון אחד גדול: אנשים לא יודעים מה האחרים עושים. שניים מתקנים את אותו באג, או שאחד מבטל בשקט החלטה של מישהו אחר.
+        תיקיית ה-specs היא התשובה. לכל feature יש תיקייה משלו, כמו specs/001-heltec-monitor ב-repo הזה. בפנים יש את ה-spec, את ה-clarifications עם התשובות, את ה-plan, את רשימת המשימות ואת דוח הניתוח. לפני שמתחילים לעבוד, קוראים את התיקייה. לפני שמשנים החלטה, רואים למה היא התקבלה.
+        וה-specs נוסעים באותו pull request עם הקוד שהם מתארים. מי שעושה review רואה יחד את השינוי בכוונה ואת השינוי בקוד, ויכול לשאול: האם הקוד הזה עושה את מה שה-spec אומר עכשיו?
+        דמיינו מפתחת שנייה שמצטרפת מחר. היא תפתח specs/002 ל-feature שלה, ב-branch משלה, וכולם יוכלו לקרוא אותו ב-PR לפני ששורת קוד אחת נכנסת.
+        כל שלב של Spec Kit ב-repo הזה מסומן גם ב-tag ב-Git וב-GitHub, מ-01-start ועד 09-hardware-verified, כך שאפשר לשחזר איך ה-spec גדל.
+        TIP: בכל pull request, עברו קודם על שינויי ה-spec, ורק אחר כך על הקוד.
 
   # ---------------------------------------------------------------- Part VI
   - id: skills
     part: VI
     budget: "1:00"
     layout: bullets
-    title: { en: "Skills: recipe cards for the AI", he: "skills: יכולות שאפשר לשתף" }
+    title: { en: "Skills: recipe cards for the AI", he: "skills: כרטיסי מתכון ל-AI" }
     bullets:
-      - { key: what, en: "A recipe card for the AI: written steps it loads when needed", he: "skill הוא נוהל כתוב שה-agent טוען רק כשצריך" }
-      - { key: share, en: "That card is a skill: write it once, reuse it everywhere", he: "כותבים פעם אחת ומשתפים בין פרויקטים וחברי צוות" }
+      - { key: what, en: "A recipe card for the AI: written steps it loads when needed", he: "כרטיס מתכון ל-AI: צעדים כתובים שהוא טוען כשצריך" }
+      - { key: share, en: "That card is a skill: write it once, reuse it everywhere", he: "הכרטיס הזה הוא skill: כותבים פעם אחת, משתמשים בכל מקום" }
     tip: { key: first-skill, en: "Turn the instruction you repeat most often into your first skill.", he: "הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם." }
     notes:
       en: |
@@ -577,39 +716,48 @@ slides:
         You have already met skills today. In this project, Spec Kit's stages are installed as skills for the assistant, and Superpowers is essentially a library of skills.
         Write a skill once and you can share it across projects and teammates, so everyone's agent follows the same steps.
         Tip: turn the instruction you repeat most often into your first skill.
-      he: "Analogy: כרטיס מתכון שנותנים לכל טבח חדש."
+      he: |
+        Analogy: כרטיס מתכון שאפשר לתת לכל טבח חדש. כותבים אותו פעם אחת, וכל טבח מכין את המנה באותה צורה.
+        skill הוא בדיוק זה בשביל AI agent: נוהל כתוב, שמור כקובץ, שה-agent טוען רק כשהוא צריך אותו. “איך כותבים spec.” “איך עושים review ל-pull request.” “איך משחררים גרסה.”
+        כבר פגשתם skills היום. בפרויקט הזה, השלבים של Spec Kit מותקנים כ-skills לעוזר, ו-Superpowers הוא בעצם ספרייה של skills.
+        כותבים skill פעם אחת, ואפשר לשתף אותו בין פרויקטים וחברי צוות, כך שה-agent של כל אחד עובר את אותם צעדים.
+        TIP: הפכו את ההוראה שאתם חוזרים עליה הכי הרבה ל-skill הראשון שלכם.
 
   - id: team-of-skills
     part: VI
     budget: "1:00"
     layout: bullets-diagram
-    title: { en: "Teams of skills: the /team example", he: "צוותים של skills: הדוגמה של team" }
+    title: { en: "Teams of skills: the /team example", he: "צוותים של skills: הדוגמה של /team" }
     bullets:
-      - { key: roles, en: "Three AI roles: architect, product owner, senior developer", he: "ארכיטקט, בעל מוצר ומפתח, כל אחד הוא skill" }
-      - { key: meta, en: "They negotiated this talk’s scope, cuts and timing", he: "המצגת הזאת עצמה נבנתה על ידי צוות כזה" }
+      - { key: roles, en: "Three AI roles: architect, product owner, senior developer", he: "שלושה תפקידי AI: ארכיטקט, product owner, מפתח בכיר" }
+      - { key: meta, en: "They negotiated this talk’s scope, cuts and timing", he: "הם סיכמו את ההיקף, הקיצוצים והתזמון של ההרצאה" }
     diagram:
       name: team-roles
       labels:
-        architect: { en: "Architect", he: "Architect" }
+        architect: { en: "Architect", he: "ארכיטקט" }
         product_owner: { en: "Product owner", he: "Product owner" }
-        senior_dev: { en: "Senior developer", he: "Senior developer" }
-        human: { en: "Human (approves)", he: "Human (approves)" }
+        senior_dev: { en: "Senior developer", he: "מפתח בכיר" }
+        human: { en: "Human (approves)", he: "אדם (מאשר)" }
     notes:
       en: |
         Analogy: a small band. The drummer, the bassist and the singer each know their part, and the band leader settles the arguments.
         Skills can also define roles, and roles can work as a team. This talk is the example. It was planned by three AI roles: an architect who coordinated, a product owner who wrote the brief, and a senior developer who estimated the work and checked the facts. The architect passed messages between them and made the call when they disagreed; I approved every scope decision.
         That team caught real problems: an inflated star count in the article, an archived GSD repository, and slides naming the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
         This was a custom setup on my machine, not a product you can download, but the pattern is reusable.
-      he: "Analogy: להקה קטנה שבה כל אחד יודע את התפקיד שלו."
+      he: |
+        Analogy: להקה קטנה. המתופף, הבסיסט והזמרת יודעים כל אחד את התפקיד שלו, ומנהל הלהקה מכריע בוויכוחים.
+        skills יכולים גם להגדיר תפקידים, ותפקידים יכולים לעבוד כצוות. ההרצאה הזאת היא הדוגמה. היא תוכננה על ידי שלושה תפקידי AI: ארכיטקט שתיאם, product owner שכתב את ה-brief, ומפתח בכיר שהעריך את העבודה ובדק את העובדות. הארכיטקט העביר הודעות ביניהם והכריע כשלא הסכימו; אני אישרתי כל החלטה על ההיקף.
+        הצוות הזה תפס בעיות אמיתיות: מספר כוכבים מנופח במאמר, repository של GSD שעבר לארכיון, ושקפים שציינו את החיישן הלא נכון. הוא גם ניהל משא ומתן על הקיצוצים שהכניסו את ההרצאה ל-45 דקות.
+        זה היה setup מותאם אישית על המחשב שלי, לא מוצר שאפשר להוריד, אבל את הדפוס אפשר לשחזר.
 
   - id: shared-constitution
     part: VI
     budget: "1:00"
     layout: bullets
-    title: { en: "One constitution for many projects", he: "constitution משותפת לכמה פרויקטים" }
+    title: { en: "One constitution for many projects", he: "constitution אחת לכמה פרויקטים" }
     bullets:
-      - { key: rules, en: "House rules on the fridge: testing, naming, security, review", he: "סט אחד של כללים: בדיקות, שמות, אבטחה וסקירה" }
-      - { key: reuse, en: "Start each new project from one shared template", he: "כל פרויקט חדש מתחיל מאותו בסיס מוסכם" }
+      - { key: rules, en: "House rules on the fridge: testing, naming, security, review", he: "חוקי הבית על המקרר: בדיקות, שמות, אבטחה, review" }
+      - { key: reuse, en: "Start each new project from one shared template", he: "כל פרויקט חדש מתחיל מתבנית משותפת אחת" }
     tip: { key: short-constitution, en: "Keep the constitution short; rules nobody reads are rules nobody follows.", he: "שמרו על constitution קצרה; כללים שאף אחד לא קורא, אף אחד לא מקיים." }
     notes:
       en: |
@@ -617,7 +765,11 @@ slides:
         A constitution is a project's house rules. Our Heltec project has five principles, such as "decision logic is hardware-independent" and "every threshold decision is explicit".
         The next step is one constitution shared across projects and teams: testing rules, naming, security, review. In Spec Kit each project keeps its own constitution file, so sharing is a team practice rather than a built-in feature: keep a template, copy it into every new project as the starting point, then add the project's own rules.
         Tip: keep the constitution short; rules nobody reads are rules nobody follows.
-      he: "Analogy: חוקי הבית שתלויים על המקרר."
+      he: |
+        Analogy: חוקי הבית על המקרר. כל השותפים בדירה מקיימים את אותם כללים, ושותף חדש קורא אותם ביום הראשון.
+        constitution היא חוקי הבית של פרויקט. לפרויקט ה-Heltec שלנו יש חמישה עקרונות, כמו “לוגיקת ההחלטות לא תלויה בחומרה” ו“כל החלטה על סף היא מפורשת”.
+        הצעד הבא הוא constitution אחת, משותפת לכמה פרויקטים וצוותים: כללי בדיקות, שמות, אבטחה, review. ב-Spec Kit לכל פרויקט יש קובץ constitution משלו, אז השיתוף הוא נוהל צוותי ולא פיצ'ר מובנה: מחזיקים תבנית, מעתיקים אותה לכל פרויקט חדש כנקודת התחלה, ומוסיפים את הכללים של הפרויקט עצמו.
+        TIP: שמרו על constitution קצרה; כללים שאף אחד לא קורא, אף אחד לא מקיים.
 
   # ---------------------------------------------------------------- Close
   - id: takeaways
@@ -627,11 +779,11 @@ slides:
     title: { en: "Takeaways", he: "מה לוקחים הביתה" }
     bullets:
       - { key: intent, en: "Write the intent down before the AI writes the code", he: "כתבו את הכוונה לפני שה-AI כותב את הקוד" }
-      - { key: context, en: "Keep the AI’s desk tidy: context rots in long sessions", he: "נהלו את ה-context בכוונה; אחרת הוא נרקב" }
-      - { key: layers, en: "Pick layers by pain: planning first, helpers when needed", he: "בחרו שכבות לפי הכאב: תכנון, context, משמעת" }
-      - { key: heltec, en: "Heltec run: Spec Kit plus human review was enough", he: "בפרויקט ה-Heltec השתמשנו רק ב-Spec Kit, וזה הספיק" }
-      - { key: team, en: "Branches, PRs and a shared specs/ make it a team sport", he: "Branches, PRs and a shared specs/ make it a team sport" }
-    tip: { key: tomorrow, en: "Write a one-page spec before your next AI coding session, starting tomorrow.", he: "מחר, כתבו spec של עמוד אחד לפני הסשן הבא שלכם עם AI." }
+      - { key: context, en: "Keep the AI’s desk tidy: context rots in long sessions", he: "שמרו על השולחן של ה-AI מסודר: context נרקב ב-sessions ארוכים" }
+      - { key: layers, en: "Pick layers by pain: planning first, helpers when needed", he: "בחרו שכבות לפי הכאב: קודם תכנון, עזרים כשצריך" }
+      - { key: heltec, en: "Heltec run: Spec Kit plus human review was enough", he: "בפרויקט Heltec: Spec Kit עם review אנושי הספיק" }
+      - { key: team, en: "Branches, PRs and a shared specs/ make it a team sport", he: "branches, PRs ו-specs/ משותף הופכים את זה לעבודת צוות" }
+    tip: { key: tomorrow, en: "Write a one-page spec before your next AI coding session, starting tomorrow.", he: "כתבו spec של עמוד אחד לפני ה-session הבא שלכם עם AI, כבר מחר." }
     notes:
       en: |
         Analogy: measure twice, cut once.
@@ -641,7 +793,14 @@ slides:
         Four, from the case study: on the Heltec project, Spec Kit plus a human reviewing each stage was enough. Specify and clarify pinned down the hysteresis band, analyze caught a contradiction before any code existed, and eleven tests plus two photos proved the behavior.
         Five: make it a team sport, with issues, branches, pull requests and a shared specs folder, so everyone can see what everyone else is building and why.
         And one thing to do tomorrow, the tip: before your next AI coding session, write a one-page spec. Who is it for, what should it do, and how will you know it works?
-      he: "Analogy: מודדים פעמיים, חותכים פעם אחת."
+      he: |
+        Analogy: מודדים פעמיים, חותכים פעם אחת.
+        חמישה דברים לקחת הביתה. אחד: כתבו את הכוונה לפני שה-AI כותב את הקוד. ה-spec, לא הצ'אט, הוא מקור האמת.
+        שתיים: שמרו על השולחן של ה-AI מסודר. context נרקב ב-sessions ארוכים, אז שמרו על sessions קצרים ועל החלטות בקבצים.
+        שלוש: בחרו שכבות לפי הכאב. התחילו בתכנון; הוסיפו בידוד context או משמעת נאכפת רק כשאתם באמת מרגישים את הבעיות האלה.
+        ארבע, מה-case study: בפרויקט Heltec, Spec Kit יחד עם אדם שבודק כל שלב הספיקו. specify ו-clarify קיבעו את פס ה-hysteresis, analyze תפס סתירה עוד לפני שהיה קוד, ואחת עשרה בדיקות ושתי תמונות הוכיחו את ההתנהגות.
+        חמש: הפכו את זה לעבודת צוות, עם issues, branches, pull requests ותיקיית specs משותפת, כך שכולם רואים מה כל אחד בונה ולמה.
+        ודבר אחד לעשות מחר, ה-TIP: לפני ה-session הבא שלכם עם AI, כתבו spec של עמוד אחד. בשביל מי זה, מה זה צריך לעשות, ואיך תדעו שזה עובד?
 
   - id: resources
     part: close
@@ -649,11 +808,11 @@ slides:
     layout: bullets
     title: { en: "Resources", he: "מקורות" }
     bullets:
-      - { key: article, en: "Article: V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "V. Dwarampudi, Spec-Driven AI (Medium, 2026)" }
+      - { key: article, en: "Article: V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "מאמר: V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)" }
       - { key: speckit, en: "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD", he: "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD" }
       - { key: gsd, en: "GitHub: open-gsd/gsd-core · obra/superpowers", he: "GitHub: open-gsd/gsd-core · obra/superpowers" }
-      - { key: research, en: "Research: Chroma, “Context Rot” (2025)", he: "Research: Chroma, “Context Rot” (2025)" }
-      - { key: repo, en: "This talk: github.com/ronyronen/speckit-claude-presentation", he: "This talk: github.com/ronyronen/speckit-claude-presentation" }
+      - { key: research, en: "Research: Chroma, “Context Rot” (2025)", he: "מחקר: Chroma, “Context Rot” (2025)" }
+      - { key: repo, en: "This talk: github.com/ronyronen/speckit-claude-presentation", he: "ההרצאה: github.com/ronyronen/speckit-claude-presentation" }
     sources: [article, F4, F7]
     notes:
       en: |
@@ -666,7 +825,16 @@ slides:
         Superpowers: https://github.com/obra/superpowers
         Context rot: https://www.trychroma.com/research/context-rot
         Lost in the Middle: https://arxiv.org/abs/2307.03172
-      he: "משאירים את השקף כדי שאנשים יספיקו לצלם.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
+      he: |
+        כל מה שראינו היום נמצא ב-repository של ההרצאה: ה-firmware, תיקיית ה-specs המלאה ושתי המצגות, באנגלית ובעברית. השאירו את השקף הזה בזמן שאנשים מצלמים.
+        This talk: https://github.com/ronyronen/speckit-claude-presentation
+        Article: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
+        Spec Kit: https://github.com/github/spec-kit
+        BMAD: https://github.com/bmad-code-org/BMAD-METHOD
+        GSD: https://github.com/open-gsd/gsd-core
+        Superpowers: https://github.com/obra/superpowers
+        Context rot: https://www.trychroma.com/research/context-rot
+        Lost in the Middle: https://arxiv.org/abs/2307.03172
 
   - id: qa
     part: close
@@ -684,7 +852,14 @@ slides:
         "Does it work with my assistant?" Spec Kit supports several assistants, and its files do not depend on any one of them.
         "How long did the Heltec spec take?" Specify through implement all ran on one day, 2026-09-10, per the tags and commit dates in the repo.
         If time runs out, point to the resources slide and the repo.
-      he: "חוזרים על כל שאלה לפני שעונים עליה."
+      he: |
+        חזרו על כל שאלה לפני שאתם עונים, כדי שכל החדר ישמע.
+        שאלות צפויות:
+        “זה לא סתם waterfall מחדש?” לא. waterfall מקפיא את המסמך; כאן ה-spec חי, ולולאת המשוב מעדכנת אותו בכל פעם שלומדים משהו.
+        “עם איזה כלי להתחיל?” כלי תכנון אחד; Spec Kit הוא זה שהשתמשתי בו כאן. את השאר תחליטו לפי כלל ההחלטה.
+        “זה עובד עם העוזר שלי?” Spec Kit תומכת בכמה עוזרים, והקבצים שלה לא תלויים באף אחד מהם.
+        “כמה זמן לקח ה-spec של Heltec?” מ-specify ועד implement הכול רץ ביום אחד, 2026-09-10, לפי ה-tags ותאריכי ה-commits ב-repo.
+        אם נגמר הזמן, הפנו לשקף המקורות ול-repo.
 
   # ---------------------------------------------------------------- Appendix
   - id: a1-stages-catch-mistakes
@@ -696,16 +871,18 @@ slides:
     table:
       header:
         - { en: "Stage", he: "שלב" }
-        - { en: "Mistake caught in the Heltec run", he: "דוגמה לטעות שנתפסה" }
+        - { en: "Mistake caught in the Heltec run", he: "הטעות שנתפסה בפרויקט Heltec" }
       rows:
-        - [ { en: "clarify", he: "specify" }, { en: "Exact threshold value undecided", he: "אין החלטה לגבי קצה הסף" } ]
+        - [ { en: "clarify", he: "clarify" }, { en: "Exact threshold value undecided", he: "ערך הסף המדויק לא הוחלט" } ]
         - [ { en: "plan", he: "plan" }, { en: "Logic tangled with hardware code", he: "לוגיקה מעורבבת עם קוד חומרה" } ]
-        - [ { en: "analyze", he: "analyze" }, { en: "Two requirements disagreed (1 vs 3 reads)", he: "דרישה בלי בדיקה" } ]
+        - [ { en: "analyze", he: "analyze" }, { en: "Two requirements disagreed (1 vs 3 reads)", he: "שתי דרישות סתרו (קריאה 1 מול 3)" } ]
     notes:
       en: |
         backup, not timed. Use only if someone asks how each stage pays for itself.
         Clarify settled the exact edges of the hysteresis band (strictly above, strictly below). Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
-      he: "backup, not timed. משתמשים רק אם שואלים על השלבים."
+      he: |
+        backup, not timed. משתמשים רק אם מישהו שואל איך כל שלב מחזיר את ההשקעה.
+        clarify קבע את הקצוות המדויקים של פס ה-hysteresis (רק מעל, רק מתחת). plan, בעקבות ה-constitution, שמר את ה-state machine נקייה מקריאות לחומרה, וזה מה שאפשר את 11 הבדיקות על הלפטופ. analyze מצא שקריטריון ההצלחה SC-004 סותר את הדרישה FR-005, עוד לפני שהיה קוד.
 
   - id: a2-overlap-gaps
     part: close
@@ -717,16 +894,18 @@ slides:
       - heading: { en: "Overlap", he: "חפיפה" }
         items:
           - { en: "BMAD and Spec Kit both plan before coding", he: "גם BMAD וגם Spec Kit מתכננים לפני הקוד" }
-          - { en: "Spec Kit’s checklist, BMAD’s tester: light gates", he: "גם GSD וגם Superpowers מעצבים את הביצוע" }
+          - { en: "Spec Kit’s checklist, BMAD’s tester: light gates", he: "ה-checklist של Spec Kit, הבודק של BMAD: שערים קלים" }
       - heading: { en: "Gaps", he: "פערים" }
         items:
-          - { en: "Planning tools don’t stop context rot", he: "אף אחד מהם לא מחליף סקירה אנושית" }
-          - { en: "Planning tools don’t enforce TDD while coding", he: "בדיקות חומרה עדיין באחריותכם" }
+          - { en: "Planning tools don’t stop context rot", he: "כלי תכנון לא עוצרים context rot" }
+          - { en: "Planning tools don’t enforce TDD while coding", he: "כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד" }
     notes:
       en: |
         backup, not timed. For questions comparing the tools.
         The article's argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
-      he: "backup, not timed. לשאלות שמשוות בין הכלים."
+      he: |
+        backup, not timed. לשאלות שמשוות בין הכלים.
+        הטיעון של המאמר: frameworks של תכנון פותרים את “מה לבנות”; GSD ו-Superpowers פותרים את “איך לבנות באמינות במשך שעות”. בפרויקטים קטנים עם review אנושי קפדני, השערים הקלים של שכבת התכנון אולי מספיקים. אף אחד מהארבעה לא מחליף reviewer אנושי, ובדיקות החומרה עדיין עליכם.
 
   - id: a3-specify-init
     part: close
@@ -743,7 +922,8 @@ slides:
     notes:
       en: |
         backup, not timed. Show only if someone wants to try it tonight. The full setup steps are in the repo README and in docs/textbook.md, chapter 5.
-      he: "backup, not timed. מראים רק אם מישהו רוצה לנסות כבר הערב."
+      he: |
+        backup, not timed. מראים רק אם מישהו רוצה לנסות כבר הערב. כל שלבי ההתקנה נמצאים ב-README של ה-repo וב-docs/textbook.md, פרק 5.
 
   - id: a4-tool-relationship
     part: close
@@ -752,12 +932,13 @@ slides:
     layout: bullets
     title: { en: "Backup: how the tools relate", he: "גיבוי: איך הכלים קשורים זה לזה" }
     bullets:
-      - { key: complement, en: "Spec Kit writes the documents; the assistant does the work", he: "כלי תכנון וכלי ביצוע משלימים זה את זה" }
-      - { key: combine, en: "Same specs/ work with Claude Code, Codex and others", he: "אפשר לשלב את Spec Kit עם GSD או עם Superpowers" }
+      - { key: complement, en: "Spec Kit writes the documents; the assistant does the work", he: "Spec Kit כותבת את המסמכים; העוזר עושה את העבודה" }
+      - { key: combine, en: "Same specs/ work with Claude Code, Codex and others", he: "אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים" }
     notes:
       en: |
         backup, not timed. Use with slide 12. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
-      he: "backup, not timed. משתמשים יחד עם שקף 12."
+      he: |
+        backup, not timed. משתמשים יחד עם שקף 12. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
 
   - id: a5-vscode-extensions
     part: close
@@ -767,12 +948,13 @@ slides:
     title: { en: "Backup: VS Code extensions", he: "גיבוי: הרחבות ל-VS Code" }
     bullets:
       - { key: platformio, en: "PlatformIO for building and flashing the board", he: "PlatformIO לבנייה ולצריבה של הלוח" }
-      - { key: markdown, en: "A Markdown preview for reading specs side by side", he: "תצוגה מקדימה של Markdown כדי לקרוא specs זה לצד זה" }
+      - { key: markdown, en: "A Markdown preview for reading specs side by side", he: "תצוגה מקדימה של Markdown כדי לקרוא specs לצד הקוד" }
     tip: { key: preview, en: "Keep the spec open in a preview pane while the agent works.", he: "השאירו את ה-spec פתוח בחלונית תצוגה בזמן שה-agent עובד." }
     notes:
       en: |
         backup, not timed. For the hands-on crowd. The full extension list is in the repo README, section 5.
-      he: "backup, not timed. לקהל שרוצה לנסות בעצמו."
+      he: |
+        backup, not timed. לקהל שרוצה לנסות בעצמו. רשימת ההרחבות המלאה נמצאת ב-README של ה-repo, סעיף 5.
 
   - id: a6-git-checkpoints
     part: close
@@ -781,8 +963,9 @@ slides:
     layout: section
     title: { en: "Backup: git checkpoints per stage", he: "גיבוי: נקודות ביקורת ב-Git לכל שלב" }
     bullets:
-      - { key: tags, en: "One tag per stage, from 01-start to 09-hardware-verified", he: "tag אחד לכל שלב, מ-01-start ועד 08-implemented" }
+      - { key: tags, en: "One tag per stage, from 01-start to 09-hardware-verified", he: "tag אחד לכל שלב, מ-01-start ועד 09-hardware-verified" }
     notes:
       en: |
         backup, not timed. Tags make each stage easy to replay: 03-spec-created still has open questions, 04-spec-clarified has the answers, 07-analysis-complete shows the contradiction found, 08-implemented has 11/11 tests passing, and 09-hardware-verified is the DHT22 run on the board.
-      he: "backup, not timed. ה-tags מאפשרים לשחזר כל שלב בקלות."
+      he: |
+        backup, not timed. ה-tags מאפשרים לשחזר כל שלב בקלות: ב-03-spec-created עדיין יש שאלות פתוחות, ב-04-spec-clarified יש את התשובות, 07-analysis-complete מראה את הסתירה שנמצאה, ב-08-implemented עוברות 11/11 בדיקות, ו-09-hardware-verified הוא הריצה עם ה-DHT22 על הלוח.
