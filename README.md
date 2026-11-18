@@ -1,25 +1,37 @@
-# Spec Kit + Heltec WiFi Kit V3 Workshop
+# Spec-Driven Development with AI: Spec Kit + Heltec WiFi Kit V3
 
-A beginner-friendly, hands-on workshop (in Hebrew) that teaches **Spec-Driven
-Development** with **GitHub Spec Kit**, using **Claude Code** and **Codex** as
-coding agents, on a real **Heltec WiFi Kit V3** hardware example.
+A beginner-friendly, **theory-first 45-minute talk** on **Spec-Driven
+Development (SDD)**, given in **English or Hebrew** (two decks, identical
+content). The first ~24 minutes cover the theory: the intent gap, vibe
+coding vs SDD, context engineering and context rot, and how **BMAD**,
+**GitHub Spec Kit**, **GSD** and **Superpowers** work as different layers,
+plus a practical decision rule. Then comes an ~8-minute case study: a real
+**Heltec WiFi Kit V3** firmware built with Spec Kit, using **Claude Code**
+and **Codex** as coding agents. The talk closes with the GitHub team
+workflow in a nutshell and a short "what's next" (skills, teams of skills,
+a shared constitution).
 
 > The problem is usually not that the AI cannot write the code.
 > The problem is that the product behavior was not sufficiently defined.
 
-This repository is the companion material for a live talk. It contains a
+This repository is the companion material for the talk. It contains a
 working firmware example, the full set of Spec Kit artifacts that produced
-it, a standalone Markdown textbook, and everything needed to assemble the
-Hebrew slide deck.
+it, a standalone Markdown textbook, and the single content source from
+which both slide decks are generated.
+
+The theory part is based on Vimal Dwarampudi,
+["Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers"](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a)
+(Medium, Jun 2026). Claims from the article were fact-checked before they
+went on a slide; the article's opinions are attributed to its author.
 
 ## Status
 
 Checkpoints `01-start` through `08-implemented` are complete: the full
 Spec Kit workflow ran for real against this exact feature, the firmware
 builds cleanly, and all 11 native unit tests pass. `09-hardware-verified`
-is done for the DHT22 path (the sensor used in this workshop run); the
+is done for the DHT22 path (the sensor used in the case study); the
 BME280 path is still pending physical re-verification. Each stage is
-preserved as a Git tag so the workshop never depends on an AI step
+preserved as a Git tag so the talk never depends on an AI step
 completing live — see [Git checkpoints](#git-checkpoints) below.
 
 ## The example
@@ -35,7 +47,61 @@ failure handling. See [firmware/README.md](firmware/README.md).
   <img src="docs/images/hardware-dht22-warning.jpg" alt="Heltec WiFi Kit V3 with a DHT22 sensor, OLED showing WARNING and 26.6C" width="360">
 </p>
 
-📊 [View the slide deck](presentation/speckit-workshop.pptx)
+## Slide decks
+
+📊 Two decks, same content, timed speaker notes in each:
+
+- [presentation/speckit-workshop.pptx](presentation/speckit-workshop.pptx) (English)
+  · [transcript](presentation/transcript-en.md)
+- [presentation/speckit-workshop-he.pptx](presentation/speckit-workshop-he.pptx) (Hebrew)
+  · [transcript](presentation/transcript-he.md)
+
+Each transcript is the full talk script, slide by slide, with timings and tips.
+Tips appear on the slides as a light-bulb icon.
+
+### Rebuilding the decks
+
+- [`presentation/content/deck.yaml`](presentation/content/deck.yaml) is the
+  single source for both decks: every slide's EN and HE text, tips, speaker
+  notes and time budget. Edit the YAML, never the `.pptx` files.
+- Build both decks (requirements in
+  [`presentation/build/requirements.txt`](presentation/build/requirements.txt)):
+
+  ```bash
+  pip install -r presentation/build/requirements.txt
+  python3 -m presentation.build.build_decks --lang both
+  ```
+
+  This also rewrites the two transcripts (`presentation/transcript-en.md`,
+  `presentation/transcript-he.md`).
+
+- Regenerate the Hebrew manual bidi checklist
+  (`presentation/build/he_manual_check.md`):
+
+  ```bash
+  python3 -m presentation.build.build_decks --manual-check
+  ```
+
+- Run the tests:
+
+  ```bash
+  python3 -m pytest presentation/build/tests -q
+  ```
+
+- **Fonts.** Both decks use Arial, with Courier New for code: fonts every
+  PowerPoint machine already has, so nothing needs installing.
+
+- The validator (10 validator checks plus the generator-enforced timing
+  prefix) enforces the 45:00 timing and EN/HE sync (same slides, bullet keys
+  and tips in both languages):
+
+  ```bash
+  python3 -m presentation.build.validate presentation/content/deck.yaml
+  ```
+
+- [`presentation/build/he_manual_check.md`](presentation/build/he_manual_check.md)
+  is the checklist for the manual right-to-left (bidi) pass over the Hebrew
+  deck in PowerPoint.
 
 ## Installation
 
@@ -148,8 +214,12 @@ firmware implementation. Compare [examples/prompt-only](examples/prompt-only)
 ├── README.md
 ├── docs/                          # textbook, setup guides, images
 │   └── textbook.md
-├── presentation/                  # the final slide deck
-│   └── speckit-workshop.pptx
+├── presentation/
+│   ├── speckit-workshop.pptx      # English deck (generated)
+│   ├── speckit-workshop-he.pptx   # Hebrew deck (generated)
+│   ├── transcript-en.md / -he.md  # talk scripts (generated)
+│   ├── content/deck.yaml          # single content source for both decks
+│   └── build/                     # generator, validator, tests
 ├── firmware/                      # PlatformIO project for Heltec WiFi Kit V3
 ├── specs/001-heltec-monitor/      # spec, plan, tasks, research, analysis
 ├── .specify/                      # Spec Kit project configuration (generated)
@@ -186,10 +256,17 @@ see [docs/codex.md](docs/codex.md).)
 - Claude Code workflow: [docs/claude-code.md](docs/claude-code.md)
 - Codex workflow: [docs/codex.md](docs/codex.md)
 - Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
-- Slide deck: [presentation/speckit-workshop.pptx](presentation/speckit-workshop.pptx)
+- Slide decks: [English](presentation/speckit-workshop.pptx) ·
+  [Hebrew](presentation/speckit-workshop-he.pptx) · transcripts:
+  [English](presentation/transcript-en.md) · [Hebrew](presentation/transcript-he.md)
 
 ## References
 
+- Vimal Dwarampudi, [“Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers”](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a) (Medium, Jun 2026)
+- [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
+  [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) ·
+  [Superpowers](https://github.com/obra/superpowers)
+- Chroma, [“Context Rot”](https://www.trychroma.com/research/context-rot) (2025)
 - [Spec Kit](https://github.com/github/spec-kit)
 - [Spec Kit documentation](https://github.github.io/spec-kit/)
 - [Claude Code documentation](https://docs.claude.com/en/docs/claude-code)
