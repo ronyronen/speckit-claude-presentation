@@ -106,6 +106,9 @@ def test_diagram_area_above_tip_band(decks):
 LONG = "Long placeholder text that keeps going to sixty characters!!"
 LONG_HE = "טקסט ארוך מאוד שממשיך וממשיך עד שהוא מגיע לשישים תווים בדיוק"
 TIP20 = " ".join(["word"] * 20)
+# Titles must fit one line (>= 28pt): as long as the longest real title.
+LONG_TITLE = {"en": "Heltec board + DHT22: implicit vs explicit",
+              "he": "לוח Heltec עם DHT22: מרומז מול מפורש בדיוק"}
 
 
 def _long_slide(layout):
@@ -122,7 +125,7 @@ def _long_slide(layout):
         if layout == "bullets-diagram" else None
     return Slide(
         id=f"long-{layout}", part="I", budget_s=60, layout=layout,
-        title=pair, bullets=[Bullet(f"b{i}", LONG, LONG_HE) for i in range(5)],
+        title=dict(LONG_TITLE), bullets=[Bullet(f"b{i}", LONG, LONG_HE) for i in range(5)],
         tip=Tip("t", TIP20, TIP20), notes={"en": "", "he": ""},
         diagram=diagram, sources=[], appendix=False, extra=extra)
 
@@ -253,3 +256,136 @@ def test_title_gap(layout):
     sl = _render(_long_slide(layout))
     t = _shape(sl, "lay-title")
     assert t.top + t.height + Inches(0.1) <= content_box(True)[1]
+
+
+# --- task 6: fit guard on every text body (no reliance on normAutofit) ------
+
+from presentation.build.layouts import BODY_PT, CODE_PT, SMALL_PT, TIP_PT, TITLE_PT  # noqa: E402
+
+MID = "Medium length bullet text that wraps once or twice in a box"  # 59 chars
+HUGE = " ".join(["overflowing"] * 400)
+
+
+def _runs_pt(sl, name):
+    sh = _shape(sl, name)
+    return {r.font.size.pt for p in sh.text_frame.paragraphs for r in p.runs}
+
+
+def _fits(sh, size):
+    from presentation.build.layouts import (BULLET_INDENT, FRAME_INSET_H,
+                                            FRAME_INSET_V, est_height, est_lines)
+    tw = sh.width - FRAME_INSET_H - BULLET_INDENT
+    lines = sum(est_lines(p.text, tw, size) for p in sh.text_frame.paragraphs)
+    return est_height(lines, size) + FRAME_INSET_V <= sh.height
+
+
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_long_bullets_fit_by_downsizing(lang):
+    s = _long_slide("bullets")
+    s.bullets = [Bullet(f"b{i}", MID + " " + MID, MID + " " + MID) for i in range(7)]
+    sl = _render(s, lang)
+    (size,) = _runs_pt(sl, "lay-body")
+    assert 14 <= size < BODY_PT
+    assert _fits(_shape(sl, "lay-body"), size)
+
+
+def test_short_bullets_keep_default_size():
+    s = _long_slide("bullets")
+    s.bullets = [Bullet("a", "short", "קצר")]
+    assert _runs_pt(_render(s), "lay-body") == {BODY_PT}
+
+
+def _overflow(layout, mutate):
+    s = _long_slide(layout)
+    mutate(s)
+    return s
+
+
+TOO_LONG = {
+    "bullets": ("bullets", lambda s: setattr(s, "bullets", [Bullet("x", HUGE, HUGE)])),
+    "code-bullets": ("code", lambda s: setattr(s, "bullets", [Bullet("x", HUGE, HUGE)])),
+    "code": ("code", lambda s: s.extra.__setitem__("code", "\n".join(["x = 1"] * 60))),
+    "compare": ("compare", lambda s: s.extra.__setitem__(
+        "columns", [{"heading": {"en": "h", "he": "h"},
+                     "items": [{"en": HUGE, "he": HUGE}]}] * 2)),
+    "caption": ("photos", lambda s: s.extra["images"][1].__setitem__(
+        "caption", {"en": HUGE, "he": HUGE})),
+    "tip": ("bullets", lambda s: setattr(s, "tip", Tip("t", HUGE, HUGE))),
+}
+
+
+@pytest.mark.parametrize("case", sorted(TOO_LONG))
+def test_too_long_body_raises(case):
+    layout, mutate = TOO_LONG[case]
+    with pytest.raises(ValueError, match=f"long-{layout}"):
+        _render(_overflow(layout, mutate))
+
+
+def test_long_tip_fits_by_downsizing():
+    s = _long_slide("bullets")
+    s.tip = Tip("t", " ".join(["word"] * 40), " ".join(["מילה"] * 40))
+    (size,) = _runs_pt(_render(s), "lay-tip-text")
+    assert 14 <= size < TIP_PT
+
+
+def test_long_code_fits_by_downsizing():
+    s = _long_slide("code")
+    s.extra["code"] = "\n".join(["line"] * 14)
+    (size,) = _runs_pt(_render(s), "lay-code")
+    assert 14 <= size < CODE_PT
+
+
+def test_compare_items_fit_by_downsizing():
+    s = _long_slide("compare")
+    pair = {"en": MID + " " + MID, "he": MID + " " + MID}
+    s.extra["columns"] = [{"heading": {"en": "h", "he": "h"}, "items": [pair] * 4}] * 2
+    (size,) = _runs_pt(_render(s), "lay-col0-body")
+    assert 14 <= size < SMALL_PT
+
+
+def test_bullet_strip_leaves_min_diagram_height():
+    s = _long_slide("bullets-diagram")
+    four = MID + " " + MID + " " + MID + " " + MID
+    s.bullets = [Bullet(f"b{i}", four, four) for i in range(3)]
+    with pytest.raises(ValueError, match="long-bullets-diagram"):
+        _render(s)
+
+
+def test_title_steps_down_to_one_line():
+    s = _long_slide("bullets")
+    s.title = {"en": "Heltec board + DHT22: implicit vs explicit wiring",
+               "he": "Heltec board + DHT22: implicit vs explicit wiring"}
+    (size,) = _runs_pt(_render(s), "lay-title")
+    assert 28 <= size < TITLE_PT
+
+
+def test_short_title_keeps_size():
+    s = _long_slide("bullets")
+    s.title = {"en": "Takeaways", "he": "סיכום"}
+    assert _runs_pt(_render(s), "lay-title") == {TITLE_PT}
+
+
+def test_title_needing_two_lines_raises():
+    s = _long_slide("bullets")
+    s.title = {"en": LONG + " " + LONG, "he": LONG_HE + " " + LONG_HE}
+    with pytest.raises(ValueError, match="long-bullets.*title"):
+        _render(s)
+
+
+def test_code_lines_do_not_wrap_when_avoidable():
+    """Mono code wraps badly: step down until no source line wraps (>= 14pt)."""
+    from presentation.build.layouts import FRAME_INSET_H, MONO_EM, est_lines
+    s = _long_slide("code")
+    line = "test_third_consecutive_failure_enters_sensor_error [PASSED]"  # 59
+    s.extra["code"] = "$ pio test -e native\n" + line + "\n"
+    sl = _render(s)
+    (size,) = _runs_pt(sl, "lay-code")
+    tw = _shape(sl, "lay-code").width - FRAME_INSET_H
+    assert 14 <= size < CODE_PT
+    assert est_lines(line, tw, size, char_em=MONO_EM) == 1
+
+
+def test_short_code_keeps_default_size():
+    s = _long_slide("code")
+    s.extra["code"] = "cd heltec-monitor\n"
+    assert _runs_pt(_render(s), "lay-code") == {CODE_PT}

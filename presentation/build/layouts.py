@@ -38,12 +38,17 @@ FRAME_INSET_H = Inches(0.2)  # default text-frame left + right insets
 CELL_INSET_V = Inches(0.1)   # default table-cell top + bottom margins
 CELL_INSET_H = Inches(0.2)   # default table-cell left + right margins
 TABLE_PT_MAX, TABLE_PT_MIN = 18, 14
+BODY_PT_MIN = 14     # floor for every text body
+TITLE_PT_MIN = 28    # floor for slide titles
+MONO_EM = 0.6        # monospace glyph width, in ems
+DIAGRAM_MIN_H = Inches(2.5)
+CODE_TEXT_FRAC = 0.32  # bullet column share on code slides; the rest is code
 
 
-def est_lines(text, width_emu, size_pt, bold=False):
+def est_lines(text, width_emu, size_pt, bold=False, char_em=CHAR_EM):
     """Greedy word-wrap line count for text in a box width_emu wide."""
     em = size_pt * EMU_PT * (1.1 if bold else 1.0)
-    cpl = max(1, int(width_emu / (em * CHAR_EM)))
+    cpl = max(1, int(width_emu / (em * char_em)))
     n = 0
     for para in str(text).split("\n"):
         lines, cur = 1, 0
@@ -62,6 +67,20 @@ def est_height(lines, size_pt):
     return int(lines * size_pt * LINE_EM * EMU_PT)
 
 
+def fit_size(sid, field, items, w, h, size, bullet=False, bold=False,
+             char_em=CHAR_EM, min_pt=BODY_PT_MIN, max_lines=None):
+    """Largest font from size down to min_pt whose estimated text height fits
+    a w x h text frame (and needs at most max_lines lines). Raises ValueError
+    naming the slide and field when even min_pt does not fit."""
+    tw = w - FRAME_INSET_H - (BULLET_INDENT if bullet else 0)
+    for pt in range(size, min_pt - 1, -1):
+        lines = sum(est_lines(t, tw, pt, bold, char_em) for t in items)
+        if (max_lines is None or lines <= max_lines) and \
+                est_height(lines, pt) + FRAME_INSET_V <= h:
+            return pt
+    raise ValueError(f"{sid}: {field} too long to fit at {min_pt}pt")
+
+
 def _mx(x, w, lang):
     """Mirror a box horizontally for RTL."""
     return SLIDE_W - x - w if lang == "he" else x
@@ -72,7 +91,12 @@ def _t(d, lang):
 
 
 def _textbox(slide, name, x, y, w, h, lang, items, glossary, size,
-             bullet=False, color=None, bold=False, align=None, anchor=None):
+             bullet=False, color=None, bold=False, align=None, anchor=None,
+             fit=None, min_pt=BODY_PT_MIN, max_lines=None):
+    """fit=(slide id, field name) steps size down until the text fits."""
+    if fit:
+        size = fit_size(*fit, items, w, h, size, bullet=bullet, bold=bold,
+                        min_pt=min_pt, max_lines=max_lines)
     tb = slide.shapes.add_textbox(int(_mx(x, w, lang)), int(y), int(w), int(h))
     tb.name = name
     tf = tb.text_frame
@@ -120,11 +144,12 @@ TITLE_GAP = Inches(0.1)  # between the title frame and the content
 def _title(slide, s, lang, glossary):
     tb = _textbox(slide, "lay-title", MARGIN, MARGIN, SLIDE_W - 2 * MARGIN,
                   content_box(False)[1] - MARGIN - TITLE_GAP, lang, [_t(s.title, lang)], glossary, TITLE_PT,
-                  bold=True, anchor=MSO_ANCHOR.MIDDLE)
+                  bold=True, anchor=MSO_ANCHOR.MIDDLE, fit=(s.id, "title"),
+                  min_pt=TITLE_PT_MIN, max_lines=1)
     _head_font(tb, lang)
 
 
-def add_tip(slide, tip_text, lang, glossary=()):
+def add_tip(slide, tip_text, lang, glossary=(), sid="tip"):
     """Bottom TIP band: pill labelled "TIP" (left in EN, right in HE) + text."""
     x, y, w, h = tip_box()
     _rect(slide, "lay-tip-band", x, y, w, h, lang, "surface", line="tip")
@@ -133,7 +158,7 @@ def add_tip(slide, tip_text, lang, glossary=()):
     p.name = "lay-tip-pill"
     tx = x + pad + PILL_W + pad
     _textbox(slide, "lay-tip-text", tx, y, x + w - tx - pad, h, lang, [tip_text],
-             list(glossary), TIP_PT, anchor=MSO_ANCHOR.MIDDLE)
+             list(glossary), TIP_PT, anchor=MSO_ANCHOR.MIDDLE, fit=(sid, "tip"))
 
 
 def _frame(slide, s, lang, glossary, title=True):
@@ -143,7 +168,7 @@ def _frame(slide, s, lang, glossary, title=True):
         _title(slide, s, lang, glossary)
     x, y, w, h = content_box(s.tip is not None)
     if s.tip:
-        add_tip(slide, getattr(s.tip, lang), lang, glossary)
+        add_tip(slide, getattr(s.tip, lang), lang, glossary, s.id)
         h -= TIP_GAP
     return x, y, w, h
 
@@ -157,7 +182,7 @@ def _bullet_box(slide, box, s, lang, glossary, size=BODY_PT):
         return
     x, y, w, h = box
     _textbox(slide, "lay-body", x, y, w, h, lang, _bullets(s, lang), glossary,
-             size, bullet=True)
+             size, bullet=True, fit=(s.id, "bullets"))
 
 
 # --- layouts ---------------------------------------------------------------
@@ -168,12 +193,13 @@ def _centered(slide, s, lang, glossary, title_pt, sub_color):
     ty = y + (h - title_h) // 2 - Inches(0.6)
     tb = _textbox(slide, "lay-title", x, ty, w, title_h, lang, [_t(s.title, lang)],
                   glossary, title_pt, bold=True, align=PP_ALIGN.CENTER,
-                  anchor=MSO_ANCHOR.BOTTOM)
+                  anchor=MSO_ANCHOR.BOTTOM, fit=(s.id, "title"), min_pt=TITLE_PT_MIN)
     _head_font(tb, lang)
     if s.bullets:
         sy = ty + title_h + Inches(0.2)
         _textbox(slide, "lay-body", x, sy, w, y + h - sy, lang, _bullets(s, lang),
-                 glossary, SMALL_PT, color=COLORS[sub_color], align=PP_ALIGN.CENTER)
+                 glossary, SMALL_PT, color=COLORS[sub_color], align=PP_ALIGN.CENTER,
+                 fit=(s.id, "bullets"))
 
 
 def title(slide, s, lang, glossary):
@@ -198,6 +224,9 @@ def bullets_diagram(slide, s, lang, glossary):
         strip = est_height(lines, SMALL_PT) + FRAME_INSET_V
         _bullet_box(slide, (x, y, w, strip), s, lang, glossary, SMALL_PT)
         y, h = y + strip + Inches(0.15), h - strip - Inches(0.15)
+        if s.diagram and h < DIAGRAM_MIN_H:
+            raise ValueError(f"{s.id}: bullets leave {h / 914400:.2f}in for the "
+                             f"diagram (min {DIAGRAM_MIN_H / 914400:.1f}in)")
     if s.diagram:
         DIAGRAMS[s.diagram["name"]](slide, (x, y, w, h), s.diagram, lang, glossary)
 
@@ -217,11 +246,13 @@ def compare(slide, s, lang, glossary):
         _rect(slide, f"lay-col{i}-card", cx, y, cw, h, lang, "surface", line="accent")
         _textbox(slide, f"lay-col{i}-head", cx + pad, y + pad // 2, cw - 2 * pad,
                  head_h, lang, [_t(col.get("heading"), lang)], glossary, BODY_PT,
-                 bold=True, color=COLORS["accent2"], anchor=MSO_ANCHOR.MIDDLE)
+                 bold=True, color=COLORS["accent2"], anchor=MSO_ANCHOR.MIDDLE,
+                 fit=(s.id, f"columns[{i}].heading"))
         items = [_t(it, lang) for it in col.get("items") or []]
         if items:
             _textbox(slide, f"lay-col{i}-body", cx + pad, y + head_h, cw - 2 * pad,
-                     h - head_h - pad, lang, items, glossary, SMALL_PT, bullet=True)
+                     h - head_h - pad, lang, items, glossary, SMALL_PT, bullet=True,
+                     fit=(s.id, f"columns[{i}].items"))
 
 
 def _table_fit(s, rows, col_w, max_h, lang):
@@ -287,25 +318,31 @@ def photos(slide, s, lang, glossary):
         _textbox(slide, f"lay-caption{i}", cx, y + ph, cw, cap_h, lang,
                  [_t(img.get("caption"), lang)], glossary, SMALL_PT,
                  color=COLORS["muted"], align=PP_ALIGN.CENTER,
-                 anchor=MSO_ANCHOR.MIDDLE)
+                 anchor=MSO_ANCHOR.MIDDLE, fit=(s.id, f"images[{i}].caption"))
 
 
 def code(slide, s, lang, glossary):
     """Bullets on the reading-start side, a dark code card on the other side.
     Code is always LTR (mono font, no RTL)."""
     x, y, w, h = _frame(slide, s, lang, glossary)
-    text_w = int(w * 0.38) if s.bullets else 0
+    text_w = int(w * CODE_TEXT_FRAC) if s.bullets else 0
     if s.bullets:
         _bullet_box(slide, (x, y, text_w, h), s, lang, glossary, SMALL_PT)
     cx = x + text_w + (GAP if s.bullets else 0)
     cw = x + w - cx
     _rect(slide, "lay-code-card", cx, y, cw, h, lang, "bg", line="accent")
     pad = Inches(0.25)
+    src = s.extra.get("code", "")
+    fit = (s.id, "code", [src], cw - 2 * pad, h - 2 * pad, CODE_PT)
+    try:  # prefer a size at which no source line wraps
+        size = fit_size(*fit, char_em=MONO_EM, max_lines=len(src.split("\n")))
+    except ValueError:
+        size = fit_size(*fit, char_em=MONO_EM)
     tb = slide.shapes.add_textbox(int(_mx(cx + pad, cw - 2 * pad, lang)), int(y + pad),
                                   int(cw - 2 * pad), int(h - 2 * pad))
     tb.name = "lay-code"
     tf = tb.text_frame
-    write_paragraphs(tf, [s.extra.get("code", "")], "en", CODE_PT, [], bullet=False,
+    write_paragraphs(tf, [src], "en", size, [], bullet=False,
                      color=COLORS["ok"])
     tf.auto_size = MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE
     for p in tf.paragraphs:
