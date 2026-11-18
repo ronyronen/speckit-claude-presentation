@@ -2,10 +2,10 @@
 
     python3 -m presentation.build.backgrounds
 
-bg.png        content slides: deep navy with a faint blueprint grid (the
-              spec as a blueprint) and a soft blue glow in one corner.
-bg-title.png  title and section slides: near-black with a glowing horizon
-              of blue, violet and cyan light, keynote style.
+bg.png        content slides: off-white paper with a faint blueprint grid
+              (the spec as a blueprint) and soft pastel light in two corners.
+bg-title.png  title and section slides: a bright stage with a pastel aurora
+              rising behind a soft horizon, keynote style.
 """
 from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
@@ -63,41 +63,37 @@ def _dither(im, amount=6):
 
 
 def make_content_bg(path=ASSETS / "bg.png"):
-    im = _vertical((7, 11, 22), (11, 19, 36)).convert("RGBA")
+    im = _vertical((250, 251, 254), (238, 243, 251)).convert("RGBA")
     # grid strongest towards the bottom-right, almost gone behind the title
-    mask = _radial_mask((W * 0.35, H * 0.25, W * 1.45, H * 1.6), 260, base=40)
-    im = _grid(im, 48, 240, 22, 50, mask)
-    im = _glow(im, (W * 0.62, H * 0.55, W * 1.25, H * 1.45), BLUE, 70, 220)
-    im = _glow(im, (-W * 0.25, -H * 0.45, W * 0.35, H * 0.35), VIOLET, 38, 220)
-    _dither(im).save(path)
+    mask = _radial_mask((W * 0.3, H * 0.2, W * 1.45, H * 1.6), 260, base=60)
+    im = _grid(im, 48, 240, 26, 55, mask)
+    im = _glow(im, (W * 0.62, H * 0.55, W * 1.25, H * 1.45), (147, 197, 253), 120, 220)
+    im = _glow(im, (-W * 0.25, -H * 0.45, W * 0.3, H * 0.3), (196, 181, 253), 90, 200)
+    _dither(im, 3).save(path)
     return path
 
 
 def make_title_bg(path=ASSETS / "bg-title.png"):
-    im = Image.new("RGBA", (W, H), (3, 5, 11, 255))
+    im = _vertical((252, 253, 255), (244, 247, 253)).convert("RGBA")
     mask = _radial_mask((-W * 0.1, -H * 0.6, W * 1.1, H * 0.75), 200, base=0)
-    im = _grid(im, 60, 300, 10, 24, mask)
-    # light rising behind a dark "planet" whose edge is the horizon
+    im = _grid(im, 60, 300, 22, 45, mask)
+    # pastel aurora rising behind a soft horizon
     planet = (-W * 0.3, H * 0.80, W * 1.3, H * 2.2)
-    im = _glow(im, (W * 0.0, H * 0.62, W * 0.55, H * 1.05), VIOLET, 200, 120)
-    im = _glow(im, (W * 0.45, H * 0.62, W * 1.0, H * 1.05), CYAN, 180, 120)
-    im = _glow(im, (W * 0.2, H * 0.60, W * 0.8, H * 1.0), BLUE, 230, 110)
+    im = _glow(im, (W * 0.0, H * 0.60, W * 0.55, H * 1.05), (196, 181, 253), 230, 120)
+    im = _glow(im, (W * 0.45, H * 0.60, W * 1.0, H * 1.05), (153, 246, 228), 220, 120)
+    im = _glow(im, (W * 0.2, H * 0.58, W * 0.8, H * 1.0), (147, 197, 253), 240, 110)
     body = Image.new("L", (W, H), 0)
     ImageDraw.Draw(body).ellipse(planet, fill=255)
-    dark = Image.new("RGBA", (W, H), (4, 7, 16, 0))
-    dark.putalpha(body.filter(ImageFilter.GaussianBlur(3)))
-    im = Image.alpha_composite(im, dark)
-    # faint inner light just under the rim
-    im = _glow(im, (W * 0.25, H * 0.82, W * 0.75, H * 1.1), BLUE, 60, 60)
+    paper = Image.new("RGBA", (W, H), (250, 251, 254, 0))
+    paper.putalpha(body.filter(ImageFilter.GaussianBlur(4)).point(lambda v: v * 235 // 255))
+    im = Image.alpha_composite(im, paper)
     rim = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(rim).ellipse(planet, outline=230, width=3)
+    ImageDraw.Draw(rim).ellipse(planet, outline=200, width=3)
     rim = rim.filter(ImageFilter.GaussianBlur(1.5))
-    layer = Image.new("RGBA", (W, H), (210, 230, 255, 0))
-    layer.putalpha(rim)
+    layer = Image.new("RGBA", (W, H), (37, 99, 235, 0))
+    layer.putalpha(rim.point(lambda v: v * 150 // 255))
     im = Image.alpha_composite(im, layer)
-    # darken the top so the type sits on black
-    im = _glow(im, (-W * 0.2, -H * 0.9, W * 1.2, H * 0.55), (3, 5, 11), 160, 120)
-    _dither(im, 5).save(path)
+    _dither(im, 3).save(path)
     return path
 
 

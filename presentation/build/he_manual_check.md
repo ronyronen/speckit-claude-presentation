@@ -8,7 +8,6 @@ place in the right-to-left sentence, and that nothing is clipped.
 ## 1. title
 - [ ] פיתוח מבוסס spec עם AI
 - [ ] קודם כותבים מה רוצים. אחר כך ה-AI בונה.
-- [ ] על בסיס המאמר של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)
 - [ ] עם AI
 
 ## 2. hidden-questions
@@ -19,7 +18,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 ## 3. intent-gap
 - [ ] פער הכוונה: SDLC מול ADLC
 - [ ] הדרך הישנה: SDLC (מחזור חיי פיתוח תוכנה), איטית
-- [ ] הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מבינה הכול מילולית
+- [ ] הדרך החדשה: ADLC (מונח שמתגבש), מהירה אבל מבינה הכול מילולית
 - [ ] SDLC: הדרך הישנה
 - [ ] ADLC: מחזור פיתוח עם agents
 - [ ] ה-AI agent בונה
@@ -168,9 +167,7 @@ place in the right-to-left sentence, and that nothing is clipped.
 - [ ] TIP: כתבו spec של עמוד אחד לפני ה-session הבא שלכם עם AI, כבר מחר.
 
 ## 25. resources
-- [ ] מאמר: V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)
-- [ ] מחקר: Chroma, “Context Rot” (2025)
-- [ ] ההרצאה: github.com/ronyronen/speckit-claude-presentation
+- [ ] חומרי ההרצאה: github.com/ronyronen/speckit-claude-presentation
 
 ## 27. a1-stages-catch-mistakes
 - [ ] הטעות שנתפסה בפרויקט Heltec

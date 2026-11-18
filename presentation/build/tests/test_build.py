@@ -505,8 +505,10 @@ def test_opening_slide_is_keynote_style(decks):
     for lang, accent in (("en", "with AI"), ("he", "עם AI")):
         sl = decks[lang].slides[0]
         names = {sh.name: sh for sh in sl.shapes}
-        assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-body",
-                "lay-credit"} <= set(names)
+        assert {"lay-eyebrow", "lay-title", "lay-title-accent", "lay-body"} <= set(names)
+        # the source is cited on the References slide, not on the cover
+        assert "Dwarampudi" not in " ".join(sh.text_frame.text for sh in sl.shapes
+                                             if sh.has_text_frame)
         assert names["lay-title-accent"].text_frame.text.replace("‎", "").replace(
             "‏", "").strip() == accent
         runs = [r for p in names["lay-title-accent"].text_frame.paragraphs for r in p.runs]

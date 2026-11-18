@@ -170,7 +170,7 @@ def add_tip(slide, tip_text, lang, glossary=(), sid="tip"):
     """Bottom tip band: amber stripe + light-bulb icon on the reading-start
     side (left in EN, right in HE), then the tip text. No "TIP" label."""
     x, y, w, h = tip_box()
-    _rect(slide, "lay-tip-band", x, y, w, h, lang, "surface")
+    _rect(slide, "lay-tip-band", x, y, w, h, lang, "tip_band")
     stripe = Inches(0.07)
     _rect(slide, "lay-tip-stripe", x, y, stripe, h, lang, "bulb",
           kind=MSO_SHAPE.RECTANGLE)
@@ -245,7 +245,7 @@ def _centered(slide, s, lang, glossary, title_pt, sub_color):
 TITLE_BG = "bg-title.png"
 HERO_PT, HERO_PT_MIN = 66, 40
 # keynote-style gradient for the accent words of the opening title
-HERO_GRADIENT = ("38BDF8", "818CF8", "C084FC")
+HERO_GRADIENT = ("0284C7", "4F46E5", "9333EA")
 
 
 def _gradient_text(tb, stops=HERO_GRADIENT):
@@ -449,7 +449,7 @@ def code(slide, s, lang, glossary):
         _bullet_box(slide, (x, y, text_w, h), s, lang, glossary, SMALL_PT)
     cx = x + text_w + (GAP if s.bullets else 0)
     cw = x + w - cx
-    _rect(slide, "lay-code-card", cx, y, cw, h, lang, "bg", line="accent")
+    _rect(slide, "lay-code-card", cx, y, cw, h, lang, "code_bg", line="accent")
     pad = Inches(0.25)
     src = s.extra.get("code", "")
     fit = (s.id, "code", [src], cw - 2 * pad, h - 2 * pad, CODE_PT)
@@ -462,7 +462,7 @@ def code(slide, s, lang, glossary):
     tb.name = "lay-code"
     tf = tb.text_frame
     write_paragraphs(tf, [src], "en", size, [], bullet=False,
-                     color=COLORS["ok"])
+                     color=COLORS["code_text"])
     tf.auto_size = MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE
     for p in tf.paragraphs:
         for r in p.runs:

@@ -15,18 +15,13 @@ a shared constitution).
 > The problem is that the product behavior was not sufficiently defined.
 
 **Repository:** [github.com/ronyronen/speckit-claude-presentation](https://github.com/ronyronen/speckit-claude-presentation)
-· **Latest release:** [v1.0.0](https://github.com/ronyronen/speckit-claude-presentation/releases/latest)
+· **Latest release:** [download](https://github.com/ronyronen/speckit-claude-presentation/releases/latest)
 (both decks and both transcripts, ready to download)
 
 This repository is the companion material for the talk. It contains a
 working firmware example, the full set of Spec Kit artifacts that produced
 it, a standalone Markdown textbook, and the single content source from
 which both slide decks are generated.
-
-The theory part is based on Vimal Dwarampudi,
-["Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers"](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a)
-(Medium, Jun 2026). Claims from the article were fact-checked before they
-went on a slide; the article's opinions are attributed to its author.
 
 ## Status
 
@@ -78,7 +73,8 @@ The decks:
   · [transcript](presentation/transcript-he.md)
 
 Each transcript is the full talk script, slide by slide, with timings and tips.
-Tips appear on the slides as a light-bulb icon. The same files are attached
+Tips appear on the slides as a light-bulb icon. The decks use a light
+paper-and-blueprint theme with a keynote-style cover. The same files are attached
 to every [GitHub release](https://github.com/ronyronen/speckit-claude-presentation/releases).
 
 ### Rebuilding the decks
@@ -340,7 +336,7 @@ A learning path for after the talk, in order:
    and practise TDD with it: ask for a failing test first.
 5. **Learn the fundamentals** behind the talk:
    - Anthropic, [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-   - Liu et al., [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) (2023)
+   - Liu, N. F. et al. (2024), [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172), TACL
    - Chroma, [Context Rot](https://www.trychroma.com/research/context-rot) (2025)
    - Martin Fowler's site, [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
    - Anthropic, [Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices)
@@ -366,12 +362,12 @@ A learning path for after the talk, in order:
 
 ## References
 
-- Vimal Dwarampudi, [“Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers”](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a) (Medium, Jun 2026)
+- Dwarampudi, V. (2026). [*Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers*](https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a). Medium.
 - [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
   [GSD (gsd-core)](https://github.com/open-gsd/gsd-core) ·
   [Superpowers](https://github.com/obra/superpowers)
 - Chroma, [“Context Rot”](https://www.trychroma.com/research/context-rot) (2025)
-- Liu et al., [“Lost in the Middle: How Language Models Use Long Contexts”](https://arxiv.org/abs/2307.03172) (2023)
+- Liu, N. F. et al. (2024). [*Lost in the Middle: How Language Models Use Long Contexts*](https://arxiv.org/abs/2307.03172). TACL.
 - Anthropic, [“Effective context engineering for AI agents”](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - Martin Fowler's site, [“Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl”](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
 - GitHub Blog, [“Spec-driven development with AI: get started with a new open source toolkit”](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)

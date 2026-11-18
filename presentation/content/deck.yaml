@@ -6,10 +6,6 @@ meta:
   total_budget: "45:00"
   qa_budget: "3:00"
   min_tips: 10
-  article_credit:
-    author: "V. Dwarampudi"
-    title: "Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers"
-    venue: "Medium, Jun 2026"
 
 glossary_keep_en: [TIP, Spec Kit, BMAD, GSD, Superpowers, SDD, SDLC, ADLC, AI,
   agent, agents, prompt, prompts, prompt engineering, context, context window,
@@ -41,17 +37,11 @@ slides:
     accent: { en: "with AI", he: "עם AI" }
     bullets:
       - { key: subtitle, en: "Write the intent first. Then let the AI build it.", he: "קודם כותבים מה רוצים. אחר כך ה-AI בונה." }
-      - { key: credit, en: "Based on V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "על בסיס המאמר של V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)" }
-    sources: [article]
     notes:
       en: |
         Welcome. AI means artificial intelligence, and today is about one idea: when you build software with an AI coding assistant like Claude Code or Codex, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec is simply a written description of what the software should do.
-        The theory follows Vimal Dwarampudi's Medium article "Spec-Driven AI"; where something is his opinion, I will say so.
-        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: |
         ברוכים הבאים. AI זה בינה מלאכותית, והיום נדבר על רעיון אחד: כשבונים תוכנה עם עוזר קוד מבוסס AI, כמו Claude Code או Codex, כותבים קודם מה רוצים, ורק אז הוא כותב את הקוד. לזה קוראים Spec-Driven Development, או SDD. spec הוא פשוט תיאור כתוב של מה שהתוכנה צריכה לעשות.
-        החלק התיאורטי מבוסס על המאמר של Vimal Dwarampudi ב-Medium, “Spec-Driven AI”; כשמשהו הוא דעה שלו, אגיד את זה.
-        Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   - id: hidden-questions
     part: "0"
@@ -84,7 +74,7 @@ slides:
     title: { en: "The intent gap: SDLC vs ADLC", he: "פער הכוונה: SDLC מול ADLC" }
     bullets:
       - { key: sdlc, en: "Old way: software development life cycle (SDLC), slow docs", he: "הדרך הישנה: SDLC (מחזור חיי פיתוח תוכנה), איטית" }
-      - { key: adlc, en: "New way: ADLC (the article’s term), fast but literal", he: "הדרך החדשה: ADLC (מונח מהמאמר), מהירה אבל מבינה הכול מילולית" }
+      - { key: adlc, en: "New way: ADLC (an emerging term), fast but literal", he: "הדרך החדשה: ADLC (מונח שמתגבש), מהירה אבל מבינה הכול מילולית" }
     diagram:
       name: sdlc-adlc
       labels:
@@ -104,7 +94,7 @@ slides:
       en: |
         Analogy: a very fast translator who never asks what you meant. Every word you say is translated perfectly, including the words you got wrong.
         Start with the old way. For decades software followed the SDLC, the software development life cycle: requirements, design, code, test, release. People did every step, and slowly. The documents written at the start drifted out of date, but the slowness hid the problem, because a confused developer could walk over and ask.
-        The article calls the new way the ADLC, roughly "agentic development life cycle". That is the author's framing, not an industry-standard term yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. In the article's words, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
+        The new way is sometimes called the ADLC, roughly "agentic development life cycle". It is an emerging term, not an industry standard yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. Put simply, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
         Both share one unsolved problem: does what got built match what was intended? In the old world, requirement documents went stale before the ink dried. In early AI coding, the answer was "prompt harder". Neither worked reliably.
         So here is the intent gap: what you meant and what you typed are not the same thing. Humans used to fill that gap with conversation. The agent fills it with guesses, at high speed. The faster the builder, the faster that gap grows.
         The fix sounds almost boring: write the intent down first, in a form both people and the AI can read, and keep it up to date. Everything else today builds on that.
@@ -112,7 +102,7 @@ slides:
       he: |
         Analogy: מתרגם מהיר מאוד שאף פעם לא שואל למה התכוונתם. כל מילה שאתם אומרים מתורגמת בצורה מושלמת, כולל המילים שטעיתם בהן.
         נתחיל מהדרך הישנה. במשך עשורים, פיתוח תוכנה עבד לפי SDLC, מחזור חיי פיתוח התוכנה: דרישות, עיצוב, קוד, בדיקות, שחרור. אנשים עשו כל שלב, ולאט. המסמכים שנכתבו בהתחלה התיישנו, אבל האיטיות הסתירה את הבעיה, כי מפתח מבולבל יכול היה פשוט לקום ולשאול.
-        המאמר קורא לדרך החדשה ADLC, בערך “agentic development life cycle”. זה הניסוח של הכותב, עדיין לא מונח מקובל בתעשייה, אבל הוא שימושי. agent הוא AI שיכול לערוך קבצים ולהריץ פקודות בעצמו. הוא כותב את הקוד בדקות, ובונה בדיוק את מה שהקלדתם. במילים של המאמר, SDLC מתמקד בתיאום בין אנשים, ו-ADLC מתמקד בביצוע אוטונומי עם פיקוח אנושי.
+        לדרך החדשה קוראים לפעמים ADLC, בערך “agentic development life cycle”. זה מונח שעדיין מתגבש, לא תקן בתעשייה, אבל הוא שימושי. agent הוא AI שיכול לערוך קבצים ולהריץ פקודות בעצמו. הוא כותב את הקוד בדקות, ובונה בדיוק את מה שהקלדתם. בקצרה, SDLC מתמקד בתיאום בין אנשים, ו-ADLC מתמקד בביצוע אוטונומי עם פיקוח אנושי.
         לשתיהן יש בעיה פתוחה אחת: האם מה שנבנה תואם את מה שהתכוונו? בעולם הישן, מסמכי הדרישות התיישנו עוד לפני שהדיו התייבש. בימים הראשונים של קוד עם AI, התשובה הייתה “לכתוב prompt חזק יותר”. אף אחת מהן לא עבדה באמת.
         אז הנה פער הכוונה: מה שהתכוונתם ומה שהקלדתם הם לא אותו דבר. פעם אנשים סגרו את הפער הזה בשיחה. ה-agent סוגר אותו בניחושים, ובמהירות. ככל שהבונה מהיר יותר, הפער גדל מהר יותר.
         הפתרון נשמע כמעט משעמם: לכתוב את הכוונה קודם, בצורה שגם אנשים וגם ה-AI יכולים לקרוא, ולשמור אותה מעודכנת. כל השאר היום נבנה על זה.
@@ -155,7 +145,7 @@ slides:
         So this is not good versus bad. It is a choice, and one question decides it: will this code need to survive? If yes, it deserves a spec.
         Point at the picture. On the left, a loop with no exit: prompt, the AI writes code, you accept or reject, and round again. Nothing is written down outside the chat. On the right, a line that goes somewhere: spec, plan, tasks, code, a review against the spec, and only then ship. Every one of the first four steps leaves a file behind.
         That is the tip on the slide: explore with vibe coding, and switch to a spec the moment the code has to last.
-        The diagram is redrawn from an idea in the article: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
+        Source (diagram adapted from): https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: |
         Analogy: סקיצה על מפית מול שרטוט של אדריכל. שניהם ציורים. לא בונים בית מהמפית, ולא משרטטים תוכנית אדריכלית רק כדי לנסות רעיון.
         vibe coding הוא המפית. זו דרך עבודה שבה מתארים מה רוצים, מקבלים את מה שה-AI מייצר, מריצים, וממשיכים לכתוב prompts עד שזה נראה עובד. אף פעם לא באמת קוראים את הקוד. ההחלטות שלכם חיות בהיסטוריית צ'אט שאף אחד, כולל אתם, לא יקרא שוב.
@@ -165,7 +155,7 @@ slides:
         אז זה לא טוב מול רע. זו בחירה, ושאלה אחת מכריעה: האם הקוד הזה צריך לשרוד? אם כן, מגיע לו spec.
         הצביעו על התמונה. משמאל, לולאה בלי יציאה: prompt, ה-AI כותב קוד, מאשרים או דוחים, ושוב מההתחלה. שום דבר לא נכתב מחוץ לצ'אט. מימין, קו שמתקדם: spec, plan, tasks, קוד, review מול ה-spec, ורק אז משחררים. כל אחד מארבעת השלבים הראשונים משאיר אחריו קובץ.
         זה ה-TIP בשקף: חקרו עם vibe coding, ועברו ל-spec ברגע שהקוד צריך להחזיק מעמד.
-        התרשים צויר מחדש על בסיס רעיון מהמאמר: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
+        Source (diagram adapted from): https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   - id: sdd-core
     part: I
@@ -195,7 +185,7 @@ slides:
         SDD makes the spec the source of truth. Not the code, and not the chat. The code is something the AI generates from the spec, and can generate again.
         The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
         Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
-        Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. The article describes this feedback loop, with the constitution as a rail running underneath every stage.
+        Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. Think of it as a feedback loop, with the constitution as a rail running underneath every stage.
         The constitution is not paperwork. Every later stage is checked against it, so you write the rules once and the AI respects them everywhere.
         The tip is the habit that makes all of this work: when the code and the spec disagree, fix the spec first.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
@@ -204,7 +194,7 @@ slides:
         SDD הופך את ה-spec למקור האמת. לא הקוד ולא הצ'אט. הקוד הוא משהו שה-AI מייצר מה-spec, ויכול לייצר שוב.
         העבודה עוברת בשלבים. קודם ה-constitution: חוקי הבית של הפרויקט, שנכתבים פעם אחת. בפרויקט החומרה שלנו, אחד הכללים הוא שלוגיקת ההחלטות חייבת להיות ניתנת לבדיקה בלי הלוח. אחר כך specify: מה המערכת צריכה לעשות, בשביל מי, ואיך נדע שהיא עובדת? אחר כך plan: איך נבנה את זה? אחר כך tasks: רשימת משימות ממוספרת. ואז implement: ה-AI כותב את הקוד.
         Spec Kit, ערכת הכלים החינמית של GitHub שנכיר כמו שצריך בשקף 9, מוסיפה שתי נקודות ביקורת חשובות, שמסומנות בתרשים כשערים. clarify שואל אתכם את השאלות שה-spec השאיר פתוחות, אחת אחת, ורושם את התשובות. analyze בודק את המסמכים זה מול זה, עוד לפני שיש קוד.
-        ואז הלולאה. כשלומדים משהו תוך כדי בנייה, דרישה משתנה או בדיקה חושפת פער, לא מתקנים את הקוד בשקט. מעדכנים את ה-spec, ומייצרים מחדש משם. המאמר מתאר את לולאת המשוב הזאת, עם ה-constitution כמסילה שעוברת מתחת לכל שלב.
+        ואז הלולאה. כשלומדים משהו תוך כדי בנייה, דרישה משתנה או בדיקה חושפת פער, לא מתקנים את הקוד בשקט. מעדכנים את ה-spec, ומייצרים מחדש משם. זו לולאת משוב, עם ה-constitution כמסילה שעוברת מתחת לכל שלב.
         ה-constitution היא לא ניירת. כל שלב בהמשך נבדק מולה, אז כותבים את הכללים פעם אחת וה-AI מקפיד עליהם בכל מקום.
         ה-TIP הוא ההרגל שגורם לכל זה לעבוד: כשהקוד וה-spec סותרים, תקנו קודם את ה-spec.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
@@ -306,7 +296,6 @@ slides:
         BMAD stands for Breakthrough Method for Agile AI-Driven Development. Its organizing idea is the agile team. Instead of one general-purpose AI assistant, you get several specialized agent roles, such as an analyst, a product manager, an architect, a developer and a tester. Each has a narrow job and its own focused context.
         The key feature is the handoff. Each role produces a written document, a brief, a requirements document, an architecture, user stories, and passes it to the next role. That leaves an audit trail of every decision.
         Walk the picture left to right: four phases, analysis, planning, solutioning and implementation. In each column, the agents on top write the document underneath, and that document is what the next phase starts from. The amber lane at the bottom is the quick flow: for a bug fix or a small feature you skip the first three phases and go straight to a short spec, a story and a review.
-        The article quotes a specific number of roles; we could not verify it, so I am not repeating it.
         In my reading, BMAD fits bigger projects that need serious planning up front. On a small project the full crew is overkill, which is the tip: borrow only the roles you actually miss.
         Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
       he: |
@@ -314,7 +303,6 @@ slides:
         BMAD הוא קיצור של Breakthrough Method for Agile AI-Driven Development. הרעיון המארגן שלו הוא צוות agile. במקום עוזר AI כללי אחד, מקבלים כמה תפקידי agent מתמחים, כמו אנליסט, מנהל מוצר, ארכיטקט, מפתח ובודק. לכל אחד תפקיד צר, וה-context הממוקד שלו.
         הדבר המרכזי הוא ההעברה. כל תפקיד מייצר מסמך כתוב, brief, מסמך דרישות, ארכיטקטורה, user stories, ומעביר אותו לתפקיד הבא. כך נשאר תיעוד של כל החלטה.
         עוברים על התמונה משמאל לימין: ארבעה שלבים, ניתוח, תכנון, עיצוב הפתרון ומימוש. בכל עמודה, ה-agents למעלה כותבים את המסמך שמתחתם, והמסמך הזה הוא נקודת ההתחלה של השלב הבא. המסלול הכתום למטה הוא ה-quick flow: לתיקון באג או feature קטן מדלגים על שלושת השלבים הראשונים, וישר עוברים ל-spec קצר, story ו-review.
-        המאמר מצטט מספר מסוים של תפקידים; לא הצלחנו לאמת אותו, אז אני לא חוזר עליו.
         לפי הקריאה שלי, BMAD מתאים לפרויקטים גדולים שצריכים תכנון רציני מראש. בפרויקט קטן, הצוות המלא מוגזם, וזה ה-TIP: קחו רק את התפקידים שבאמת חסרים לכם.
         Source: https://github.com/bmad-code-org/BMAD-METHOD · docs: https://docs.bmad-method.org/
 
@@ -384,7 +372,7 @@ slides:
         Superpowers, created by Jesse Vincent, starts from a simple insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
         Its README describes a seven-step workflow, and that is the picture. Brainstorming asks you questions before any design. A git worktree gives the work its own isolated branch. The plan splits it into small tasks. A fresh subagent takes each task. Then come TDD, code review, and finishing with a merge or a PR. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
         Then the work passes two reviews: first, does it match the spec? Second, is the code itself good?
-        On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers). The article's "170k in three months" figure does not match the record, so I am not repeating it.
+        On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers).
         Tip: ask for a failing test first, then only the code that makes it pass.
         Source: https://github.com/obra/superpowers
       he: |
@@ -418,9 +406,9 @@ slides:
         Analogy: building a house needs an architect and a site foreman. The architect decides what to build; the foreman keeps the work on track every day. Neither replaces the other.
         Here are the four frameworks on one picture, each with its metaphor. BMAD is the team. Spec Kit is the living document. GSD, short for "Get Sh*t Done", is fresh context: every task gets a new agent with a clean context window, so long projects never rot; there is a backup slide on it if anyone asks. Superpowers is discipline.
         They sit in two layers. The top layer is planning and governance: what are we building, why, and under which rules? That is BMAD and Spec Kit. The bottom layer is execution discipline: how do we build it reliably, for hours, without the AI drifting or skipping tests? That is GSD and Superpowers.
-        This is the article's most useful idea: these tools are not competitors. Planning tools do not solve context rot; a planning agent can drift in a long session like any other. And none of the planning tools enforce TDD at the moment the code is written.
+        This is the most useful idea here: these tools are not competitors. Planning tools do not solve context rot; a planning agent can drift in a long session like any other. And none of the planning tools enforce TDD at the moment the code is written.
         There is real overlap too. Spec Kit's acceptance checklist is a light quality gate, and BMAD has a tester role, so on smaller projects with careful human review, the planning layer may be enough on its own.
-        The author goes further: he writes that mature teams are converging on all four. That is his opinion. I would rather give you a rule for deciding, and that is the next slide.
+        Some practitioners go further and argue that mature teams are converging on all four. That is an opinion. I would rather give you a rule for deciding, and that is the next slide.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: |
         Analogy: כדי לבנות בית צריך אדריכל ומנהל עבודה. האדריכל מחליט מה בונים; מנהל העבודה דואג שהעבודה תתקדם כמו שצריך, כל יום. אף אחד מהם לא מחליף את השני.
@@ -428,7 +416,7 @@ slides:
         הם יושבים בשתי שכבות. השכבה העליונה היא תכנון ומשילות: מה בונים, למה, ולפי אילו כללים? זה BMAD ו-Spec Kit. השכבה התחתונה היא משמעת ביצוע: איך בונים באמינות, במשך שעות, בלי שה-AI יסטה או ידלג על בדיקות? זה GSD ו-Superpowers.
         זה הרעיון הכי שימושי במאמר: הכלים האלה לא מתחרים זה בזה. כלי תכנון לא פותרים context rot; agent של תכנון יכול לסטות ב-session ארוך כמו כל אחד אחר. ואף אחד מכלי התכנון לא אוכף TDD ברגע שהקוד נכתב.
         יש גם חפיפה אמיתית. ה-checklist של Spec Kit הוא שער איכות קל, ול-BMAD יש תפקיד של בודק, אז בפרויקטים קטנים עם review אנושי קפדני, שכבת התכנון לבדה אולי מספיקה.
-        הכותב הולך רחוק יותר: הוא כותב שצוותים בוגרים מתכנסים לשימוש בכל הארבעה. זו דעה שלו. אני מעדיף לתת לכם כלל להחלטה, וזה השקף הבא.
+        יש מי שהולכים רחוק יותר וטוענים שצוותים בוגרים מתכנסים לשימוש בכל הארבעה. זו דעה. אני מעדיף לתת לכם כלל להחלטה, וזה השקף הבא.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
   - id: decision-rule
@@ -455,7 +443,7 @@ slides:
     notes:
       en: |
         Analogy: choosing a vehicle. You do not buy a truck for a short commute, and you do not move house on a bicycle. The trip decides the vehicle.
-        This is the article's practical decision rule, drawn as two simple tracks. Start with a planning tool, for example Spec Kit, then ask three questions.
+        Here is a practical decision rule, drawn as two simple tracks. Start with a planning tool, for example Spec Kit, then ask three questions.
         First track, the context layer, GSD. Question one: are your AI sessions long, hours of work on their own? If yes, add GSD, because you will hit context rot. If no, ask question two: does a human review the output after each phase? If nobody does, add GSD. If you review every phase, skip it; each review is a natural checkpoint.
         Second track, the discipline layer, Superpowers. Question three: does your team have a strong TDD habit that survives deadline pressure? If no, add Superpowers and let the tool enforce it. If yes, skip it.
         Let's try the rule on the project you are about to see, the Heltec temperature monitor. Question one: were the sessions long? No; each Spec Kit stage was a short, focused session. Question two: did a human review each phase? Yes; I read and approved every document before the next stage started. So the context track says: skip GSD. Question three: a strong TDD habit? Here the habit was written into the project's constitution: Principle II says every threshold and state change needs a test written before or alongside the code. So the discipline track says: skip Superpowers too. Spec Kit alone, plus a human, was the right size for that job.
@@ -465,7 +453,7 @@ slides:
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: |
         Analogy: לבחור רכב. לא קונים משאית לנסיעה קצרה לעבודה, ולא עוברים דירה על אופניים. הנסיעה קובעת את הרכב.
-        זה כלל ההחלטה המעשי מהמאמר, מצויר כשני מסלולים פשוטים. מתחילים עם כלי תכנון, למשל Spec Kit, ואז שואלים שלוש שאלות.
+        זה כלל החלטה מעשי, מצויר כשני מסלולים פשוטים. מתחילים עם כלי תכנון, למשל Spec Kit, ואז שואלים שלוש שאלות.
         מסלול ראשון, שכבת ה-context, GSD. שאלה אחת: ה-sessions שלכם עם ה-AI ארוכים, שעות של עבודה עצמאית? אם כן, הוסיפו GSD, כי תיתקלו ב-context rot. אם לא, שאלה שתיים: האם אדם עושה review לתוצר אחרי כל שלב? אם אף אחד לא, הוסיפו GSD. אם אתם בודקים כל שלב, ותרו עליו; כל review הוא נקודת ביקורת טבעית.
         מסלול שני, שכבת המשמעת, Superpowers. שאלה שלוש: יש לצוות הרגל TDD חזק, ששורד לחץ של דדליין? אם לא, הוסיפו Superpowers ותנו לכלי לאכוף אותו. אם כן, ותרו.
         בואו ננסה את הכלל על הפרויקט שתראו עוד רגע, מוניטור הטמפרטורה של Heltec. שאלה אחת: ה-sessions היו ארוכים? לא; כל שלב של Spec Kit היה session קצר וממוקד. שאלה שתיים: אדם בדק כל שלב? כן; קראתי ואישרתי כל מסמך לפני שהשלב הבא התחיל. אז מסלול ה-context אומר: ותרו על GSD. שאלה שלוש: הרגל TDD חזק? כאן ההרגל נכתב לתוך ה-constitution של הפרויקט: עיקרון II קובע שלכל סף ולכל שינוי מצב צריכה להיות בדיקה, שנכתבת לפני הקוד או יחד איתו. אז מסלול המשמעת אומר: ותרו גם על Superpowers. Spec Kit לבד, יחד עם אדם, היה בדיוק בגודל הנכון לעבודה הזאת.
@@ -759,7 +747,7 @@ slides:
       en: |
         Analogy: a small band. The drummer, the bassist and the singer each know their part, and the band leader settles the arguments.
         Skills can also define roles, and roles can work as a team. This talk is the example. It was planned by three AI roles: an architect who coordinated, a product owner who wrote the brief, and a senior developer who estimated the work and checked the facts. The architect passed messages between them and made the call when they disagreed; I approved every scope decision.
-        That team caught real problems: an inflated star count in the article, an archived GSD repository, and slides naming the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
+        That team caught real problems: an inflated star count in a source, an archived GSD repository, and slides naming the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
         This was a custom setup on my machine, not a product you can download, but the pattern is reusable.
       he: |
         Analogy: להקה קטנה. המתופף, הבסיסט והזמרת יודעים כל אחד את התפקיד שלו, ומנהל הלהקה מכריע בוויכוחים.
@@ -823,13 +811,13 @@ slides:
     part: close
     budget: "0:30"
     layout: bullets
-    title: { en: "Resources", he: "מקורות" }
+    title: { en: "References", he: "מקורות" }
     bullets:
-      - { key: article, en: "Article: V. Dwarampudi, “Spec-Driven AI” (Medium, Jun 2026)", he: "מאמר: V. Dwarampudi, “Spec-Driven AI” (Medium, יוני 2026)" }
-      - { key: speckit, en: "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD", he: "GitHub: github/spec-kit · bmad-code-org/BMAD-METHOD" }
-      - { key: gsd, en: "GitHub: open-gsd/gsd-core · obra/superpowers", he: "GitHub: open-gsd/gsd-core · obra/superpowers" }
-      - { key: research, en: "Research: Chroma, “Context Rot” (2025)", he: "מחקר: Chroma, “Context Rot” (2025)" }
-      - { key: repo, en: "This talk: github.com/ronyronen/speckit-claude-presentation", he: "ההרצאה: github.com/ronyronen/speckit-claude-presentation" }
+      - { key: article, en: "Dwarampudi, V. (2026). Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers. Medium.", he: "Dwarampudi, V. (2026). Spec-Driven AI: BMAD, SpecKit, GSD & Superpowers. Medium." }
+      - { key: research, en: "Liu, N. F. et al. (2024). Lost in the Middle. TACL · Chroma (2025). Context Rot.", he: "Liu, N. F. et al. (2024). Lost in the Middle. TACL · Chroma (2025). Context Rot." }
+      - { key: speckit, en: "github.com/github/spec-kit · github.com/bmad-code-org/BMAD-METHOD", he: "github.com/github/spec-kit · github.com/bmad-code-org/BMAD-METHOD" }
+      - { key: gsd, en: "github.com/open-gsd/gsd-core · github.com/obra/superpowers", he: "github.com/open-gsd/gsd-core · github.com/obra/superpowers" }
+      - { key: repo, en: "Talk materials: github.com/ronyronen/speckit-claude-presentation", he: "חומרי ההרצאה: github.com/ronyronen/speckit-claude-presentation" }
     sources: [article, F4, F7]
     notes:
       en: |
@@ -870,7 +858,7 @@ slides:
         "Which tool should I start with?" One planning tool; Spec Kit is the one I used here. Then use the decision rule for the rest.
         "Does it work with my assistant?" Spec Kit supports several assistants, and its files do not depend on any one of them.
         "How long did the Heltec spec take?" Specify through implement all ran on one day, 2026-09-10, per the tags and commit dates in the repo.
-        If time runs out, point to the resources slide and the repo.
+        If time runs out, point to the references slide and the repo.
       he: |
         חזרו על כל שאלה לפני שאתם עונים, כדי שכל החדר ישמע.
         שאלות צפויות:
@@ -921,10 +909,10 @@ slides:
     notes:
       en: |
         backup, not timed. For questions comparing the tools.
-        The article's argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
+        The argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
       he: |
         backup, not timed. לשאלות שמשוות בין הכלים.
-        הטיעון של המאמר: frameworks של תכנון פותרים את “מה לבנות”; GSD ו-Superpowers פותרים את “איך לבנות באמינות במשך שעות”. בפרויקטים קטנים עם review אנושי קפדני, השערים הקלים של שכבת התכנון אולי מספיקים. אף אחד מהארבעה לא מחליף reviewer אנושי, ובדיקות החומרה עדיין עליכם.
+        הטיעון: frameworks של תכנון פותרים את “מה לבנות”; GSD ו-Superpowers פותרים את “איך לבנות באמינות במשך שעות”. בפרויקטים קטנים עם review אנושי קפדני, השערים הקלים של שכבת התכנון אולי מספיקים. אף אחד מהארבעה לא מחליף reviewer אנושי, ובדיקות החומרה עדיין עליכם.
 
   - id: a7-gsd
     part: close
@@ -950,20 +938,20 @@ slides:
       en: |
         backup, not timed. Use if someone asks about long sessions or GSD (slides 11 and 12 mention it).
         Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
-        GSD is short for a blunt phrase, "Get Sh*t Done", and the article calls it fundamentally a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
+        GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 7): quality drops as the window fills, so never let it fill.
         Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
         The project's memory lives in files, not in one long chat, and that is what lets each fresh runner pick up the baton.
-        One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The article still links the old one. The original project was published under the name TÂCHES.
+        One practical note: the original repository, gsd-build/get-shit-done, is now archived, and its README points to open-gsd/gsd-core. The original project was published under the name TÂCHES.
         Sources:
         https://github.com/open-gsd/gsd-core
         https://github.com/gsd-build/get-shit-done
       he: |
         backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 11 ו-12 מזכירים אותו).
         Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
-        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, והמאמר מגדיר אותו ביסודו ככלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 7): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
+        GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, וביסודו הוא כלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 7): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
         כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
         הזיכרון של הפרויקט חי בקבצים, לא בצ'אט ארוך אחד, וזה מה שמאפשר לכל רץ חדש לקחת את המקל.
-        הערה מעשית: ה-repository המקורי, gsd-build/get-shit-done, עבר לארכיון, וה-README שלו מפנה ל-open-gsd/gsd-core. המאמר עדיין מקשר לישן. הפרויקט המקורי פורסם תחת השם TÂCHES.
+        הערה מעשית: ה-repository המקורי, gsd-build/get-shit-done, עבר לארכיון, וה-README שלו מפנה ל-open-gsd/gsd-core. הפרויקט המקורי פורסם תחת השם TÂCHES.
         Sources:
         https://github.com/open-gsd/gsd-core
         https://github.com/gsd-build/get-shit-done

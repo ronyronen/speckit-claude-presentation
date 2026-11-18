@@ -69,7 +69,7 @@ slides:
 
 ## 5. Theme and RTL
 
-- **Visual baseline:** keep the current deck's dark navy background PNG, colour palette, OK/WARNING photos and code-card look, all extracted into `assets/`. The hand-placed PNG pieces are rebuilt as native shapes. The human has accepted that the result approximates the old look rather than copying it.
+- **Visual baseline:** (superseded 2026-11-18: light paper-and-blueprint theme, backgrounds drawn by `backgrounds.py`, keynote-style cover; the source article is cited on the References slide only) keep the current deck's dark navy background PNG, colour palette, OK/WARNING photos and code-card look, all extracted into `assets/`. The hand-placed PNG pieces are rebuilt as native shapes. The human has accepted that the result approximates the old look rather than copying it.
 - **Fonts (both decks):** Arial, with Courier New for code. These replace Plus Jakarta Sans and JetBrains Mono (2026-11-18), because every PowerPoint machine already has them and the render checks then show the real fonts.
 - **Theme details:** an accent bar beside each title, accent-coloured bullets with spacing, a rule under title and section headings, and a footer with the talk name and slide number (not on the title slide).
 - **HE font:** Arial, set in both `<a:latin>` and `<a:cs>`. Noto Sans Hebrew is the fallback.
@@ -115,7 +115,7 @@ slides:
 ## 9. Decisions and trade-offs
 
 - **A generator instead of hand edits.** The EN and HE decks stay in sync, and timing, tone and facts are checked by machine. The cost is that the hand polish of the current deck is only approximated. The human accepted this.
-- **Native diagrams instead of SVG.** They match the dark theme and are translated from the same YAML. The existing SVG pairs in `docs/images` are left untouched.
+- **Native diagrams instead of SVG.** They follow the theme colours and are translated from the same YAML. The existing SVG pairs in `docs/images` are left untouched.
 - **Repo history as an illustration, not a claim.** The GitHub section teaches the ideal team flow, using the real numbers (issue #2 and PRs #3–7). It does not claim that this repo was built by a team, or that the repo enforces CI or branch protection. Issue #2 stays open until the deck ships, because a slide uses it as a teaching example.
 - **Safe overwrite of the old deck.** The current EN deck is overwritten at the same path. Before that happens, the tag `pre-theory-deck` is created.
 - **`.tmp/` stays out of the repo.** The article is credited and linked, not redistributed.
