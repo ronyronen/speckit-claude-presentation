@@ -37,8 +37,8 @@ slides:
     sources: [article]
     notes:
       en: |
-        Welcome. Today is about one idea: when you build software with an AI coding assistant, AI meaning artificial intelligence, tools like Claude Code or Codex that write code for you, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec, short for specification, is simply a written description of what the software should do.
-        The theory part follows Vimal Dwarampudi's Medium article "Spec-Driven AI". Where something is his opinion, I will say so.
+        Welcome. AI means artificial intelligence, and today is about one idea: when you build software with an AI coding assistant like Claude Code or Codex, write down what you want before it writes the code. That is Spec-Driven Development, or SDD. A spec is simply a written description of what the software should do.
+        The theory follows Vimal Dwarampudi's Medium article "Spec-Driven AI"; where something is his opinion, I will say so.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: "ברוכים הבאים. מציינים את המאמר כבר בהתחלה.\nhttps://medium.com/ (קישור זמני)"
 
@@ -55,10 +55,10 @@ slides:
     tip: { key: ask-first, en: "List three questions the AI would have to guess, and answer them before prompting.", he: "לפני שכותבים prompt, רשמו שלוש שאלות שה-AI יצטרך לנחש לגביהן." }
     notes:
       en: |
-        Analogy: ordering a birthday cake by saying only "make it nice". You will get a cake, but every decision you skipped, the baker made for you.
-        Here is, in short, the request I gave an AI coding assistant. The real prompt, word for word, was: "Build an application for a Heltec WiFi Kit V3 that reads a sensor, shows the value on the display, and shows a warning when the value is too high." Nothing else. It sounds complete. Now count the questions hiding inside it.
-        What does "too hot" mean, exactly? Does the warning switch on at the number, or just above it? If the temperature hovers right at the edge, does the warning flicker on and off? Which sensor are we reading, and what happens when it stops answering?
-        The AI will not stop and ask. It answers every one of these questions anyway, silently, by guessing. The rest of this talk is about making those guesses visible, and then deciding them on purpose.
+        Analogy: ordering a birthday cake by saying only "make it nice". You get a cake, but every decision you skipped, the baker made for you.
+        The slide shows the request in short. The real prompt, word for word, was: "Build an application for a Heltec WiFi Kit V3 that reads a sensor, shows the value on the display, and shows a warning when the value is too high." Nothing else. It sounds complete.
+        Now count the hidden questions. What does "too hot" mean? At the number, or just above it? If the temperature hovers at the edge, does the warning flicker? Which sensor, and what if it stops answering?
+        The AI will not stop and ask. It answers every one of them anyway, silently, by guessing. This talk is about making those guesses visible.
       he: "Analogy: להזמין עוגה ולהגיד רק 'שתהיה יפה'.\nעוברים על כל שאלה נסתרת."
 
   # ---------------------------------------------------------------- Part I
@@ -68,8 +68,8 @@ slides:
     layout: bullets-diagram
     title: { en: "The intent gap: SDLC vs ADLC", he: "פער הכוונה: SDLC מול ADLC" }
     bullets:
-      - { key: sdlc, en: "Old: software development life cycle (SDLC), slow and stale docs", he: "SDLC: אנשים כותבים קוד, והמסמכים מתיישנים לאט" }
-      - { key: adlc, en: "New: ADLC (the article’s term): an AI agent codes in minutes", he: "ADLC: agent כותב קוד בדקות, ממה שאמרתם, בדיוק כפי שאמרתם" }
+      - { key: sdlc, en: "Old way: software development life cycle (SDLC), slow docs", he: "SDLC: אנשים כותבים קוד, והמסמכים מתיישנים לאט" }
+      - { key: adlc, en: "New way: ADLC (the article’s term), fast but literal", he: "ADLC: agent כותב קוד בדקות, ממה שאמרתם, בדיוק כפי שאמרתם" }
     diagram:
       name: sdlc-adlc
       labels:
@@ -81,7 +81,7 @@ slides:
         test: { en: "Test", he: "Test" }
         release: { en: "Release", he: "Release" }
         intent: { en: "Your intent", he: "Your intent" }
-        agent_builds: { en: "Agent builds", he: "Agent builds" }
+        agent_builds: { en: "AI agent builds", he: "AI agent builds" }
         check: { en: "Check", he: "Check" }
         correct: { en: "Correct", he: "Correct" }
     sources: [article, F8]
@@ -91,10 +91,9 @@ slides:
         Start with the old way. For decades software followed the SDLC, the software development life cycle: requirements, design, code, test, release. People did every step, and slowly. The documents written at the start drifted out of date, but the slowness hid the problem, because a confused developer could walk over and ask.
         The article calls the new way the ADLC, roughly "agentic development life cycle". That is the author's framing, not an industry-standard term yet, but it is useful. An agent is an AI that can edit files and run commands on its own. It writes the code in minutes, and it builds from exactly what you typed. In the article's words, SDLC optimizes for human coordination; ADLC optimizes for autonomous execution with human oversight.
         Both share one unsolved problem: does what got built match what was intended? In the old world, requirement documents went stale before the ink dried. In early AI coding, the answer was "prompt harder". Neither worked reliably.
-        So now there are two things: what you meant, and what you typed. Humans used to fill the gap between them with conversation. The agent fills it with guesses, at high speed. The faster the builder, the faster the gap grows.
+        So here is the intent gap: what you meant and what you typed are not the same thing. Humans used to fill that gap with conversation. The agent fills it with guesses, at high speed. The faster the builder, the faster that gap grows.
         The fix sounds almost boring: write the intent down first, in a form both people and the AI can read, and keep it up to date. Everything else today builds on that.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-        Slide points: What you meant and what you typed are not the same thing. The faster the builder, the faster that gap grows.
       he: "Analogy: מתרגם מהיר שאף פעם לא שואל למה התכוונתם.\nהתרשים יגיע בשלב P2.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
 
   - id: vibe-vs-sdd
@@ -144,7 +143,7 @@ slides:
         clarify: { en: "Clarify", he: "Clarify" }
         analyze: { en: "Analyze", he: "Analyze" }
         feedback: { en: "Change? Update the spec", he: "Change? Update the spec" }
-        rail: { en: "Constitution: the house rules for every stage", he: "Constitution: the house rules for every stage" }
+        rail: { en: "House rules for every stage", he: "House rules for every stage" }
     tip: { key: one-truth, en: "Fix the spec first when code and spec disagree, then regenerate the code.", he: "כשהקוד וה-spec לא מסכימים, מתקנים קודם את ה-spec ואז מייצרים מחדש." }
     sources: [article, F10]
     notes:
@@ -152,12 +151,11 @@ slides:
         Analogy: a restaurant kitchen cooking from one recipe card. If the dish comes out wrong, you do not just fix the plate; you fix the recipe, so tomorrow's dish is right too.
         SDD makes the spec the source of truth. Not the code, and not the chat. The code is something the AI generates from the spec, and can generate again.
         The work moves through stages. The constitution comes first: the project's house rules, written once. In our hardware project, one rule is that the decision logic must be testable without the board. Then specify: what should the system do, for whom, and how will we know it works? Then plan: how will we build it? Then tasks: a numbered to-do list. Then implement: the AI writes the code.
-        Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
+        Spec Kit, GitHub's free toolkit that we will meet properly on slide 9, adds two checkpoints that matter a lot, drawn on the diagram as gates. Clarify asks you the questions the spec left open, one at a time, and records your answers. Analyze cross-checks the documents against each other before any code exists.
         Then the loop. When you learn something while building, a requirement changes or a test reveals a gap, you do not quietly patch the code. You update the spec, and regenerate from there. The article describes this feedback loop, with the constitution as a rail running underneath every stage.
         The constitution is not paperwork. Every later stage is checked against it, so you write the rules once and the AI respects them everywhere.
         The tip is the habit that makes all of this work: when the code and the spec disagree, fix the spec first.
         Source: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
-        Slide points: Stages: constitution → specify → plan → tasks → implement. Two checkpoints: clarify (ask) and analyze (cross-check).
       he: "Analogy: כרטיס מתכון שכל המטבח מבשל לפיו.\nהתרשים יגיע בשלב P2.\nhttps://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a"
 
   # ---------------------------------------------------------------- Part II
@@ -201,14 +199,13 @@ slides:
     notes:
       en: |
         Analogy: a whiteboard in a long meeting. By hour two it is full, the decision from minute five is squeezed into a corner under three other diagrams, and people start contradicting it without noticing.
-        That is what happens in a long AI session. The context window keeps filling with old messages, failed attempts and files you no longer need. The early decisions are still technically there, but they get buried, and the AI starts quietly ignoring them.
+        That is what happens in a long AI session. The context window keeps filling with old messages, failed attempts and files you no longer need. The early decisions are still technically there, but they get buried and quietly ignored.
         This has a name: context rot. And it is not just a feeling. In July 2025, researchers at Chroma, Kelly Hong, Anton Troynikov and Jeff Huber, tested 18 AI models and found that performance becomes less reliable as the input gets longer, even on simple tasks. An earlier paper by Nelson Liu and colleagues, "Lost in the Middle", showed that models use information at the start and the end of a long input much better than information in the middle.
         So quality drops long before the window is full, and a bigger window does not make the problem go away.
         What helps? Keep sessions short and focused. Write decisions into files, not only into the chat. And when the AI starts forgetting what you agreed, do not argue with it: start a fresh session and hand it the spec.
         Sources:
         https://www.trychroma.com/research/context-rot
         https://arxiv.org/abs/2307.03172
-        Slide points: Early decisions get buried and quietly ignored. The name for this: context rot.
       he: "Analogy: משחק טלפון שבור שרק הולך ומתארך.\nהתרשים יגיע בשלב P2.\nhttps://www.trychroma.com/research/context-rot\nhttps://arxiv.org/abs/2307.03172"
 
   # ---------------------------------------------------------------- Part III
@@ -302,7 +299,7 @@ slides:
         Superpowers, created by Jesse Vincent, starts from a similar insight: the problem with AI coding is not intelligence, it is discipline. It is a library of skills, written procedures, that the agent must follow.
         Its README describes a seven-step workflow, from brainstorming the design, through an approved spec and a plan, to building, review and merge. The strictest part is TDD, test-driven development: first write a test that fails, then write just enough code to make it pass. Superpowers enforces this literally: code written before its test gets deleted.
         Then the work passes two reviews: first, does it match the spec? Second, is the code itself good?
-        On adoption: as of November 2026 the repository has over 300,000 GitHub stars. The article's "170k in three months" figure does not match the record, so I am not repeating it.
+        On adoption: the repository has over 300,000 GitHub stars as of November 2026 (github.com/obra/superpowers). The article's "170k in three months" figure does not match the record, so I am not repeating it.
         Tip: ask for a failing test first, then only the code that makes it pass.
         Source: https://github.com/obra/superpowers
       he: "Analogy: רשימת תיוג של טייס, שמקריאים בקול בכל טיסה.\nhttps://github.com/obra/superpowers"
@@ -413,10 +410,10 @@ slides:
     notes:
       en: |
         Analogy: a home thermostat. The heating turns on at 19 degrees and off at 21, not both at 20, otherwise it would click on and off all day.
-        This is the clearest example in the project. Writing the code for a warning is trivial; deciding it is the hard part. With a single threshold, a reading hovering at the limit would flip the warning on and off every two seconds.
-        The specify stage turned "too hot" into an explicit band with two numbers: one to switch the warning on, a lower one to switch it off. In between, the state stays as it was. That gap is called hysteresis. On the slide you see them as FR-003 and FR-004. FR means functional requirement; they are numbered so that tests and tasks can point to them.
-        Then clarify asked the question nobody had thought about: what happens at exactly the threshold value? The answer we recorded: strictly. Exactly 27.0 does not trigger, exactly 25.0 does not clear. That is a product decision, and it is written down.
-        One more detail. The first version of the band was 30 and 28 °C. During hardware bring-up we lowered both, so you can trigger the warning by cupping a hand around the sensor. That change was recorded as a new clarification in the spec, not quietly edited in the code.
+        Writing the code for a warning is trivial; deciding it is the hard part. With a single threshold, a reading hovering at the limit would flip the warning on and off every two seconds.
+        The specify stage turned "too hot" into an explicit band: one number to switch the warning on, a lower one to switch it off, and in between the state stays as it was. That gap is called hysteresis. On the slide they are FR-003 and FR-004; FR means functional requirement, numbered so tests and tasks can point to it.
+        Then clarify asked what nobody had thought about: what happens at exactly the threshold? Our answer: strictly. Exactly 27.0 does not trigger; exactly 25.0 does not clear.
+        The first band was 30 and 28 °C. During hardware bring-up we lowered it so a cupped hand can trigger the warning, and recorded that as a new clarification, not a quiet code edit.
         Tip: ask about the edges, exactly at the threshold, sensor missing, first boot.
       he: "Analogy: see slide 5"
 
@@ -512,8 +509,8 @@ slides:
         Analogy: a newspaper. The printed edition is what readers see, and it must always be right. The draft desk is where the messy work happens.
         Some vocabulary first. Git is the tool that tracks every version of your files. GitHub is the website where a team shares a Git repository, or repo: the project folder with its full history. A branch is a parallel copy of the project where you can work without disturbing anyone else.
         Two branches matter here. main is the published edition: always working, always safe to hand to someone. dev is the draft desk: work lands there first, gets combined, and gets checked.
-        The team rule: merge into main only after the tests pass and the work is verified. To merge simply means to bring the changes from one branch into another.
-        The diagram is this repository's real history, used as an illustration: issue #2 is a to-do card asking for DHT22 support, and PR #3 is the reviewed change that delivered it; I will define both properly on the next slide. To be clear, this was a one-person project, early work here went straight to main, there is no automated test server, and main is not technically locked. A real team would add those. The flow is the same.
+        The team rule: merge into main only after the tests pass and the work is verified. To merge means bringing the changes from one branch into another.
+        The diagram is this repo's real history, as an illustration: issue #2 is a to-do card asking for DHT22 support, and PR #3 is the change that delivered it; more on both next slide. To be clear, this was a one-person project, early work went straight to main, there is no automated test server, and main is not locked. A real team would add those.
         Tip: keep main always working, and merge into it only after the tests pass.
       he: "Analogy: דלפק ההגשה במטבח, המנות מחכות שם לפני שהן יוצאות לסועדים."
 
@@ -600,8 +597,8 @@ slides:
     notes:
       en: |
         Analogy: a small band. The drummer, the bassist and the singer each know their part, and the band leader settles the arguments.
-        Skills can also define roles, and roles can work as a team. This talk is the example. It was planned with a team setup of three AI roles: an architect who coordinated and owned the design, a product owner who wrote the brief and the acceptance criteria, and a senior developer who estimated the work and checked the facts. They never talked directly; the architect passed messages and made the call when they disagreed, and I approved every scope decision.
-        That team caught real problems: an inflated star count in the article, an archived GSD repository, and slides that still named the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
+        Skills can also define roles, and roles can work as a team. This talk is the example. It was planned by three AI roles: an architect who coordinated, a product owner who wrote the brief, and a senior developer who estimated the work and checked the facts. The architect passed messages between them and made the call when they disagreed; I approved every scope decision.
+        That team caught real problems: an inflated star count in the article, an archived GSD repository, and slides naming the wrong sensor. It also negotiated the cuts that fit this talk into 45 minutes.
         This was a custom setup on my machine, not a product you can download, but the pattern is reusable.
       he: "Analogy: להקה קטנה שבה כל אחד יודע את התפקיד שלו."
 
