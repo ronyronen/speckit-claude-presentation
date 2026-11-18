@@ -182,3 +182,74 @@ def test_en_text_is_not_rtl(decks):
         for sh in s.shapes:
             for p in _paragraphs(sh):
                 assert p._p.pPr is None or p._p.pPr.get("rtl") != "1"
+
+
+# --- fix round 1: table bound, bullet strip, title gap ----------------------
+
+from pptx.util import Inches  # noqa: E402
+
+from presentation.build.theme import content_box  # noqa: E402
+
+
+def _render(slide_obj, lang="en"):
+    from presentation.build.build_decks import new_presentation
+    from presentation.build.layouts import LAYOUTS
+    prs = new_presentation()
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    LAYOUTS[slide_obj.layout](s, slide_obj, lang, [])
+    return s
+
+
+def _table_slide(ncols, text_en, text_he, nrows=7):
+    s = _long_slide("table")
+    cell = {"en": text_en, "he": text_he}
+    s.extra["table"] = {"header": [cell] * ncols, "rows": [[cell] * ncols] * nrows}
+    return s
+
+
+def _table_sizes(sl):
+    t = _shape(sl, "lay-table")
+    return t, [r.font.size.pt for row in t.table.rows for c in row.cells
+               for p in c.text_frame.paragraphs for r in p.runs]
+
+
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_table_7_rows_fits_by_downsizing(lang):
+    s = _table_slide(2, LONG, LONG_HE)
+    sl = _render(s, lang)
+    t, sizes = _table_sizes(sl)
+    assert 14 <= min(sizes) and max(sizes) < 18
+    assert t.top + sum(r.height for r in t.table.rows) <= tip_box()[1]
+
+
+def test_table_7_rows_too_long_raises():
+    s = _table_slide(3, LONG + " " + LONG, LONG_HE + " " + LONG_HE)
+    with pytest.raises(ValueError, match="long-table"):
+        _render(s)
+
+
+def test_table_short_keeps_18pt():
+    s = _table_slide(2, "short", "קצר", nrows=3)
+    _, sizes = _table_sizes(_render(s))
+    assert set(sizes) == {18}
+
+
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_bullet_strip_does_not_overlap_diagram(lang):
+    s = _long_slide("bullets-diagram")
+    two_line = LONG + " " + LONG + " and more"  # ~130 chars: two lines at 20pt
+    s.bullets = [Bullet("a", two_line, two_line), Bullet("b", two_line, two_line)]
+    sl = _render(s, lang)
+    body = _shape(sl, "lay-body")
+    dg = [sh for sh in sl.shapes if not sh.name.startswith(LAYOUT_SHAPE)]
+    assert dg
+    assert body.top + body.height <= min(sh.top for sh in dg)
+    assert body.height >= 4 * Inches(20 * 1.2 / 72)  # room for 4 lines
+
+
+@pytest.mark.parametrize("layout", ["bullets", "bullets-diagram", "compare", "table",
+                                    "photos", "code"])
+def test_title_gap(layout):
+    sl = _render(_long_slide(layout))
+    t = _shape(sl, "lay-title")
+    assert t.top + t.height + Inches(0.1) <= content_box(True)[1]

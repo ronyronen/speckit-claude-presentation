@@ -27,6 +27,41 @@ TIP_GAP = Inches(0.2)  # breathing room between content and the tip band
 PILL_W, PILL_H = Inches(0.9), Inches(0.4)
 
 
+# --- text height estimate (the real overflow guard; autofit is a safety net:
+# PowerPoint does not apply normAutofit until the text is edited) -----------
+EMU_PT = 12700
+CHAR_EM = 0.55      # conservative average glyph width, in ems
+LINE_EM = 1.2       # line height, in ems
+BULLET_INDENT = 285750  # marL from text.write_paragraphs
+FRAME_INSET_V = Inches(0.1)  # default text-frame top + bottom insets
+FRAME_INSET_H = Inches(0.2)  # default text-frame left + right insets
+CELL_INSET_V = Inches(0.1)   # default table-cell top + bottom margins
+CELL_INSET_H = Inches(0.2)   # default table-cell left + right margins
+TABLE_PT_MAX, TABLE_PT_MIN = 18, 14
+
+
+def est_lines(text, width_emu, size_pt, bold=False):
+    """Greedy word-wrap line count for text in a box width_emu wide."""
+    em = size_pt * EMU_PT * (1.1 if bold else 1.0)
+    cpl = max(1, int(width_emu / (em * CHAR_EM)))
+    n = 0
+    for para in str(text).split("\n"):
+        lines, cur = 1, 0
+        for word in para.split():
+            need = len(word) if cur == 0 else cur + 1 + len(word)
+            if need <= cpl:
+                cur = need
+            else:
+                lines += 1 + (len(word) - 1) // cpl
+                cur = (len(word) - 1) % cpl + 1
+        n += lines
+    return n
+
+
+def est_height(lines, size_pt):
+    return int(lines * size_pt * LINE_EM * EMU_PT)
+
+
 def _mx(x, w, lang):
     """Mirror a box horizontally for RTL."""
     return SLIDE_W - x - w if lang == "he" else x
@@ -79,9 +114,12 @@ def _head_font(tb, lang):
             r.font.name = FONTS[lang]["head"]
 
 
+TITLE_GAP = Inches(0.1)  # between the title frame and the content
+
+
 def _title(slide, s, lang, glossary):
     tb = _textbox(slide, "lay-title", MARGIN, MARGIN, SLIDE_W - 2 * MARGIN,
-                  Inches(1.0), lang, [_t(s.title, lang)], glossary, TITLE_PT,
+                  content_box(False)[1] - MARGIN - TITLE_GAP, lang, [_t(s.title, lang)], glossary, TITLE_PT,
                   bold=True, anchor=MSO_ANCHOR.MIDDLE)
     _head_font(tb, lang)
 
@@ -154,8 +192,10 @@ def bullets(slide, s, lang, glossary):
 def bullets_diagram(slide, s, lang, glossary):
     """Short bullet strip on top, diagram below in the rest of the content box."""
     x, y, w, h = _frame(slide, s, lang, glossary)
-    strip = min(len(s.bullets), 2) * Inches(0.5)
     if s.bullets:
+        tw = w - FRAME_INSET_H - BULLET_INDENT
+        lines = sum(est_lines(t, tw, SMALL_PT) for t in _bullets(s, lang))
+        strip = est_height(lines, SMALL_PT) + FRAME_INSET_V
         _bullet_box(slide, (x, y, w, strip), s, lang, glossary, SMALL_PT)
         y, h = y + strip + Inches(0.15), h - strip - Inches(0.15)
     if s.diagram:
@@ -184,6 +224,21 @@ def compare(slide, s, lang, glossary):
                      h - head_h - pad, lang, items, glossary, SMALL_PT, bullet=True)
 
 
+def _table_fit(s, rows, col_w, max_h, lang):
+    """Largest font (18pt down to 14pt) whose estimated table height fits
+    max_h. Returns (row heights, size); raises ValueError if nothing fits."""
+    tw = col_w - CELL_INSET_H
+    for size in range(TABLE_PT_MAX, TABLE_PT_MIN - 1, -1):
+        est = [max(est_height(est_lines(_t(c, lang), tw, size, bold=r == 0), size)
+                   for c in row) + CELL_INSET_V for r, row in enumerate(rows)]
+        if sum(est) <= max_h:
+            pad = min(Inches(0.6), max_h // len(rows))
+            roomy = [max(e, pad) for e in est]
+            return (roomy if sum(roomy) <= max_h else est), size
+    raise ValueError(f"{s.id}: table text too long to fit at {TABLE_PT_MIN}pt; "
+                     "shorten the cells or split the table")
+
+
 def table(slide, s, lang, glossary):
     """Native table; column order reversed in HE."""
     x, y, w, h = _frame(slide, s, lang, glossary)
@@ -195,20 +250,20 @@ def table(slide, s, lang, glossary):
     order = list(range(len(header)))
     if lang == "he":
         order.reverse()
-    row_h = min(Inches(0.75), h // len(rows))
+    heights, size = _table_fit(s, rows, w // len(header), h, lang)
     gf = slide.shapes.add_table(len(rows), len(header), int(x), int(y), int(w),
-                                int(row_h * len(rows)))
+                                int(sum(heights)))
     gf.name = "lay-table"
     tbl = gf.table
     for c in range(len(header)):
         tbl.columns[c].width = Emu(w // len(header))
     for r, row in enumerate(rows):
-        tbl.rows[r].height = Emu(row_h)
+        tbl.rows[r].height = Emu(heights[r])
         for c, src in enumerate(order):
             cell = tbl.cell(r, c)
             cell.fill.solid()
             cell.fill.fore_color.rgb = COLORS["accent"] if r == 0 else COLORS["surface"]
-            write_paragraphs(cell.text_frame, [_t(row[src], lang)], lang, 18, glossary,
+            write_paragraphs(cell.text_frame, [_t(row[src], lang)], lang, size, glossary,
                              bullet=False, bold=r == 0,
                              color=COLORS["bg"] if r == 0 else COLORS["text"])
             cell.vertical_anchor = MSO_ANCHOR.MIDDLE
