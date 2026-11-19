@@ -158,7 +158,7 @@ slides:
         Spec-driven development is the blueprint. You write the intent down first, you review it, and only then do you let the AI generate the code. The decisions live in plain files inside the project, next to the code, where the whole team can read them, review them, and change them.
         The difference shows up a month later. With vibe coding, someone asks why the warning triggers at 27 degrees, and the honest answer is: the AI picked it. With a spec, you open a file and the decision is there, with the reason next to it.
         So this is not good versus bad. It is a choice, and one question decides it: will this code need to survive? If yes, it deserves a spec.
-        Point at the picture. On the left, a loop with no exit: prompt, the AI writes code, you accept or reject, and round again. Nothing is written down outside the chat. On the right, a line that goes somewhere: spec, plan, tasks, code, a review against the spec, and only then ship. Every one of the first four steps leaves a file behind.
+        In the picture, on the left, a loop with no exit: prompt, the AI writes code, you accept or reject, and round again. Nothing is written down outside the chat. On the right, a line that goes somewhere: spec, plan, tasks, code, a review against the spec, and only then ship. Every one of the first four steps leaves a file behind.
         That is the tip on the slide: explore with vibe coding, and switch to a spec the moment the code has to last.
         Source (diagram adapted from): https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
       he: |
@@ -168,7 +168,7 @@ slides:
         פיתוח מבוסס spec הוא השרטוט. כותבים את הכוונה קודם, בודקים אותה, ורק אז נותנים ל-AI לייצר את הקוד. ההחלטות חיות בקבצים פשוטים בתוך הפרויקט, ליד הקוד, שם כל הצוות יכול לקרוא אותן, לבדוק ולשנות.
         ההבדל מתגלה חודש אחרי. עם vibe coding, מישהו שואל למה האזהרה נדלקת ב-27 מעלות, והתשובה הכנה היא: ה-AI בחר. עם spec, פותחים קובץ וההחלטה שם, עם הסיבה לידה.
         אז זה לא טוב מול רע. זו בחירה, ושאלה אחת מכריעה: האם הקוד הזה צריך לשרוד? אם כן, מגיע לו spec.
-        הצביעו על התמונה. משמאל, לולאה בלי יציאה: prompt, ה-AI כותב קוד, מאשרים או דוחים, ושוב מההתחלה. שום דבר לא נכתב מחוץ לצ'אט. מימין, קו שמתקדם: spec, plan, tasks, קוד, review מול ה-spec, ורק אז משחררים. כל אחד מארבעת השלבים הראשונים משאיר אחריו קובץ.
+        בתמונה, משמאל, לולאה בלי יציאה: prompt, ה-AI כותב קוד, מאשרים או דוחים, ושוב מההתחלה. שום דבר לא נכתב מחוץ לצ'אט. מימין, קו שמתקדם: spec, plan, tasks, קוד, review מול ה-spec, ורק אז משחררים. כל אחד מארבעת השלבים הראשונים משאיר אחריו קובץ.
         זה ה-TIP בשקף: חקרו עם vibe coding, ועברו ל-spec ברגע שהקוד צריך להחזיק מעמד.
         Source (diagram adapted from): https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
 
@@ -737,7 +737,7 @@ slides:
     notes:
       en: |
         Analogy: see slide 20, the thermostat. These photos show it working.
-        Pause about 10 seconds on each photo so people can read the screen.
+        Cue: Pause about 10 seconds on each photo so people can read the screen.
         This is the real board with the DHT22 wired up. On the left, normal room temperature: the screen shows OK and 24.0 degrees.
         On the right, I warmed the sensor with my hand. Look closely at the number: 26.6 degrees, and the screen still says WARNING. A beginner might call that a bug, because 26.6 is below the 27-degree threshold. It is not a bug; it is the spec. The reading went above 27, the warning switched on, and it stays on until the temperature drops below 25. That is the hysteresis band from three slides ago, visible on real hardware.
         This is why the photos matter. The unit tests proved the logic on a laptop; the photos prove the same behavior on the physical device, with the real sensor. We use photos instead of a live demo on purpose: they never fail on stage.
@@ -745,7 +745,7 @@ slides:
         Tip: photograph real hardware results; reviewers trust a photo faster than a log.
       he: |
         Analogy: ראו שקף 20, התרמוסטט. התמונות האלה מראות אותו עובד.
-        עצרו בערך 10 שניות על כל תמונה, כדי שאנשים יספיקו לקרוא את המסך.
+        Cue: עצרו בערך 10 שניות על כל תמונה, כדי שאנשים יספיקו לקרוא את המסך.
         זה הלוח האמיתי, עם ה-DHT22 מחובר. בתמונת ה-OK, טמפרטורת חדר רגילה: המסך מציג OK ו-24.0 מעלות.
         בתמונת ה-WARNING, חיממתי את החיישן ביד. תסתכלו טוב על המספר: 26.6 מעלות, והמסך עדיין אומר WARNING. מי שרק מתחיל היה קורא לזה באג, כי 26.6 מתחת לסף של 27. זה לא באג; זה ה-spec. הקריאה עלתה מעל 27, האזהרה נדלקה, והיא נשארת דלוקה עד שהטמפרטורה יורדת מתחת ל-25. זה פס ה-hysteresis משלושה שקפים קודם, גלוי על חומרה אמיתית.
         בגלל זה התמונות חשובות. בדיקות היחידה הוכיחו את הלוגיקה על לפטופ; התמונות מוכיחות את אותה התנהגות על המכשיר הפיזי, עם החיישן האמיתי. אנחנו משתמשים בתמונות במקום בדמו חי בכוונה: הן אף פעם לא נכשלות על הבמה.
@@ -995,7 +995,8 @@ slides:
     sources: [article, F4, F7]
     notes:
       en: |
-        Everything from today is in this talk's repository: the firmware, the full specs folder and both decks, English and Hebrew. Leave this slide up while people photograph it.
+        Everything from today is in this talk's repository: the firmware, the full specs folder and both decks, English and Hebrew.
+        Cue: Leave this slide up while people photograph it.
         This talk: https://github.com/ronyronen/speckit-claude-presentation
         Article: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
         Spec Kit: https://github.com/github/spec-kit
@@ -1006,7 +1007,8 @@ slides:
         Lost in the Middle: https://arxiv.org/abs/2307.03172
         Where to go next: the last backup slide has a learning path, and the repo README has the full reading list.
       he: |
-        כל מה שראינו היום נמצא ב-repository של ההרצאה: ה-firmware, תיקיית ה-specs המלאה ושתי המצגות, באנגלית ובעברית. השאירו את השקף הזה בזמן שאנשים מצלמים.
+        כל מה שראינו היום נמצא ב-repository של ההרצאה: ה-firmware, תיקיית ה-specs המלאה ושתי המצגות, באנגלית ובעברית.
+        Cue: השאירו את השקף הזה בזמן שאנשים מצלמים.
         This talk: https://github.com/ronyronen/speckit-claude-presentation
         Article: https://vimal-dwarampudi.medium.com/spec-driven-ai-bmad-speckit-gsd-superpowers-2cae4512819a
         Spec Kit: https://github.com/github/spec-kit
@@ -1015,7 +1017,7 @@ slides:
         Superpowers: https://github.com/obra/superpowers
         Context rot: https://www.trychroma.com/research/context-rot
         Lost in the Middle: https://arxiv.org/abs/2307.03172
-        Where to go next: the last backup slide has a learning path, and the repo README has the full reading list.
+        לאן ממשיכים: בשקף הגיבוי האחרון יש מסלול לימוד, וב-README של ה-repo יש את רשימת הקריאה המלאה.
 
   - id: qa
     part: close
@@ -1026,21 +1028,21 @@ slides:
       - { key: thanks, en: "Thank you", he: "תודה רבה" }
     notes:
       en: |
-        Repeat each question before answering it, so the whole room hears it.
+        Cue: Repeat each question before answering it, so the whole room hears it.
         Likely questions:
         "Isn't this just waterfall again?" No. Waterfall freezes the document; here the spec is living, and the feedback loop updates it whenever you learn something.
         "Which tool should I start with?" One planning tool; Spec Kit is the one I used here. Then use the decision rule for the rest.
         "Does it work with my assistant?" Spec Kit supports several assistants, and its files do not depend on any one of them.
         "How long did the Heltec spec take?" Specify through implement all ran on one day, 2026-09-10, per the tags and commit dates in the repo.
-        If time runs out, point to the references slide and the repo.
+        Cue: If time runs out, point to the references slide and the repo.
       he: |
-        חזרו על כל שאלה לפני שאתם עונים, כדי שכל החדר ישמע.
+        Cue: חזרו על כל שאלה לפני שאתם עונים, כדי שכל החדר ישמע.
         שאלות צפויות:
         “זה לא סתם waterfall מחדש?” לא. waterfall מקפיא את המסמך; כאן ה-spec חי, ולולאת המשוב מעדכנת אותו בכל פעם שלומדים משהו.
         “עם איזה כלי להתחיל?” כלי תכנון אחד; Spec Kit הוא זה שהשתמשתי בו כאן. את השאר תחליטו לפי כלל ההחלטה.
         “זה עובד עם העוזר שלי?” Spec Kit תומכת בכמה עוזרים, והקבצים שלה לא תלויים באף אחד מהם.
         “כמה זמן לקח ה-spec של Heltec?” מ-specify ועד implement הכול רץ ביום אחד, 2026-09-10, לפי ה-tags ותאריכי ה-commits ב-repo.
-        אם נגמר הזמן, הפנו לשקף המקורות ול-repo.
+        Cue: אם נגמר הזמן, הפנו לשקף המקורות ול-repo.
 
   # ---------------------------------------------------------------- Appendix
   - id: appendix
@@ -1075,10 +1077,10 @@ slides:
         - [ { en: "analyze", he: "analyze" }, { en: "Two requirements disagreed (1 vs 3 reads)", he: "שתי דרישות סתרו זו את זו (קריאה 1 מול 3)" } ]
     notes:
       en: |
-        backup, not timed. Use only if someone asks how each stage pays for itself.
+        backup, not timed. Cue: Use only if someone asks how each stage pays for itself.
         Clarify settled the exact edges of the hysteresis band (strictly above, strictly below). Plan, following the constitution, kept the state machine free of hardware calls, which is what made the 11 laptop tests possible. Analyze found that success criterion SC-004 contradicted requirement FR-005 before any code existed.
       he: |
-        backup, not timed. משתמשים רק אם מישהו שואל איך כל שלב מחזיר את ההשקעה.
+        backup, not timed. Cue: משתמשים רק אם מישהו שואל איך כל שלב מחזיר את ההשקעה.
         clarify קבע את הקצוות המדויקים של פס ה-hysteresis (רק מעל, רק מתחת). plan, בעקבות ה-constitution, שמר את ה-state machine נקייה מקריאות לחומרה, וזה מה שאפשר את 11 הבדיקות על הלפטופ. analyze מצא שקריטריון ההצלחה SC-004 סותר את הדרישה FR-005, עוד לפני שהיה קוד.
 
   - id: a2-overlap-gaps
@@ -1098,10 +1100,10 @@ slides:
           - { en: "Planning tools don’t enforce TDD while coding", he: "כלי תכנון לא אוכפים TDD בזמן כתיבת הקוד" }
     notes:
       en: |
-        backup, not timed. For questions comparing the tools.
+        backup, not timed. Cue: For questions comparing the tools.
         The argument: planning frameworks solve "what to build"; GSD and Superpowers solve "how to build it reliably for hours". On small projects with careful human review, the planning layer's light gates may be enough. None of the four replaces a human reviewer, and hardware testing is still on you.
       he: |
-        backup, not timed. לשאלות שמשוות בין הכלים.
+        backup, not timed. Cue: לשאלות שמשוות בין הכלים.
         הטיעון: frameworks של תכנון פותרים את “מה לבנות”; GSD ו-Superpowers פותרים את “איך לבנות באמינות במשך שעות”. בפרויקטים קטנים עם review אנושי קפדני, השערים הקלים של שכבת התכנון אולי מספיקים. אף אחד מהארבעה לא מחליף reviewer אנושי, ובדיקות החומרה עדיין עליכם.
 
   - id: a7-gsd
@@ -1126,7 +1128,7 @@ slides:
     sources: [F4, F5, F6]
     notes:
       en: |
-        backup, not timed. Use if someone asks about long sessions or GSD (slides 16 and 17 mention it).
+        backup, not timed. Cue: Use if someone asks about long sessions or GSD (slides 16 and 17 mention it).
         Analogy: a relay race. No runner tries to run the whole marathon; each one starts fresh, takes the baton, and runs one leg at full speed.
         GSD is short for a blunt phrase, "Get Sh*t Done", and at heart it is a context engineering tool. Its insight is the one from the context rot slide (slide 9): quality drops as the window fills, so never let it fill.
         Every task gets a new, clean context: a fresh agent that only sees what that task needs. Independent tasks can run side by side in parallel waves; dependent ones wait. Your main session stays small while the helpers do the heavy lifting. The gsd-core README describes this as a fresh 200,000-token context per task; that number is the project's own claim.
@@ -1136,7 +1138,7 @@ slides:
         https://github.com/open-gsd/gsd-core
         https://github.com/gsd-build/get-shit-done
       he: |
-        backup, not timed. משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 16 ו-17 מזכירים אותו).
+        backup, not timed. Cue: משתמשים אם מישהו שואל על sessions ארוכים או על GSD (שקפים 16 ו-17 מזכירים אותו).
         Analogy: מרוץ שליחים. אף רץ לא מנסה לרוץ את כל המרתון; כל אחד מתחיל רענן, לוקח את המקל ורץ מקטע אחד במלוא המהירות.
         GSD הוא קיצור של ביטוי בוטה, “Get Sh*t Done”, וביסודו הוא כלי context engineering. התובנה שלו היא זו משקף ה-context rot (שקף 9): האיכות יורדת ככל שהחלון מתמלא, אז פשוט לא נותנים לו להתמלא.
         כל משימה מקבלת context חדש ונקי: agent רענן שרואה רק את מה שהמשימה צריכה. משימות עצמאיות רצות במקביל, בגלים; משימות תלויות מחכות. ה-session הראשי נשאר קטן, והעוזרים עושים את העבודה הכבדה. ה-README של gsd-core מתאר context טרי של 200,000 tokens לכל משימה; המספר הזה הוא טענה של הפרויקט עצמו.
@@ -1160,9 +1162,11 @@ slides:
       cd heltec-monitor
     notes:
       en: |
-        backup, not timed. Show only if someone wants to try it tonight. The full setup steps are in the repo README and in docs/textbook.md, chapter 5.
+        backup, not timed. Cue: Show only if someone wants to try it tonight.
+        The full setup steps are in the repo README and in docs/textbook.md, chapter 5.
       he: |
-        backup, not timed. מראים רק אם מישהו רוצה לנסות כבר הערב. כל שלבי ההתקנה נמצאים ב-README של ה-repo וב-docs/textbook.md, פרק 5.
+        backup, not timed. Cue: מראים רק אם מישהו רוצה לנסות כבר הערב.
+        כל שלבי ההתקנה נמצאים ב-README של ה-repo וב-docs/textbook.md, פרק 5.
 
   - id: a4-tool-relationship
     part: close
@@ -1175,9 +1179,11 @@ slides:
       - { key: combine, en: "Same specs/ work with Claude Code, Codex and others", he: "אותה תיקיית specs/ עובדת עם Claude Code, Codex ואחרים" }
     notes:
       en: |
-        backup, not timed. Use with slide 16. Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
+        backup, not timed. Cue: Use with slide 16.
+        Spec Kit is not an AI itself: it sets up templates and commands, and an AI assistant such as Claude Code or Codex runs them. The specs and constitution are plain files, so you can switch assistants mid-project.
       he: |
-        backup, not timed. משתמשים יחד עם שקף 16. Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
+        backup, not timed. Cue: משתמשים יחד עם שקף 16.
+        Spec Kit היא לא AI בעצמה: היא מכינה תבניות ופקודות, ועוזר AI כמו Claude Code או Codex מריץ אותן. ה-specs וה-constitution הם קבצים פשוטים, אז אפשר להחליף עוזר באמצע הפרויקט.
 
   - id: a5-vscode-extensions
     part: close
@@ -1191,9 +1197,11 @@ slides:
     tip: { key: preview, en: "Keep the spec open in a preview pane while the agent works.", he: "השאירו את ה-spec פתוח בחלונית תצוגה בזמן שה-agent עובד." }
     notes:
       en: |
-        backup, not timed. For the hands-on crowd. The full extension list is in the repo README, section 5.
+        backup, not timed. Cue: For the hands-on crowd.
+        The full extension list is in the repo README, section 5.
       he: |
-        backup, not timed. לקהל שרוצה לנסות בעצמו. רשימת ההרחבות המלאה נמצאת ב-README של ה-repo, סעיף 5.
+        backup, not timed. Cue: לקהל שרוצה לנסות בעצמו.
+        רשימת ההרחבות המלאה נמצאת ב-README של ה-repo, סעיף 5.
 
   - id: a6-git-checkpoints
     part: close

@@ -492,11 +492,25 @@ def test_transcript_is_current_and_complete(lang):
     md = transcript_md(deck, lang)
     assert md == TRANSCRIPT[lang].read_text(encoding="utf-8")
     for n, s in enumerate(deck.slides, 1):
-        assert f"### {n}. {s.title[lang]}" in md
-        first = next(ln for ln in s.notes[lang].splitlines() if ln.strip())
-        assert first.strip() in md
-    assert md.count("💡") == sum(1 for s in deck.slides if s.tip)
+        if s.layout != "divider" and n > 1:
+            assert f" {n} · {s.title[lang]}" in md
+    assert md.count("> **") == sum(1 for s in deck.slides if s.tip)
     assert ("<div dir=\"rtl\">" in md) == (lang == "he")
+
+
+@pytest.mark.parametrize("lang", ["en", "he"])
+def test_transcript_reads_like_a_paper(lang):
+    """No timings or presenter cues; every URL is a numbered reference."""
+    import re
+    from presentation.build.build_decks import transcript_md
+    md = transcript_md(load_deck(DECK), lang)
+    for banned in ("[@", "`[", "backup, not timed", "Cue:", "Transition:", "\nAnalogy:"):
+        assert banned not in md, banned
+    refs = md.rsplit("\n## ", 1)[1]
+    assert "http" not in md.rsplit("\n## ", 1)[0]  # URLs only in References
+    cited = {int(x) for x in re.findall(r"\[(\d+)\]", md.rsplit("\n## ", 1)[0])}
+    listed = re.findall(r"^(\d+)\. .*<https?://", refs, re.M)
+    assert cited == set(range(1, len(listed) + 1))
 
 
 def test_opening_slide_is_keynote_style(decks):

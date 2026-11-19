@@ -13,6 +13,7 @@ from pptx import Presentation
 
 from .layouts import LAYOUTS, add_footer
 from .model import load_deck, timing_prefixes
+from .reader import reader_md
 from .shapes import DIAGRAMS
 from .text import _HE, set_rtl
 from .theme import SLIDE_H, SLIDE_W
@@ -82,43 +83,10 @@ def manual_check_md(deck) -> str:
     return "\n".join(out)
 
 
-_T = {
-    "en": {"intro": "Speaker transcript, slide by slide, generated from "
-                    "`presentation/content/deck.yaml` (the same text as the "
-                    "speaker notes). Times are the slide budget and the elapsed "
-                    "time at the end of the slide.",
-           "tip": "Tip", "backup": "Backup slides (not timed)", "deck": "Deck"},
-    "he": {"intro": "התמליל של ההרצאה, שקף אחרי שקף, נוצר אוטומטית מתוך "
-                    "`presentation/content/deck.yaml` (אותו טקסט כמו ה-speaker notes). "
-                    "הזמנים הם הזמן של השקף והזמן המצטבר בסוף השקף.",
-           "tip": "Tip", "backup": "שקפי גיבוי (לא בתזמון)", "deck": "מצגת"},
-}
-
-
 def transcript_md(deck, lang) -> str:
-    """Full talk script in one Markdown file: per slide its title, timing,
-    on-slide tip and speaker notes. HE is wrapped in a right-to-left div."""
-    t = _T[lang]
-    prefixes = timing_prefixes(deck)
-    out = [f"# {deck.slides[0].title.get(lang, '')}" if deck.slides else "# Transcript",
-           "", t["intro"], "",
-           f"{t['deck']}: `presentation/{OUT[lang].name}`", ""]
-    backup_started = False
-    for n, s in enumerate(deck.slides, 1):
-        if s.appendix and not backup_started:
-            out += ["---", "", f"## {t['backup']}", ""]
-            backup_started = True
-        out += [f"### {n}. {s.title.get(lang, '')}", "",
-                f"`{prefixes[s.id]}`", ""]
-        if s.tip:
-            out += [f"> 💡 **{t['tip']}:** {getattr(s.tip, lang)}", ""]
-        for para in s.notes.get(lang, "").strip().split("\n"):
-            if para.strip():
-                out += [para.strip(), ""]
-    body = "\n".join(out).rstrip() + "\n"
-    if lang == "he":
-        body = '<div dir="rtl">\n\n' + body + '\n</div>\n'
-    return body
+    """The transcript as a reader's edition (see reader.py): no timings,
+    no presenter cues, numbered references. HE is wrapped in an RTL div."""
+    return reader_md(deck, lang, OUT[lang].name)
 
 
 def new_presentation():
