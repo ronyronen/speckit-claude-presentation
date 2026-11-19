@@ -75,7 +75,7 @@ The decks:
 - [presentation/speckit-workshop-he.pptx](presentation/speckit-workshop-he.pptx) (Hebrew)
   · [transcript](presentation/transcript-he.md)
 
-Each transcript is the full talk script, slide by slide, with timings and tips.
+Each transcript is a reader's edition of the talk, written like a paper: one section per slide, numbered as in the deck so you can read along, with numbered references at the end. Timings and presenter cues live only in the speaker notes.
 Tips appear on the slides as a light-bulb icon. The decks use a light
 paper-and-blueprint theme with a keynote-style cover. The same files are attached
 to every [GitHub release](https://github.com/ronyronen/speckit-claude-presentation/releases).
@@ -293,7 +293,7 @@ firmware implementation. Compare [examples/prompt-only](examples/prompt-only)
 ├── presentation/
 │   ├── speckit-workshop.pptx      # English deck (generated)
 │   ├── speckit-workshop-he.pptx   # Hebrew deck (generated)
-│   ├── transcript-en.md / -he.md  # talk scripts (generated)
+│   ├── transcript-en.md / -he.md  # reader editions of the talk (generated)
 │   ├── content/deck.yaml          # single content source for both decks
 │   └── build/                     # generator, validator, tests
 ├── firmware/                      # PlatformIO project for Heltec WiFi Kit V3
